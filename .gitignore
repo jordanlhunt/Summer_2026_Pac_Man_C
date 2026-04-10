@@ -1,3 +1,7 @@
 .vscode/settings.json
 .vscode/launch.json
 .vscode/c_cpp_properties.json
+*.o
+*.out
+hac_man_summer_project
+build/
