@@ -1,5 +1,6 @@
 #include "include/main.h"
 #include "include/common.h"
+#include <SDL2/SDL_video.h>
 
 int main(int argc, char *argv[]) {
 
@@ -10,17 +11,16 @@ int main(int argc, char *argv[]) {
   }
   SDL_Window *window = SDL_CreateWindow("Hac-Man", SDL_WINDOWPOS_UNDEFINED,
                                         SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-                                        SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+                                        SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
   SDL_Renderer *render =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   SDL_SetRenderDrawColor(render, 100, 216, 107, 255); // Matrix Green
   SDL_RenderClear(render);
   SDL_RenderPresent(render);
-  SDL_ShowWindow(window);
 
   bool isQuit = false;
   SDL_Event sdl_event;
-
+  SDL_ShowWindow(window);
   while (isQuit == false) {
     Uint32 startTime = SDL_GetTicks();
     while (SDL_PollEvent(&sdl_event) != 0) {
