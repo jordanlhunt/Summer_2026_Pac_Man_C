@@ -1,6 +1,8 @@
+#include "include/main.h"
 #include "include/common.h"
 
 int main(int argc, char *argv[]) {
+
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("[main.c] - SDL could not initialize! SDL_Error: %s\n",
            SDL_GetError());
@@ -11,21 +13,32 @@ int main(int argc, char *argv[]) {
                                         SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   SDL_Renderer *render =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  SDL_SetRenderDrawColor(render, 100, 216, 107, 255); // Matrix Green
+  SDL_RenderClear(render);
+  SDL_RenderPresent(render);
+  SDL_ShowWindow(window);
+
   bool isQuit = false;
   SDL_Event sdl_event;
+
   while (isQuit == false) {
+    Uint32 startTime = SDL_GetTicks();
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {
         isQuit = true;
       }
-
-      SDL_SetRenderDrawColor(render, 100, 216, 107, 255); // Matrix Green
-      SDL_RenderClear(render);
-      SDL_RenderPresent(render);
     }
+    delayFramerate(startTime);
   }
   SDL_DestroyRenderer(render);
   SDL_DestroyWindow(window);
   SDL_Quit();
   return 0;
+}
+
+void delayFramerate(Uint32 startTime) {
+  Uint32 elapsedTime = SDL_GetTicks() - startTime;
+  if (elapsedTime < FRAMERATE_DELAY) {
+    SDL_Delay(FRAMERATE_DELAY - elapsedTime);
+  }
 }
