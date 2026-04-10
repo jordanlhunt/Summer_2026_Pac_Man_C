@@ -14,15 +14,15 @@ int main(int argc, char *argv[]) {
                                         SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
   SDL_Renderer *render =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-  SDL_SetRenderDrawColor(render, 100, 216, 107, 255); // Matrix Green
-  SDL_RenderClear(render);
-  SDL_RenderPresent(render);
 
   bool isQuit = false;
   SDL_Event sdl_event;
   SDL_ShowWindow(window);
   while (isQuit == false) {
     Uint32 startTime = SDL_GetTicks();
+    SDL_SetRenderDrawColor(render, 100, 216, 107, 255); // Matrix Green
+    SDL_RenderClear(render);
+    SDL_RenderPresent(render);
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {
         isQuit = true;
