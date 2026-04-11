@@ -1,0 +1,9 @@
+P - Player
+I - Inky
+B - Blink
+T - Tinky
+M - Moe
+W - Wall
+* - Pallet
++ - Power Pallet
+F - Fruit

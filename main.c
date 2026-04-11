@@ -1,9 +1,5 @@
 #include "include/main.h"
-#include "include/common.h"
-#include <SDL2/SDL_video.h>
-
 int main(int argc, char *argv[]) {
-
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("[main.c] - SDL could not initialize! SDL_Error: %s\n",
            SDL_GetError());
@@ -14,7 +10,6 @@ int main(int argc, char *argv[]) {
                                         SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
   SDL_Renderer *render =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
   bool isQuit = false;
   SDL_Event sdl_event;
   SDL_ShowWindow(window);
@@ -30,15 +25,17 @@ int main(int argc, char *argv[]) {
     }
     delayFramerate(startTime);
   }
-  SDL_DestroyRenderer(render);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
+  cleanup(render, window);
   return 0;
 }
-
 void delayFramerate(Uint32 startTime) {
   Uint32 elapsedTime = SDL_GetTicks() - startTime;
   if (elapsedTime < FRAMERATE_DELAY) {
     SDL_Delay(FRAMERATE_DELAY - elapsedTime);
   }
+}
+void cleanup(SDL_Renderer *renderer, SDL_Window *sdlWindow) {
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(sdlWindow);
+  SDL_Quit();
 }

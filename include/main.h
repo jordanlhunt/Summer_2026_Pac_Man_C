@@ -1,14 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
-
-#include <SDL2/SDL_stdinc.h>
-
+#include "common.h"
 void initializeSDL();
 void loadAssets();
-void initalizeGameState();
+void initializeGameState();
 void handleInput();
 void drawGame();
 void updateGame();
 void delayFramerate(Uint32 startTime);
-
+void cleanup(SDL_Renderer *, SDL_Window *);
 #endif
