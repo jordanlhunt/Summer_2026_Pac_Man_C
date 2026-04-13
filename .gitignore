@@ -5,5 +5,4 @@
 *.out
 hac_man_summer_project
 build/
-hac_man_summer_project
-hac_man_summer_project
+bin/*

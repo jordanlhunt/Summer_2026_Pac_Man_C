@@ -1,4 +1,5 @@
-#include "include/main.h"
+#include "../include/main.h"
+
 int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("[main.c] - SDL could not initialize! SDL_Error: %s\n",

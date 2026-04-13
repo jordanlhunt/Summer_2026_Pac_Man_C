@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = main.c
+OBJS = src/main.c
 #OBJ_Name specifies the name of the executable
 OBJ_Name = hac_man_summer_project
 # COMPILER_FLAGS specifies the additional compilation options

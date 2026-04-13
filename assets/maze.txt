@@ -1,9 +1,52 @@
-P - Player
-I - Inky
-B - Blink
-T - Tinky
-M - Moe
-W - Wall
-* - Pallet
-+ - Power Pallet
-F - Fruit
+; Hac-Man Maze - 28 cols x 31 rows (play area, rows 3-33 of the 28x36 screen)
+; Based on The Pac-Man Dossier [https://www.gamedeveloper.com/design/the-pac-man-dossier] [https://pacman.holenet.info/]
+; Each character = one 8x8 tile
+;
+; Symbol Legend:
+;   W = Wall
+;   . = Pellet
+;   + = Power Pellet
+;   ' '= Empty floor
+;   - = Ghost door
+;   X = Player spawn
+;   B = Blinky spawn
+;   P = Pinky spawn
+;   I = Inky spawn
+;   C = Clyde spawn
+;   F = Fruit spawn
+;
+;
+; Row 14 (0-indexed) is the tunnel row -- open ends wrap left<->right
+; Rows 19-20 flanking the ghost house are the "no upward turn" zones
+
+WWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W............WW............W
+W.WWWW.WWWWW.WW.WWWWW.WWWW.W
+W+WWWW.WWWWW.WW.WWWWW.WWWW+W
+W.WWWW.WWWWW.WW.WWWWW.WWWW.W
+W..........................W
+W.WWWW.WW.WWWWWWWW.WW.WWWW.W
+W.WWWW.WW.WWWWWWWW.WW.WWWW.W
+W......WW....WW....WW......W
+WWWWWW WWWWW WW WWWWW WWWWWW
+WWWWWW WWWWW WW WWWWW WWWWWW
+WWWWWW WW    B     WW WWWWWW
+WWWWWW WW WWW--WWW WW WWWWWW
+WWWWWW WW W      W WW WWWWWW
+          W I P CW          
+WWWWWW WW W      W WW WWWWWW
+WWWWWW WW WWWWWWWW WW WWWWWW
+WWWWWW WW    F     WW WWWWWW
+WWWWWW WW WWWWWWWW WW WWWWWW
+WWWWWW WW WWWWWWWW WW WWWWWW
+W............WW............W
+W.WWWW.WWWWW.WW.WWWWW.WWWW.W
+W.WWWW.WWWWW.WW.WWWWW.WWWW.W
+W+..WW.......X .......WW..+W
+WWW.WW.WW.WWWWWWWW.WW.WW.WWW
+WWW.WW.WW.WWWWWWWW.WW.WW.WWW
+W......WW....WW....WW......W
+W.WWWWWWWWWW.WW.WWWWWWWWWW.W
+W.WWWWWWWWWW.WW.WWWWWWWWWW.W
+W..........................W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWW
