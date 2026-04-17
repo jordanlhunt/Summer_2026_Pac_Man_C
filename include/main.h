@@ -1,5 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
+#include "../include/gamecontext.h"
 #include "common.h"
 void initializeSDL();
 void loadAssets();
@@ -8,5 +9,5 @@ void handleInput();
 void drawGame();
 void updateGame();
 void delayFramerate(Uint32 startTime);
-void cleanup(SDL_Renderer *, SDL_Window *);
+void cleanup(SDL_Renderer*, SDL_Window*);
 #endif
