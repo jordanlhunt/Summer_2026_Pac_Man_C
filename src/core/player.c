@@ -19,7 +19,7 @@ void handleWindowBounds(GameContext *gameContext) {
 void initializePlayer(GameContext *gameContext) {
   gameContext->player.x = 100;
   gameContext->player.y = 100;
-  gameContext->player.velocity = 10;
+  gameContext->player.velocity = 250;
   gameContext->player.width = 20;
   gameContext->player.height = 20;
 }
