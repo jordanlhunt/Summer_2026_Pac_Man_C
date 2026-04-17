@@ -3,6 +3,7 @@
 // System Libraries
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_rect.h>
 #include <stdbool.h>
 // Global Constants
 #define SCREEN_WIDTH 640

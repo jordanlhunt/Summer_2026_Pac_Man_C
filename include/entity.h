@@ -1,6 +1,5 @@
 #ifndef ENTITY_H
 #define ENTITY_H
-
 typedef struct {
   int x;
   int y;
@@ -8,5 +7,4 @@ typedef struct {
   int width;
   int height;
 } Entity;
-
 #endif
