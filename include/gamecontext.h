@@ -8,6 +8,7 @@ typedef struct Graphics Graphics;
 typedef struct LevelData LevelData;
 typedef struct Entity Entity;
 typedef struct GameState GameState;
+typedef struct Audio Audio;
 
 typedef struct GameContext {
   Graphics graphics;
@@ -17,7 +18,7 @@ typedef struct GameContext {
   Entity ghosts[4];
   GameState currentGameState;
   int currentScore;
-
+  Audio audio;
 } GameContext;
 
 #endif
