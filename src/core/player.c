@@ -8,7 +8,6 @@ void initializePlayer(GameContext* gameContext) {
   gameContext->player.width = 20;
   gameContext->player.height = 20;
 }
-
 // Update the player on GameContext->input
 void updatePlayer(GameContext* gameContext) {
   if (gameContext->input.moveLeft) {
@@ -25,17 +24,13 @@ void updatePlayer(GameContext* gameContext) {
   }
   handleWindowBounds();
 }
-
 void drawPlayer(GameContext* gameContext, SDL_Renderer* renderer) {
   SDL_Rect playerRect = {(int)gameContext->player.x, (int)gameContext->player.y,
                          gameContext->player.width, gameContext->player.height};
   SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);  // YELLOW for now
   SDL_RenderFillRect(renderer, &playerRect);
 }
-
-void handleWindowBounds(
-
-) {
+void handleWindowBounds() {
   if (gameContext->player.x < 0) {
     gameContext->player.x = 0;
   }

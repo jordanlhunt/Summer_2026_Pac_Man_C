@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
   SDL_Window* window = SDL_CreateWindow("Hac-Man", SDL_WINDOWPOS_UNDEFINED,
                                         SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
                                         SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
-  SDL_Renderer* render =
+  SDL_Renderer* renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   GameContext gameContext = {0};
   initializePlayer(&gameContext);
@@ -20,10 +20,10 @@ int main(int argc, char* argv[]) {
   while (isQuit == false) {
     Uint32 startTime = SDL_GetTicks();
     updatePlayer(&gameContext);
-    SDL_SetRenderDrawColor(render, 100, 216, 107, 255);  // Matrix Green
-    SDL_RenderClear(render);
-    drawPlayer(&gameContext, render);
-    SDL_RenderPresent(render);
+    SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255);  // Matrix Green
+    SDL_RenderClear(renderer);
+    drawPlayer(&gameContext, renderer);
+    SDL_RenderPresent(renderer);
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {
         isQuit = true;
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     }
     delayFramerate(startTime);
   }
-  cleanup(render, window);
+  cleanup(renderer, window);
   return 0;
 }
 /* Caps the game's execution speed to maintain a consistent 60 FPS */
