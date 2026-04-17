@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
       if (sdl_event.type == SDL_QUIT) {
         isQuit = true;
       }
+      handleEvent(&sdl_event, &gameContext);
     }
     delayFramerate(startTime);
   }
