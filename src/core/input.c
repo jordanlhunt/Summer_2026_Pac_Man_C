@@ -1,33 +1,41 @@
 #include "../../include/input.h"
-#include "../../include/gamecontext.h"
-#include <SDL2/SDL_keycode.h>
+
+#include <SDL2/SDL.h>
 #include <stdbool.h>
 
-void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
-  handleInput(sdlEvent->key.keysym.sym, gameContext);
-}
+#include "../../include/gamecontext.h"
 
-void handleInput(SDL_KeyCode keyCode, GameContext *gameContext) {
-  switch (keyCode) {
-  case SDLK_UP:
-    gameContext->input.moveUp = true;
-    break;
-  case SDLK_DOWN:
-    gameContext->input.moveDown = true;
-    break;
-  case SDLK_LEFT:
-    gameContext->input.moveLeft = true;
-    break;
-  case SDLK_RIGHT:
-    gameContext->input.moveRight = true;
-    break;
-  case SDLK_ESCAPE:
-    gameContext->input.quitGame = true;
-    break;
-  case SDLK_p:
-    gameContext->input.pauseGame = true;
-    break;
-  default:
-    break;
+void handleEvent(SDL_Event* sdlEvent, GameContext* gameContext) {
+  // Only process keyboard events
+  if (sdlEvent->type != SDL_KEYDOWN && sdlEvent->type != SDL_KEYUP) {
+    return;
+  }
+
+  bool isPressed = (sdlEvent->type == SDL_KEYDOWN);
+
+  switch (sdlEvent->key.keysym.sym) {
+    case SDLK_UP:
+      gameContext->input.moveUp = isPressed;
+      break;
+    case SDLK_DOWN:
+      gameContext->input.moveDown = isPressed;
+      break;
+    case SDLK_LEFT:
+      gameContext->input.moveLeft = isPressed;
+      break;
+    case SDLK_RIGHT:
+      gameContext->input.moveRight = isPressed;
+      break;
+    case SDLK_ESCAPE:
+      // Only set quit on keydown, not keyup
+      if (isPressed) gameContext->input.quitGame = true;
+      break;
+    case SDLK_p:
+      // Toggle pause on keydown only
+      if (isPressed)
+        gameContext->input.pauseGame = !gameContext->input.pauseGame;
+      break;
+    default:
+      break;
   }
 }

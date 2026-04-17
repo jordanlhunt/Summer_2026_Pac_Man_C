@@ -15,7 +15,6 @@ typedef struct {
 // Forward declaration to avoid circular includes
 typedef struct GameContext GameContext;
 
-void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext);
-void handleInput(SDL_KeyCode keyCode, GameContext *gameContext);
+void handleEvent(SDL_Event* sdlEvent, GameContext* gameContext);
 
 #endif
