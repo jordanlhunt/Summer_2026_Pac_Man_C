@@ -1,3 +1,6 @@
-const int MAP_WIDTH = 28;
-const int MAP_HEIGHT = 31;
-const int MAP_GRID_CELL_SIZE = 8;
+#ifndef MAP_H
+#define MAP_H
+#define MAP_WIDTH = 28;
+#define MAP_HEIGHT = 31;
+#define MAP_GRID_CELL_SIZE = 8;
+#endif

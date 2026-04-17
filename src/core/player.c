@@ -1,6 +1,6 @@
 #include "../../include/player.h"
 // Private Functions
-void handleWindowBounds(GameContext *gameContext) {
+static void handleWindowBounds(GameContext* gameContext) {
   if (gameContext->player.x < 0) {
     gameContext->player.x = 0;
   }
@@ -16,7 +16,7 @@ void handleWindowBounds(GameContext *gameContext) {
 }
 // Initialize the player in the center of the screen for testing purposes the
 // values for this will be changed in the future when I get the actual sprites.
-void initializePlayer(GameContext *gameContext) {
+void initializePlayer(GameContext* gameContext) {
   gameContext->player.x = 100;
   gameContext->player.y = 100;
   gameContext->player.velocity = 20;
@@ -24,7 +24,7 @@ void initializePlayer(GameContext *gameContext) {
   gameContext->player.height = 20;
 }
 // Update the player on GameContext->input
-void updatePlayer(GameContext *gameContext) {
+void updatePlayer(GameContext* gameContext) {
   if (gameContext->input.moveLeft) {
     gameContext->player.x -= gameContext->player.velocity;
   }
@@ -39,9 +39,9 @@ void updatePlayer(GameContext *gameContext) {
   }
   handleWindowBounds(gameContext);
 }
-void drawPlayer(GameContext *gameContext, SDL_Renderer *renderer) {
+void drawPlayer(GameContext* gameContext, SDL_Renderer* renderer) {
   SDL_Rect playerRect = {(int)gameContext->player.x, (int)gameContext->player.y,
                          gameContext->player.width, gameContext->player.height};
-  SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // YELLOW for now
+  SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);  // YELLOW for now
   SDL_RenderFillRect(renderer, &playerRect);
 }
