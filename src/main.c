@@ -6,6 +6,7 @@ int main(int argc, char* argv[]) {
            SDL_GetError());
     return 1;
   }
+  GameContext gameContext;
   SDL_Window* window = SDL_CreateWindow("Hac-Man", SDL_WINDOWPOS_UNDEFINED,
                                         SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
                                         SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
