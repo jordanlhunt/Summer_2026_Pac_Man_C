@@ -1,15 +1,14 @@
 #include "../include/main.h"
-
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("[main.c] - SDL could not initialize! SDL_Error: %s\n",
            SDL_GetError());
     return 1;
   }
-  SDL_Window* window = SDL_CreateWindow("Hac-Man", SDL_WINDOWPOS_UNDEFINED,
+  SDL_Window *window = SDL_CreateWindow("Hac-Man", SDL_WINDOWPOS_UNDEFINED,
                                         SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
                                         SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
-  SDL_Renderer* renderer =
+  SDL_Renderer *renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   GameContext gameContext = {0};
   initializePlayer(&gameContext);
@@ -28,7 +27,7 @@ int main(int argc, char* argv[]) {
       isQuit = true;
     }
     updatePlayer(&gameContext);
-    SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255);  // Matrix Green
+    SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
     SDL_RenderClear(renderer);
     drawPlayer(&gameContext, renderer);
     SDL_RenderPresent(renderer);
@@ -45,7 +44,7 @@ void delayFramerate(Uint32 startTime) {
   }
 }
 /* Tears down the game on close */
-void cleanup(SDL_Renderer* renderer, SDL_Window* sdlWindow) {
+void cleanup(SDL_Renderer *renderer, SDL_Window *sdlWindow) {
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(sdlWindow);
   SDL_Quit();
