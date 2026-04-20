@@ -1,0 +1,13 @@
+#ifndef MAPTILE_H
+#define MAPTILE_H
+enum MapTile {
+  TILE_WALL,
+  TILE_DOT,
+  TILE_POWER_PELLET,
+  TILE_EMPTY,
+  TILE_PLAYER,
+  TILE_GHOST,
+  TILE_FRUIT
+};
+
+#endif
