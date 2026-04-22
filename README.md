@@ -22,7 +22,7 @@ This project is totally self-directed and meant to be an application of learned 
 
 ## AI-Usage
 
-This project features no AI written code. Most of the information I acquired for this project came from reading [SDL2 documentation](https://wiki.libsdl.org/SDL2/FrontPage) and old-fashioned internet searches using the quote ".edu" in the search for educational sources. However I will say, even with Ublock Origin and several other extensions finding accurate and useful information has become needlessly difficult. I also used YouTube (which also has a terrible search feature). YouTube videos which will be linked below
+This project features no AI written code. Most of the information I acquired for this project came from reading [SDL2 documentation](https://wiki.libsdl.org/SDL2/FrontPage) and old-fashioned internet searches using the quote ".edu" for educational sources. However I will say, even with Ublock Origin and several other extensions finding accurate and useful information has become needlessly difficult. I also used YouTube (which also has a terrible search feature). YouTube videos which will be linked below
 
 ## Links to Resources
 
