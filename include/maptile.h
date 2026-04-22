@@ -7,7 +7,7 @@ enum MapTile {
   TILE_EMPTY,
   TILE_PLAYER,
   TILE_GHOST,
+  TILE_GHOST_DOOR,
   TILE_FRUIT
 };
-
 #endif

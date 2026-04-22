@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_rect.h>
 #include <stdbool.h>
+#include <stdio.h>
 // Global Constants
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480

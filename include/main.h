@@ -3,7 +3,6 @@
 #include "../include/gamecontext.h"
 #include "../include/player.h"
 #include "common.h"
-
 void initializeSDL();
 void loadAssets();
 void initializeGameState();

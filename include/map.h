@@ -1,6 +1,10 @@
 #ifndef MAP_H
 #define MAP_H
-#define MAP_WIDTH 28
-#define MAP_HEIGHT 31
-#define MAP_GRID_CELL_SIZE 8
+#include "common.h"
+#include "gamecontext.h"
+#include "leveldata.h"
+#include "maptile.h"
+void LoadMap(LevelData *levelData, const char *filePath);
+void DrawMap(LevelData *levelData, SDL_Renderer *renderer);
+enum MapTile GetMapTile(LevelData *levelData, int x, int y);
 #endif
