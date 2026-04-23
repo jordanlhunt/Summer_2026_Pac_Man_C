@@ -1,7 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 #include "common.h"
-typedef struct {
+typedef struct Input {
   bool moveUp;
   bool moveDown;
   bool moveLeft;
