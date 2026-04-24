@@ -2,37 +2,36 @@
 
 #include <stdio.h>
 #include <string.h>
-
 // Helper Function
 static enum MapTile CharToMapTile(char mapChar) {
   switch (mapChar) {
-    case 'W':
-      return TILE_WALL;
-    case '.':
-      return TILE_DOT;
-    case '+':
-      return TILE_POWER_PELLET;
-    case ' ':
-      return TILE_EMPTY;
-    case 'X':
-      return TILE_PLAYER;
-    case 'B':
-    case 'P':
-    case 'I':
-    case 'C':
-      return TILE_GHOST;
-    case '-':
-      return TILE_GHOST_DOOR;
-    case 'F':
-      return TILE_FRUIT;
-    default:
-      return TILE_EMPTY;
+  case 'W':
+    return TILE_WALL;
+  case '.':
+    return TILE_DOT;
+  case '+':
+    return TILE_POWER_PELLET;
+  case ' ':
+    return TILE_EMPTY;
+  case 'X':
+    return TILE_PLAYER;
+  case 'B':
+  case 'P':
+  case 'I':
+  case 'C':
+    return TILE_GHOST;
+  case '-':
+    return TILE_GHOST_DOOR;
+  case 'F':
+    return TILE_FRUIT;
+  default:
+    return TILE_EMPTY;
   }
 }
-
-void LoadMap(LevelData* levelData, const char* filePath) {
-  FILE* mazeTextFile;
-  const int lengthOfMazeLine = 28;
+void LoadMap(LevelData *levelData, const char *filePath) {
+  FILE *mazeTextFile;
+  const int lengthOfMazeLine =
+      30; // It's 30 because of the newline and null terminator
   int row = 0;
   // Open the maze.txt
   printf("[map.c] - Loading maze.txt\n");
@@ -54,7 +53,7 @@ void LoadMap(LevelData* levelData, const char* filePath) {
     }
     // Trim the line
     currentLine[strcspn(currentLine, "\r\n")] = '\0';
-    // Create mapTiles
+    // Loop through the .txt file and get populate the levelData->mapTiles
     if (row < MAP_HEIGHT) {
       for (int column = 0; column < MAP_WIDTH; column++) {
         if (currentLine[column] != '\0') {
@@ -66,15 +65,15 @@ void LoadMap(LevelData* levelData, const char* filePath) {
       row++;
     }
   }
+  // Error Handling
   if (row < MAP_HEIGHT) {
     fprintf(stderr, "[map.c] - Warning: Expected %d rows, but found %d.\n",
             MAP_HEIGHT, row);
   }
   fclose(mazeTextFile);
 }
-void DrawMap(LevelData* levelData, SDL_Renderer* renderer) {}
-
-enum MapTile GetMapTile(LevelData* levelData, int x, int y) {
+void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {}
+enum MapTile GetMapTile(LevelData *levelData, int x, int y) {
   enum MapTile someMapTile = levelData->mapTiles[x][y];
   return someMapTile;
 }
