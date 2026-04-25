@@ -29,7 +29,7 @@ static enum MapTile CharToMapTile(char mapChar) {
 void LoadMap(LevelData *levelData, const char *filePath) {
   FILE *mazeTextFile;
   const int lengthOfMazeLine =
-      30; // It's 30 because of the newline and null terminator
+      256; // It's 256 because of the newline and null terminator
   int row = 0;
   // Open the maze.txt
   printf("[map.c] - Loading maze.txt\n");
@@ -97,7 +97,7 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         break;
       case TILE_POWER_PELLET:
         // Power Pallets are white
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
         break;
       case TILE_PLAYER:
         // Player is Yellow
@@ -119,9 +119,8 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         break;
       case TILE_EMPTY:
         // Empty space will be all black
-        // TODO: Fix it so when empty space can be used to move throug
-        SDL_SetRenderDrawColor(renderer, 255, 154, 51, 255);
-
+        // TODO: Fix it so when empty space can be used to move through
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         break;
       default:
         break;
@@ -131,6 +130,6 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
   }
 }
 enum MapTile GetMapTile(LevelData *levelData, int x, int y) {
-  enum MapTile someMapTile = levelData->mapTiles[x][y];
+  enum MapTile someMapTile = levelData->mapTiles[y][x];
   return someMapTile;
 }

@@ -7,7 +7,7 @@
 // Forward Delectations
 typedef struct GameContext GameContext;
 typedef struct SDL_Renderer SDL_Renderer;
-void initializePlayer(GameContext* gameContext);
-void updatePlayer(GameContext* gameContext);
-void drawPlayer(GameContext* gameContext, SDL_Renderer* renderer);
+void initializePlayer(GameContext *gameContext);
+void updatePlayer(GameContext *gameContext);
+void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer);
 #endif

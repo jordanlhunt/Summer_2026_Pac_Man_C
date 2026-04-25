@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     updatePlayer(&gameContext);
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
     SDL_RenderClear(renderer);
-    drawPlayer(&gameContext, renderer);
+    // DrawPlayer(&gameContext, renderer);
     DrawMap(&gameContext.levelData, renderer);
     SDL_RenderPresent(renderer);
     delayFramerate(startTime);
