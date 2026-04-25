@@ -1,6 +1,5 @@
 #include "../../include/map.h"
 #include <SDL2/SDL_render.h>
-
 // Helper Function
 static enum MapTile CharToMapTile(char mapChar) {
   switch (mapChar) {
@@ -41,7 +40,6 @@ void LoadMap(LevelData *levelData, const char *filePath) {
   }
   // Create array to hold current line
   char currentLine[lengthOfMazeLine];
-
   // Process the line - Skip comments and empty lines, once you get to the maze
   // trim the line and create mapTiles from the line holds
   while (fgets(currentLine, sizeof(currentLine), mazeTextFile)) {
@@ -76,7 +74,7 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
   tileRect.w = MAP_GRID_CELL_SIZE;
   tileRect.h = MAP_GRID_CELL_SIZE;
   for (int row = 0; row < MAP_ROWS; row++) {
-    for (int col; col < MAP_COLUMNS; col++) {
+    for (int col = 0; col < MAP_COLUMNS; col++) {
       enum MapTile newMapTile = levelData->mapTiles[row][col];
       tileRect.x = col * MAP_GRID_CELL_SIZE;
       tileRect.y = row * MAP_GRID_CELL_SIZE;
@@ -95,7 +93,6 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         // Dots are peach for now
         // TODO: Look at official Pac-Man game and make it whatever the game
         // actually is
-
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         break;
       case TILE_POWER_PELLET:
@@ -107,17 +104,21 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         // TODO: Make the player actually a player entity rather than just a
         // marker on the map
         SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+        break;
       case TILE_GHOST:
         // Ghosts are RED for now.
         // TODO: Make each ghost it's own ghost entity rather than than just a
         // marker on the map and draw its specific ghost logic
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        break;
       case TILE_FRUIT:
-        // Fruit is green for now.
+        // Fruit is orange for now.
         // TODO: Make each fruit it's own fruit entity rather than just a marker
         // on the map.
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 255, 154, 51, 255);
+        break;
       case TILE_EMPTY:
+        break;
       default:
         break;
       }
