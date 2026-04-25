@@ -1,12 +1,12 @@
 #ifndef LEVELDATA_H
 #define LEVELDATA_H
-#define MAP_WIDTH 28
-#define MAP_HEIGHT 31
+#define MAP_ROWS 31
+#define MAP_COLUMNS 28
 #define MAP_GRID_CELL_SIZE 8
 #include "maptile.h"
 #include <stdbool.h>
 typedef struct LevelData {
-  enum MapTile mapTiles[MAP_WIDTH][MAP_HEIGHT];
+  enum MapTile mapTiles[MAP_ROWS][MAP_COLUMNS];
   bool isGameOver;
   int palletsRemaining;
 } LevelData;

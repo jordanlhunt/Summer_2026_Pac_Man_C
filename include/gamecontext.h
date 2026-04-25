@@ -3,14 +3,14 @@
 #include "common.h"
 #include "entity.h"
 #include "input.h"
+#include "leveldata.h"
 typedef struct Graphics Graphics;
-typedef struct LevelData LevelData;
 typedef struct GameState GameState;
 typedef struct Audio Audio;
 typedef struct GameContext {
   //  Graphics graphics;
   Input input;
-  // LevelData levelData;
+  LevelData levelData;
   Entity player;
   // Entity ghosts[4];
   // GameState currentGameState;

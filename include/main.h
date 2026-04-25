@@ -1,6 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include "../include/gamecontext.h"
+#include "../include/leveldata.h"
+#include "../include/map.h"
 #include "../include/player.h"
 #include "common.h"
 void initializeSDL();

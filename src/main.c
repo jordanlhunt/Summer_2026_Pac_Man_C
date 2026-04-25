@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
   SDL_Renderer *renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   GameContext gameContext = {0};
+  LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
   initializePlayer(&gameContext);
   bool isQuit = false;
   SDL_Event sdl_event;
@@ -30,6 +31,7 @@ int main(int argc, char *argv[]) {
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
     SDL_RenderClear(renderer);
     drawPlayer(&gameContext, renderer);
+    DrawMap(&gameContext.levelData, renderer);
     SDL_RenderPresent(renderer);
     delayFramerate(startTime);
   }
