@@ -6,7 +6,7 @@ OBJ_Name = hac_man_summer_project
 COMPILER_FLAGS = -w 
 
 # LINKER_FLAGS specifies the libraries the project is linking
-LINKER_FLAGS = -lSDL2 -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+LINKER_FLAGS = -lSDL2 -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf 
 
 # COMPILER specifies the compiler
 COMPILER = gcc

@@ -1,5 +1,6 @@
 #include "../../include/map.h"
 #include <SDL2/SDL_render.h>
+#include <stdio.h>
 // Helper Function
 static enum MapTile CharToMapTile(char mapChar) {
   switch (mapChar) {
@@ -28,9 +29,11 @@ static enum MapTile CharToMapTile(char mapChar) {
 }
 void LoadMap(LevelData *levelData, const char *filePath) {
   FILE *mazeTextFile;
-  const int lengthOfMazeLine =
-      256; // It's 256 because of the newline and null terminator
+  const int LENGTH_OF_MAZE_LINE = MAP_COLUMNS + 2;
   int row = 0;
+  // Create array to hold current line
+  char currentLine[LENGTH_OF_MAZE_LINE];
+
   // Open the maze.txt
   printf("[map.c] - Loading maze.txt\n");
   mazeTextFile = fopen(filePath, "rt");
@@ -38,11 +41,21 @@ void LoadMap(LevelData *levelData, const char *filePath) {
     perror("[map.c] - Unable to load maze.txt");
     exit(EXIT_FAILURE);
   }
-  // Create array to hold current line
-  char currentLine[lengthOfMazeLine];
+
   // Process the line - Skip comments and empty lines, once you get to the maze
   // trim the line and create mapTiles from the line holds
   while (fgets(currentLine, sizeof(currentLine), mazeTextFile)) {
+    // Check if hit the end of the line with EOF or '\n'
+    bool hasReadFullLine = (strchr(currentLine, '\n')) != NULL;
+    // If the buffer for this line is too small 'drain' it
+    // This is mostly for the comments in the maze.txt file
+    if (!hasReadFullLine) {
+      int endOfLineChar;
+      while ((endOfLineChar = fgetc(mazeTextFile)) != '\n' &&
+             endOfLineChar != EOF)
+        // Discards the remain characters until it hits the '\n' or EOF
+        ;
+    }
     // Skip comments and empty lines
     if (currentLine[0] == ';' || currentLine[0] == '\n' ||
         currentLine[0] == '\0') {
