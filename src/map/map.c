@@ -118,6 +118,10 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         SDL_SetRenderDrawColor(renderer, 255, 154, 51, 255);
         break;
       case TILE_EMPTY:
+        // Empty space will be all black
+        // TODO: Fix it so when empty space can be used to move throug
+        SDL_SetRenderDrawColor(renderer, 255, 154, 51, 255);
+
         break;
       default:
         break;
