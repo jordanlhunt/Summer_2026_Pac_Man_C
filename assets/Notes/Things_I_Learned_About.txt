@@ -1,0 +1,8 @@
+1.) Circular Dependencies and how to use forward delectations and proper use of header files and how to avoid them.
+2.) Game Design Patterns
+    - Game Loop pattern
+    - Update Method pattern
+3.) Separation of Concerns 
+4.) Data-oriented Design
+5.) Facade pattern
+6.) Encapsulation

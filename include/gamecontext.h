@@ -4,14 +4,12 @@
 #include "entity.h"
 #include "input.h"
 #include "leveldata.h"
-typedef struct Graphics Graphics;
-typedef struct GameState GameState;
-typedef struct Audio Audio;
+#include "player.h"
 typedef struct GameContext {
   //  Graphics graphics;
   Input input;
   LevelData levelData;
-  Entity player;
+  Player player;
   // Entity ghosts[4];
   // GameState currentGameState;
   // int currentScore;

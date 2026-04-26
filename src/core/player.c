@@ -1,47 +1,68 @@
 #include "../../include/player.h"
-// Private Functions
-static void handleWindowBounds(GameContext *gameContext) {
-  if (gameContext->player.x < 0) {
-    gameContext->player.x = 0;
+#include "../../include/gamecontext.h"
+#include "../../include/leveldata.h"
+#include "../../include/map.h"
+
+// Helper functions
+
+// Before player can move to a location on the map see if it's valid
+static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
+                                    int mapRow) {
+  bool isMovementValid = true;
+  // Bounds check
+  if (mapRow < 0 || mapRow >= MAP_ROWS || mapColumn < 0 ||
+      mapColumn >= MAP_COLUMNS) {
+    return false;
   }
-  if (gameContext->player.y < 0) {
-    gameContext->player.y = 0;
+  enum MapTile targetMapTile = GetMapTile(levelData, mapRow, mapColumn);
+  // Check if the targetMapTile a place where the player can be
+  if (targetMapTile == TILE_WALL || targetMapTile == TILE_GHOST_DOOR) {
+    return false;
   }
-  if (gameContext->player.x + gameContext->player.width > SCREEN_WIDTH) {
-    gameContext->player.x = SCREEN_WIDTH - gameContext->player.width;
-  }
-  if (gameContext->player.y + gameContext->player.height > SCREEN_HEIGHT) {
-    gameContext->player.y = SCREEN_HEIGHT - gameContext->player.height;
+  return isMovementValid;
+}
+
+// Initialize the player to their spawn location as determined from the maze.txt
+void InitializePlayer(GameContext *gameContext) {
+  for (int row = 0; row < MAP_ROWS; row++) {
+    for (int column = 0; column < MAP_COLUMNS; column++) {
+      if (GetMapTile(&gameContext->levelData, row, column) == TILE_PLAYER) {
+        gameContext->player.row = row;
+        gameContext->player.column = column;
+        gameContext->player.velocity = 1;
+        gameContext->levelData.mapTiles[row][column] = TILE_EMPTY;
+        return;
+      }
+    }
   }
 }
-// Initialize the player in the center of the screen for testing purposes the
-// values for this will be changed in the future when I get the actual sprites.
-void initializePlayer(GameContext *gameContext) {
-  gameContext->player.x = 100;
-  gameContext->player.y = 100;
-  gameContext->player.velocity = 20;
-  gameContext->player.width = 20;
-  gameContext->player.height = 20;
-}
-// Update the player on GameContext->input
-void updatePlayer(GameContext *gameContext) {
-  if (gameContext->input.moveLeft) {
-    gameContext->player.x -= gameContext->player.velocity;
-  }
+// Update the player location on GameContext->input
+void UpdatePlayer(GameContext *gameContext) {
+  int newRow = gameContext->player.row;
+  int newColumn = gameContext->player.column;
   if (gameContext->input.moveRight) {
-    gameContext->player.x += gameContext->player.velocity;
+    newColumn += gameContext->player.velocity;
+  }
+  if (gameContext->input.moveLeft) {
+    newColumn -= gameContext->player.velocity;
   }
   if (gameContext->input.moveUp) {
-    gameContext->player.y -= gameContext->player.velocity;
+    newRow -= gameContext->player.velocity;
   }
   if (gameContext->input.moveDown) {
-    gameContext->player.y += gameContext->player.velocity;
+    newRow += gameContext->player.velocity;
   }
-  handleWindowBounds(gameContext);
+  // Collision Check
+  if (CanPlayerMoveToLocation(&gameContext->levelData, newColumn, newRow)) {
+    gameContext->player.row = newRow;
+    gameContext->player.column = newColumn;
+  }
 }
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer) {
-  SDL_Rect playerRect = {(int)gameContext->player.x, (int)gameContext->player.y,
-                         gameContext->player.width, gameContext->player.height};
+  int currentX = gameContext->player.column * MAP_GRID_CELL_SIZE;
+  int currentY = gameContext->player.row * MAP_GRID_CELL_SIZE;
+  SDL_Rect playerRect = {currentX, currentY, MAP_GRID_CELL_SIZE,
+                         MAP_GRID_CELL_SIZE};
   SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // YELLOW for now
   SDL_RenderFillRect(renderer, &playerRect);
 }

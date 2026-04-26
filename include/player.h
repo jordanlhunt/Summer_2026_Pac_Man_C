@@ -2,12 +2,18 @@
 #define PLAYER_H
 // Includes
 #include "common.h"
-#include "entity.h"
-#include "gamecontext.h"
 // Forward Delectations
-typedef struct GameContext GameContext;
 typedef struct SDL_Renderer SDL_Renderer;
-void initializePlayer(GameContext *gameContext);
-void updatePlayer(GameContext *gameContext);
+typedef struct LevelData LevelData;
+typedef struct GameContext GameContext;
+// Typedef
+typedef struct Player {
+  int column;
+  int row;
+  int velocity;
+} Player;
+
+void InitializePlayer(GameContext *gameContext);
+void UpdatePlayer(GameContext *gameContext);
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer);
 #endif

@@ -1,7 +1,7 @@
 #ifndef LEVELDATA_H
 #define LEVELDATA_H
-#define MAP_ROWS 31
-#define MAP_COLUMNS 28
+#define MAP_ROWS 31    // Y Dimension
+#define MAP_COLUMNS 28 // X Dimension
 #define MAP_GRID_CELL_SIZE 8
 #include "maptile.h"
 #include <stdbool.h>

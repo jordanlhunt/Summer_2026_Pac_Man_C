@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   GameContext gameContext = {0};
   LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
-  initializePlayer(&gameContext);
+  InitializePlayer(&gameContext);
   bool isQuit = false;
   SDL_Event sdl_event;
   SDL_ShowWindow(window);
@@ -29,11 +29,11 @@ int main(int argc, char *argv[]) {
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
-    updatePlayer(&gameContext);
+    UpdatePlayer(&gameContext);
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
     SDL_RenderClear(renderer);
-    DrawPlayer(&gameContext, renderer);
     DrawMap(&gameContext.levelData, renderer);
+    DrawPlayer(&gameContext, renderer);
     SDL_RenderPresent(renderer);
     delayFramerate(startTime);
   }
