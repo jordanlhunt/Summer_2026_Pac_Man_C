@@ -106,7 +106,7 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         // Dots are peach for now
         // TODO: Look at official Pac-Man game and make it whatever the game
         // actually is
-        SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+        SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
         break;
       case TILE_POWER_PELLET:
         // Power Pallets are white
