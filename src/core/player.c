@@ -22,6 +22,18 @@ static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
   return isMovementValid;
 }
 
+// When the player a DOT, send a signal to the the gameContext to delete the dot
+// update the score
+void CollideWithDot(GameContext *gameContext, SDL_Renderer *renderer) {
+  enum MapTile collisionTile =
+      GetMapTile(&gameContext->levelData, gameContext->player.row,
+                 gameContext->player.column);
+  if (collisionTile == TILE_DOT) {
+    gameContext->currentScore += DOT_SCORE_VALUE;
+    collisionTile = TILE_EMPTY;
+  }
+}
+
 // Initialize the player to their spawn location as determined from the maze.txt
 void InitializePlayer(GameContext *gameContext) {
   for (int row = 0; row < MAP_ROWS; row++) {
@@ -54,7 +66,9 @@ void UpdatePlayer(GameContext *gameContext) {
   }
   // Collision Check
   if (CanPlayerMoveToLocation(&gameContext->levelData, newColumn, newRow)) {
-    gameContext->player.row = newRow;
+    // Check if the collision is with a DOT
+    if (&gameContext->levelData.)
+      gameContext->player.row = newRow;
     gameContext->player.column = newColumn;
   }
 }

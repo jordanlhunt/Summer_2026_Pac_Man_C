@@ -5,6 +5,7 @@
 #include "input.h"
 #include "leveldata.h"
 #include "player.h"
+#define DOT_SCORE_VALUE 1
 typedef struct GameContext {
   //  Graphics graphics;
   Input input;
@@ -12,7 +13,7 @@ typedef struct GameContext {
   Player player;
   // Entity ghosts[4];
   // GameState currentGameState;
-  // int currentScore;
+  int currentScore;
   // Audio audio;
 } GameContext;
 #endif

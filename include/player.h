@@ -16,4 +16,5 @@ typedef struct Player {
 void InitializePlayer(GameContext *gameContext);
 void UpdatePlayer(GameContext *gameContext);
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer);
+void CollideWithDot(GameContext *gameContext, SDL_Renderer *renderer);
 #endif

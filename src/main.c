@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
   SDL_Renderer *renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   GameContext gameContext = {0};
+  gameContext.currentScore = 0;
   LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
   InitializePlayer(&gameContext);
   bool isQuit = false;
