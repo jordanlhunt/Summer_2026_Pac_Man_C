@@ -24,10 +24,10 @@ static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
 
 // When the player a DOT, send a signal to the the gameContext to delete the dot
 // update the score
-void CollideWithDot(GameContext *gameContext, SDL_Renderer *renderer) {
+void CollideWithDot(GameContext *gameContext, SDL_Renderer *renderer, int row, int column) {
   enum MapTile collisionTile =
-      GetMapTile(&gameContext->levelData, gameContext->player.row,
-                 gameContext->player.column);
+      GetMapTile(&gameContext->levelData, row,
+                 column);
   if (collisionTile == TILE_DOT) {
     gameContext->currentScore += DOT_SCORE_VALUE;
     collisionTile = TILE_EMPTY;
@@ -64,12 +64,21 @@ void UpdatePlayer(GameContext *gameContext) {
   if (gameContext->input.moveDown) {
     newRow += gameContext->player.velocity;
   }
+
+  enum MapTile collisionTile =
+      GetMapTile(&gameContext->levelData, newRow,
+                newColumn);
+
   // Collision Check
   if (CanPlayerMoveToLocation(&gameContext->levelData, newColumn, newRow)) {
-    // Check if the collision is with a DOT
-    if (&gameContext->levelData.)
+
+if(collisionTile == TILE_DOT)
+{
+    CollideWithDot(&gameContext, renderer, newRow, newColumn);
+}
+else{
       gameContext->player.row = newRow;
-    gameContext->player.column = newColumn;
+      gameContext->player.column = newColumn;
   }
 }
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer) {
