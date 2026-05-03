@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "input.h"
 #include "leveldata.h"
+#include "map.h"
 #include "player.h"
 #define DOT_PELLET_SCORE_VALUE 1
 #define POWER_PELLET_SCORE_VALUE 50
@@ -28,4 +29,5 @@ void TriggerFrightenedMode(GameContext *gameContext);
 void TriggerRoundWon(GameContext *gameContext);
 void ReduceRemainingPellets(GameContext *gameContext);
 void CheckForRoundWon(GameContext *gameContext);
+void InitializeGameContext(GameContext *gameContext);
 #endif

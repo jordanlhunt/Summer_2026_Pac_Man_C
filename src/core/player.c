@@ -27,7 +27,6 @@ void CollideWithDot(GameContext *gameContext, int row, int column,
   if (collisionTile == TILE_DOT) {
     collisionTile = TILE_EMPTY;
     gameContext->currentScore += DOT_PELLET_SCORE_VALUE;
-    printf("Score - %d\n", gameContext->currentScore);
     ReduceRemainingPellets(gameContext);
   }
   SetMapTile(&gameContext->levelData, row, column, collisionTile);
@@ -39,13 +38,13 @@ void CollideWithDot(GameContext *gameContext, int row, int column,
 void CollideWithPowerPellet(GameContext *gameContext, int row, int column,
                             enum MapTile collisionTile) {
   if (collisionTile == TILE_POWER_PELLET) {
+    printf("CollideWithPowerPellet() is being called");
     collisionTile = TILE_EMPTY;
     gameContext->currentScore += POWER_PELLET_SCORE_VALUE;
-    printf("Score - %d\n", gameContext->currentScore);
+    ReduceRemainingPellets(gameContext);
   }
   SetMapTile(&gameContext->levelData, row, column, collisionTile);
   TriggerFrightenedMode(gameContext);
-  ReduceRemainingPellets(gameContext);
 }
 // Initialize the player to their spawn location as determined from the maze.txt
 void InitializePlayer(GameContext *gameContext) {
@@ -84,6 +83,12 @@ void UpdatePlayer(GameContext *gameContext) {
     if (collisionTile == TILE_DOT) {
       printf("Collide with dot\n");
       CollideWithDot(gameContext, newRow, newColumn, collisionTile);
+      gameContext->player.row = newRow;
+      gameContext->player.column = newColumn;
+    }
+    if (collisionTile == TILE_POWER_PELLET) {
+      printf("Collide with Power Pellet\n");
+      CollideWithPowerPellet(gameContext, newRow, newColumn, collisionTile);
       gameContext->player.row = newRow;
       gameContext->player.column = newColumn;
     } else {

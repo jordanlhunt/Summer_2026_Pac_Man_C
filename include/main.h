@@ -5,6 +5,9 @@
 #include "../include/map.h"
 #include "../include/player.h"
 #include "common.h"
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_timer.h>
+#include <stdio.h>
 void initializeSDL();
 void loadAssets();
 void initializeGameState();

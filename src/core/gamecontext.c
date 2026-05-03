@@ -20,10 +20,16 @@ void ReduceRemainingPellets(GameContext *gameContext) {
     return;
   }
   gameContext->remainingPellets -= 1;
+  printf("Remaining Dots: %d", gameContext->remainingPellets);
 }
 
 void CheckForRoundWon(GameContext *gameContext) {
   if (gameContext->remainingPellets == 0) {
     TriggerRoundWon(gameContext);
+    printf("Round Won! Great job player!");
   }
+}
+
+void InitializeGameContext(GameContext *gameContext) {
+  gameContext->remainingPellets = NUMBER_OF_DOTS;
 }

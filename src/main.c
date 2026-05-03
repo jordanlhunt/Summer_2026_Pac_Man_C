@@ -1,4 +1,5 @@
 #include "../include/main.h"
+
 int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("[main.c] - SDL could not initialize! SDL_Error: %s\n",
@@ -16,27 +17,37 @@ int main(int argc, char *argv[]) {
   gameContext.currentScore = 0;
   LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
   InitializePlayer(&gameContext);
+  InitializeGameContext(&gameContext);
   bool isQuit = false;
+  Uint32 previousTime = SDL_GetTicks();
   SDL_Event sdl_event;
   SDL_ShowWindow(window);
+
   while (isQuit == false) {
-    Uint32 startTime = SDL_GetTicks();
+    // Create a Delta Time for all the various Timers
+    Uint32 currentTime = SDL_GetTicks();
+    // Convert from Milliseconds to seconds
+    float deltaTime = (currentTime - previousTime) / 1000.0f;
+    previousTime = currentTime;
+
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {
         isQuit = true;
       }
       handleEvent(&sdl_event, &gameContext);
     }
+
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
     UpdatePlayer(&gameContext);
     // Handle the Frightened Ghost Mode
     if (gameContext.isFrightenedGhostModeActive == true) {
-      gameContext.frightenedGhostModeTimer -= startTime;
+      gameContext.frightenedGhostModeTimer -= deltaTime;
       if (gameContext.frightenedGhostModeTimer <= 0.0) {
         gameContext.isFrightenedGhostModeActive = false;
         gameContext.frightenedGhostModeTimer = 0.0f;
+        printf("[main.c] - Ghost Timer is 0, Ghosts are Brave\n");
       }
     }
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
@@ -44,13 +55,13 @@ int main(int argc, char *argv[]) {
     DrawMap(&gameContext.levelData, renderer);
     DrawPlayer(&gameContext, renderer);
     SDL_RenderPresent(renderer);
-    delayFramerate(startTime);
+    delayFramerate(currentTime);
     CheckForRoundWon(&gameContext);
   }
   cleanup(renderer, window);
   return 0;
 }
-/* Caps the game's execution speed to maintain a consistent 60 FPS */
+// Caps the game's execution speed to maintain a consistent 60 FPS
 void delayFramerate(Uint32 startTime) {
   Uint32 elapsedTime = SDL_GetTicks() - startTime;
   if (elapsedTime < FRAMERATE_DELAY) {
