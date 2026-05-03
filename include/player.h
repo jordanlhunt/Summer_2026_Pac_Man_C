@@ -2,6 +2,7 @@
 #define PLAYER_H
 // Includes
 #include "common.h"
+#include "maptile.h"
 // Forward Delectations
 typedef struct SDL_Renderer SDL_Renderer;
 typedef struct LevelData LevelData;
@@ -16,5 +17,8 @@ typedef struct Player {
 void InitializePlayer(GameContext *gameContext);
 void UpdatePlayer(GameContext *gameContext);
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer);
-void CollideWithDot(GameContext *gameContext, SDL_Renderer *renderer);
+void CollideWithDot(GameContext *gameContext, int row, int column,
+                    enum MapTile collisionTile);
+void CollideWithPowerPellet(GameContext *gameContext, int row, int column,
+                            enum MapTile collisionTile);
 #endif

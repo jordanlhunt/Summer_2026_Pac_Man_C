@@ -31,12 +31,21 @@ int main(int argc, char *argv[]) {
       isQuit = true;
     }
     UpdatePlayer(&gameContext);
+    // Handle the Frightened Ghost Mode
+    if (gameContext.isFrightenedGhostModeActive == true) {
+      gameContext.frightenedGhostModeTimer -= startTime;
+      if (gameContext.frightenedGhostModeTimer <= 0.0) {
+        gameContext.isFrightenedGhostModeActive = false;
+        gameContext.frightenedGhostModeTimer = 0.0f;
+      }
+    }
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
     SDL_RenderClear(renderer);
     DrawMap(&gameContext.levelData, renderer);
     DrawPlayer(&gameContext, renderer);
     SDL_RenderPresent(renderer);
     delayFramerate(startTime);
+    CheckForRoundWon(&gameContext);
   }
   cleanup(renderer, window);
   return 0;

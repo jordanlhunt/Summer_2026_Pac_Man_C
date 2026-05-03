@@ -8,5 +8,6 @@
 void LoadMap(LevelData *levelData, const char *filePath);
 void DrawMap(LevelData *levelData, SDL_Renderer *renderer);
 enum MapTile GetMapTile(LevelData *levelData, int row, int col);
+void SetMapTile(LevelData *levelData, int row, int col, enum MapTile newTile);
 
 #endif

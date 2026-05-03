@@ -33,7 +33,6 @@ void LoadMap(LevelData *levelData, const char *filePath) {
   int row = 0;
   // Create array to hold current line
   char currentLine[LENGTH_OF_MAZE_LINE];
-
   // Open the maze.txt
   printf("[map.c] - Loading maze.txt\n");
   mazeTextFile = fopen(filePath, "rt");
@@ -41,7 +40,6 @@ void LoadMap(LevelData *levelData, const char *filePath) {
     perror("[map.c] - Unable to load maze.txt");
     exit(EXIT_FAILURE);
   }
-
   // Process the line - Skip comments and empty lines, once you get to the maze
   // trim the line and create mapTiles from the line holds
   while (fgets(currentLine, sizeof(currentLine), mazeTextFile)) {
@@ -145,4 +143,7 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
 enum MapTile GetMapTile(LevelData *levelData, int row, int col) {
   enum MapTile someMapTile = levelData->mapTiles[row][col];
   return someMapTile;
+}
+void SetMapTile(LevelData *levelData, int row, int col, enum MapTile newTile) {
+  levelData->mapTiles[row][col] = newTile;
 }

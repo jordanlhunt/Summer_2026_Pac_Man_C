@@ -2,9 +2,8 @@
 #include "../../include/gamecontext.h"
 #include "../../include/leveldata.h"
 #include "../../include/map.h"
-
+#include <stdio.h>
 // Helper functions
-
 // Before player can move to a location on the map see if it's valid
 static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
                                     int mapRow) {
@@ -21,19 +20,33 @@ static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
   }
   return isMovementValid;
 }
-
-// When the player a DOT, send a signal to the the gameContext to delete the dot
-// update the score
-void CollideWithDot(GameContext *gameContext, SDL_Renderer *renderer, int row, int column) {
-  enum MapTile collisionTile =
-      GetMapTile(&gameContext->levelData, row,
-                 column);
+// When the player collides with a  DOT, send a signal to the the gameContext to
+// delete the dot update the score
+void CollideWithDot(GameContext *gameContext, int row, int column,
+                    enum MapTile collisionTile) {
   if (collisionTile == TILE_DOT) {
-    gameContext->currentScore += DOT_SCORE_VALUE;
     collisionTile = TILE_EMPTY;
+    gameContext->currentScore += DOT_PELLET_SCORE_VALUE;
+    printf("Score - %d\n", gameContext->currentScore);
+    ReduceRemainingPellets(gameContext);
   }
+  SetMapTile(&gameContext->levelData, row, column, collisionTile);
 }
 
+// When the player collides with a POWER_PELLET, send a signal to the
+// gameContext to delete the dot, update the score, and set ghosts to
+// "frightened"
+void CollideWithPowerPellet(GameContext *gameContext, int row, int column,
+                            enum MapTile collisionTile) {
+  if (collisionTile == TILE_POWER_PELLET) {
+    collisionTile = TILE_EMPTY;
+    gameContext->currentScore += POWER_PELLET_SCORE_VALUE;
+    printf("Score - %d\n", gameContext->currentScore);
+  }
+  SetMapTile(&gameContext->levelData, row, column, collisionTile);
+  TriggerFrightenedMode(gameContext);
+  ReduceRemainingPellets(gameContext);
+}
 // Initialize the player to their spawn location as determined from the maze.txt
 void InitializePlayer(GameContext *gameContext) {
   for (int row = 0; row < MAP_ROWS; row++) {
@@ -64,21 +77,19 @@ void UpdatePlayer(GameContext *gameContext) {
   if (gameContext->input.moveDown) {
     newRow += gameContext->player.velocity;
   }
-
   enum MapTile collisionTile =
-      GetMapTile(&gameContext->levelData, newRow,
-                newColumn);
-
+      GetMapTile(&gameContext->levelData, newRow, newColumn);
   // Collision Check
   if (CanPlayerMoveToLocation(&gameContext->levelData, newColumn, newRow)) {
-
-if(collisionTile == TILE_DOT)
-{
-    CollideWithDot(&gameContext, renderer, newRow, newColumn);
-}
-else{
+    if (collisionTile == TILE_DOT) {
+      printf("Collide with dot\n");
+      CollideWithDot(gameContext, newRow, newColumn, collisionTile);
       gameContext->player.row = newRow;
       gameContext->player.column = newColumn;
+    } else {
+      gameContext->player.row = newRow;
+      gameContext->player.column = newColumn;
+    }
   }
 }
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer) {
