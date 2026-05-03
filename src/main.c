@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
       if (gameContext.frightenedGhostModeTimer <= 0.0) {
         gameContext.isFrightenedGhostModeActive = false;
         gameContext.frightenedGhostModeTimer = 0.0f;
-        printf("[main.c] - Ghost Timer is 0, Ghosts are Brave\n");
+        printf("[main.c] - Ghost Timer is 0, Ghost are no longer FRIGHTENED\n");
       }
     }
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
