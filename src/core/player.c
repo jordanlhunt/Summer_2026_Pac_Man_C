@@ -13,7 +13,7 @@ static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
       mapColumn >= MAP_COLUMNS) {
     return false;
   }
-  enum MapTile targetMapTile = GetMapTile(levelData, mapRow, mapColumn);
+  MapTile targetMapTile = GetMapTile(levelData, mapRow, mapColumn);
   // Check if the targetMapTile a place where the player can be
   if (targetMapTile == TILE_WALL || targetMapTile == TILE_GHOST_DOOR) {
     return false;
@@ -23,7 +23,7 @@ static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
 // When the player collides with a  DOT, send a signal to the the gameContext to
 // delete the dot update the score
 void CollideWithDot(GameContext *gameContext, int row, int column,
-                    enum MapTile collisionTile) {
+                    MapTile collisionTile) {
   if (collisionTile == TILE_DOT) {
     collisionTile = TILE_EMPTY;
     gameContext->currentScore += DOT_PELLET_SCORE_VALUE;
@@ -36,7 +36,7 @@ void CollideWithDot(GameContext *gameContext, int row, int column,
 // gameContext to delete the dot, update the score, and set ghosts to
 // "frightened"
 void CollideWithPowerPellet(GameContext *gameContext, int row, int column,
-                            enum MapTile collisionTile) {
+                            MapTile collisionTile) {
   if (collisionTile == TILE_POWER_PELLET) {
     printf("CollideWithPowerPellet() is being called");
     collisionTile = TILE_EMPTY;
@@ -76,7 +76,7 @@ void UpdatePlayer(GameContext *gameContext) {
   if (gameContext->input.moveDown) {
     newRow += gameContext->player.velocity;
   }
-  enum MapTile collisionTile =
+  MapTile collisionTile =
       GetMapTile(&gameContext->levelData, newRow, newColumn);
   // Collision Check
   if (CanPlayerMoveToLocation(&gameContext->levelData, newColumn, newRow)) {

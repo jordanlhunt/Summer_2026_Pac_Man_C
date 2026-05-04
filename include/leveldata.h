@@ -6,7 +6,7 @@
 #include "maptile.h"
 #include <stdbool.h>
 typedef struct LevelData {
-  enum MapTile mapTiles[MAP_ROWS][MAP_COLUMNS];
+  MapTile mapTiles[MAP_ROWS][MAP_COLUMNS];
   bool isGameOver;
 } LevelData;
 #endif

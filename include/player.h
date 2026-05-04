@@ -18,7 +18,7 @@ void InitializePlayer(GameContext *gameContext);
 void UpdatePlayer(GameContext *gameContext);
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer);
 void CollideWithDot(GameContext *gameContext, int row, int column,
-                    enum MapTile collisionTile);
+                    MapTile collisionTile);
 void CollideWithPowerPellet(GameContext *gameContext, int row, int column,
-                            enum MapTile collisionTile);
+                            MapTile collisionTile);
 #endif
