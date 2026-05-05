@@ -1,7 +1,6 @@
 #include "../../include/gamecontext.h"
 #include "maptile.h"
 #include <wchar.h>
-
 void TriggerFrightenedMode(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
@@ -9,14 +8,12 @@ void TriggerFrightenedMode(GameContext *gameContext) {
   gameContext->isFrightenedGhostModeActive = true;
   gameContext->frightenedGhostModeTimer = FRIGHTEN_GHOST_MODE_DURATION;
 }
-
 void TriggerRoundWon(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
   }
   gameContext->isRoundWon = true;
 }
-
 void ReduceRemainingPellets(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
@@ -24,14 +21,12 @@ void ReduceRemainingPellets(GameContext *gameContext) {
   gameContext->remainingPellets -= 1;
   printf("Remaining Dots: %d\n", gameContext->remainingPellets);
 }
-
 void CheckForRoundWon(GameContext *gameContext) {
   if (gameContext->remainingPellets == 0) {
     TriggerRoundWon(gameContext);
     printf("Round Won! Great job player!\n");
   }
 }
-
 void InitializeGameContext(GameContext *gameContext) {
   gameContext->remainingPellets = NUMBER_OF_DOTS;
 }
@@ -60,7 +55,6 @@ void HandlePlayerTileCollision(GameContext *gameContext, int row, int column,
     CheckForRoundWon(gameContext);
   }
 }
-
 // When the player collides with a  DOT, send a signal to the the gameContext to
 // delete the dot update the score
 void CollideWithDot(GameContext *gameContext, int row, int column,

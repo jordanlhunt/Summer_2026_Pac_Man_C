@@ -1,5 +1,4 @@
 #include "../include/main.h"
-
 int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("[main.c] - SDL could not initialize! SDL_Error: %s\n",
@@ -22,26 +21,22 @@ int main(int argc, char *argv[]) {
   Uint32 previousTime = SDL_GetTicks();
   SDL_Event sdl_event;
   SDL_ShowWindow(window);
-
   while (isQuit == false) {
     // Create a Delta Time for all the various Timers
     Uint32 currentTime = SDL_GetTicks();
     // Convert from Milliseconds to seconds
     float deltaTime = (currentTime - previousTime) / 1000.0f;
     previousTime = currentTime;
-
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {
         isQuit = true;
       }
       handleEvent(&sdl_event, &gameContext);
     }
-
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
     PlayerMovementResult moveResult = UpdatePlayer(&gameContext);
-
     if (moveResult.didPlayerMove) {
       HandlePlayerTileCollision(&gameContext, moveResult.row, moveResult.column,
                                 moveResult.collidedTile);

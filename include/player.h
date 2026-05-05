@@ -18,7 +18,6 @@ typedef struct PlayerMovementResult {
   int column;
   MapTile collidedTile;
 } PlayerMovementResult;
-
 void InitializePlayer(GameContext *gameContext);
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer);
 void CollideWithDot(GameContext *gameContext, int row, int column,

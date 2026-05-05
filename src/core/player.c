@@ -20,7 +20,6 @@ static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
   }
   return isMovementValid;
 }
-
 // Initialize the player to their spawn location as determined from the maze.txt
 void InitializePlayer(GameContext *gameContext) {
   // Null-Check
