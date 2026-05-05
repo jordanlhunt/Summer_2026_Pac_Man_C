@@ -2,7 +2,7 @@
 #include <SDL2/SDL_render.h>
 #include <stdio.h>
 // Helper Function
-static enum MapTile CharToMapTile(char mapChar) {
+static MapTile CharToMapTile(char mapChar) {
   switch (mapChar) {
   case 'W':
     return TILE_WALL;
@@ -86,7 +86,7 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
   tileRect.h = MAP_GRID_CELL_SIZE;
   for (int row = 0; row < MAP_ROWS; row++) {
     for (int col = 0; col < MAP_COLUMNS; col++) {
-      enum MapTile newMapTile = levelData->mapTiles[row][col];
+      MapTile newMapTile = levelData->mapTiles[row][col];
       tileRect.x = col * MAP_GRID_CELL_SIZE;
       tileRect.y = row * MAP_GRID_CELL_SIZE;
       switch (newMapTile) {
@@ -140,10 +140,10 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
     }
   }
 }
-enum MapTile GetMapTile(LevelData *levelData, int row, int col) {
-  enum MapTile someMapTile = levelData->mapTiles[row][col];
+MapTile GetMapTile(LevelData *levelData, int row, int col) {
+  MapTile someMapTile = levelData->mapTiles[row][col];
   return someMapTile;
 }
-void SetMapTile(LevelData *levelData, int row, int col, enum MapTile newTile) {
+void SetMapTile(LevelData *levelData, int row, int col, MapTile newTile) {
   levelData->mapTiles[row][col] = newTile;
 }

@@ -2,7 +2,7 @@
 #include "../../include/gamecontext.h"
 #include "../../include/leveldata.h"
 #include "../../include/map.h"
-#include <stdio.h>
+#include "maptile.h"
 // Helper functions
 // Before player can move to a location on the map see if it's valid
 static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
@@ -20,34 +20,10 @@ static bool CanPlayerMoveToLocation(LevelData *levelData, int mapColumn,
   }
   return isMovementValid;
 }
-// When the player collides with a  DOT, send a signal to the the gameContext to
-// delete the dot update the score
-void CollideWithDot(GameContext *gameContext, int row, int column,
-                    MapTile collisionTile) {
-  if (collisionTile == TILE_DOT) {
-    collisionTile = TILE_EMPTY;
-    gameContext->currentScore += DOT_PELLET_SCORE_VALUE;
-    ReduceRemainingPellets(gameContext);
-  }
-  SetMapTile(&gameContext->levelData, row, column, collisionTile);
-}
 
-// When the player collides with a POWER_PELLET, send a signal to the
-// gameContext to delete the dot, update the score, and set ghosts to
-// "frightened"
-void CollideWithPowerPellet(GameContext *gameContext, int row, int column,
-                            MapTile collisionTile) {
-  if (collisionTile == TILE_POWER_PELLET) {
-    printf("CollideWithPowerPellet() is being called");
-    collisionTile = TILE_EMPTY;
-    gameContext->currentScore += POWER_PELLET_SCORE_VALUE;
-    ReduceRemainingPellets(gameContext);
-  }
-  SetMapTile(&gameContext->levelData, row, column, collisionTile);
-  TriggerFrightenedMode(gameContext);
-}
 // Initialize the player to their spawn location as determined from the maze.txt
 void InitializePlayer(GameContext *gameContext) {
+  // Null-Check
   for (int row = 0; row < MAP_ROWS; row++) {
     for (int column = 0; column < MAP_COLUMNS; column++) {
       if (GetMapTile(&gameContext->levelData, row, column) == TILE_PLAYER) {
@@ -61,41 +37,35 @@ void InitializePlayer(GameContext *gameContext) {
   }
 }
 // Update the player location on GameContext->input
-void UpdatePlayer(GameContext *gameContext) {
+PlayerMovementResult UpdatePlayer(GameContext *gameContext) {
+  PlayerMovementResult playerMovementResult = {
+      false, gameContext->player.row, gameContext->player.column, TILE_EMPTY};
   int newRow = gameContext->player.row;
   int newColumn = gameContext->player.column;
+  // Else if's to not allow for diagonal movement
   if (gameContext->input.moveRight) {
     newColumn += gameContext->player.velocity;
-  }
-  if (gameContext->input.moveLeft) {
+  } else if (gameContext->input.moveLeft) {
     newColumn -= gameContext->player.velocity;
   }
   if (gameContext->input.moveUp) {
     newRow -= gameContext->player.velocity;
-  }
-  if (gameContext->input.moveDown) {
+  } else if (gameContext->input.moveDown) {
     newRow += gameContext->player.velocity;
+  }
+  if (CanPlayerMoveToLocation(&gameContext->levelData, newColumn, newRow) ==
+      false) {
+    return playerMovementResult;
   }
   MapTile collisionTile =
       GetMapTile(&gameContext->levelData, newRow, newColumn);
-  // Collision Check
-  if (CanPlayerMoveToLocation(&gameContext->levelData, newColumn, newRow)) {
-    if (collisionTile == TILE_DOT) {
-      printf("Collide with dot\n");
-      CollideWithDot(gameContext, newRow, newColumn, collisionTile);
-      gameContext->player.row = newRow;
-      gameContext->player.column = newColumn;
-    }
-    if (collisionTile == TILE_POWER_PELLET) {
-      printf("Collide with Power Pellet\n");
-      CollideWithPowerPellet(gameContext, newRow, newColumn, collisionTile);
-      gameContext->player.row = newRow;
-      gameContext->player.column = newColumn;
-    } else {
-      gameContext->player.row = newRow;
-      gameContext->player.column = newColumn;
-    }
-  }
+  playerMovementResult.collidedTile = collisionTile;
+  gameContext->player.row = newRow;
+  gameContext->player.column = newColumn;
+  playerMovementResult.didPlayerMove = true;
+  playerMovementResult.row = newRow;
+  playerMovementResult.column = newColumn;
+  return playerMovementResult;
 }
 void DrawPlayer(GameContext *gameContext, SDL_Renderer *renderer) {
   int currentX = gameContext->player.column * MAP_GRID_CELL_SIZE;

@@ -40,7 +40,12 @@ int main(int argc, char *argv[]) {
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
-    UpdatePlayer(&gameContext);
+    PlayerMovementResult moveResult = UpdatePlayer(&gameContext);
+
+    if (moveResult.didPlayerMove) {
+      HandlePlayerTileCollision(&gameContext, moveResult.row, moveResult.column,
+                                moveResult.collidedTile);
+    }
     // Handle the Frightened Ghost Mode
     if (gameContext.isFrightenedGhostModeActive == true) {
       gameContext.frightenedGhostModeTimer -= deltaTime;
@@ -56,7 +61,6 @@ int main(int argc, char *argv[]) {
     DrawPlayer(&gameContext, renderer);
     SDL_RenderPresent(renderer);
     delayFramerate(currentTime);
-    CheckForRoundWon(&gameContext);
   }
   cleanup(renderer, window);
   return 0;
