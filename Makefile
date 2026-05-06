@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = src/main.c src/core/audio.c src/core/entity.c src/core/gamecontext.c src/core/gamestate.c src/core/graphics.c src/core/input.c src/core/leveldata.c src/core/player.c src/map/map.c
+OBJS = src/main.c src/core/audio.c src/core/entity.c src/core/gamecontext.c src/core/gamestate.c src/core/graphics.c src/core/input.c src/core/leveldata.c src/entities/player.c src/map/map.c
 #OBJ_Name specifies the name of the executable
 OBJ_Name = hac_man_summer_project
 # COMPILER_FLAGS specifies the additional compilation options

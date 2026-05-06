@@ -1,6 +1,4 @@
 #include "../../include/gamecontext.h"
-#include "maptile.h"
-#include <wchar.h>
 void TriggerFrightenedMode(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
