@@ -51,6 +51,10 @@ int main(int argc, char *argv[]) {
       }
     }
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
+    if (gameContext.isFrightenedGhostModeActive == true) {
+      // Change the background color for visual feedback
+      SDL_SetRenderDrawColor(renderer, 206, 32, 41, 255); // Fire Engine Red
+    }
     SDL_RenderClear(renderer);
     DrawMap(&gameContext.levelData, renderer);
     DrawPlayer(&gameContext, renderer);
