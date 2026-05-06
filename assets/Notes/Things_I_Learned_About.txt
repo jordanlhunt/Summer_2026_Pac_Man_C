@@ -6,3 +6,7 @@
 4.) Data-oriented Design
 5.) Facade pattern
 6.) Encapsulation
+7.) Basics of Refactoring
+8.) Writing and re-writing code is very common when designing something
+9.) Get something working before trying to get "right"
+10.) 

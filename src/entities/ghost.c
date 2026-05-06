@@ -1,0 +1,1 @@
+// TODO: Build out the general ghost entity to be use for each specific ghost
