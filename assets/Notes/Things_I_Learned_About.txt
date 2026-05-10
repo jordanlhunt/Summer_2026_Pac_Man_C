@@ -9,4 +9,8 @@
 7.) Basics of Refactoring
 8.) Writing and re-writing code is very common when designing something
 9.) Get something working before trying to get "right"
-10.) 
+10.) Entity Component System
+    - https://boyang.cs.uwm.edu/publication/sac2026_ECS.pdf
+    - https://gamedev.net/tutorials/programming/artificial-intelligence/the-total-beginners-guide-to-game-ai-r4942/
+    - https://www.gameaipro.com/
+    - The Cherno https://www.youtube.com/watch?v=Z-CILn2w9K0
