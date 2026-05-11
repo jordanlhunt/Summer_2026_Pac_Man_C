@@ -33,5 +33,5 @@ I will also add that even with Ublock Origin and several other extensions, findi
 - [The same Pittman writing on different website](https://www.gamedeveloper.com/design/the-pac-man-dossier)
 - [Mike Shah's C Programming Series](https://www.youtube.com/playlist?list=PLvv0ScY6vfd8M-Mi_Vyrg7KgISTW3Sklt)
 - [Programming Linux Games is an older book, but the information is still relevant and useful. I don't know if there are physical copies still around but there are various "libre" version floating around](https://books.google.com/books?id=7eAPUdU3hRUC&lpg=PR4&pg=PP1#v=onepage&q&f=false)
-  - [There is also a Mirror on the Web Archive](https://web.archive.org/web/20030210191202/http://www.overcode.net/%7Eovercode/writing/plg/)
+  - [There is also a mirror on the Web Archive](https://web.archive.org/web/20030210191202/http://www.overcode.net/%7Eovercode/writing/plg/)
 - [Great book on Game Programming Patterns](https://gameprogrammingpatterns.com/)
