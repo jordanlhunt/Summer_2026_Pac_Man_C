@@ -1,23 +1,23 @@
 # Pac-Man in C
 
-This project is meant to be a recreation of the 1980's classic [Pac-Man](https://en.wikipedia.org/wiki/Pac-Man).
+This project is meant to be a recreation of the 1980's iconic classic [Pac-Man](https://en.wikipedia.org/wiki/Pac-Man).
 
 ## What Is This Project
 
-A from scratch recreation of the Pac-Man using C and SDL2.
+A from scratch recreation of the Pac-Man using C and SDL2 using modern software development design patterns and methodologies.
 
 ## Why Is This Project
 
-This project is totally self-directed and meant to be an application of learned Software Patterns and Object-Oriented Design. It's a project that's force me to apply my learning in my Computer Science classes to make something from scratch. It's meant to be a focus more on the programming side of game development. I believe that focusing on the fundamentals first will give me a better foundation for game development and design in the future.
+This project is totally self-directed and meant to be an application of learned Software Patterns and Object-Oriented Design. It's a project that's force me to apply my learning in my Computer Science classes to make something from scratch. It's meant to be a focus more on the programming side of game development. I believe that focusing on the fundamentals first will give me a better foundation for game development and design in the future. It's also a project to force me to read/write C code because I want to be go-to language.  
 
 ## Goals and Objective
 
 1. Complete a project on my own
 2. Improve my programming skills and understanding of core principles of C
 3. To learn various foundational game development paradigms
-4. To become more comfortable solving my problems and learn how/when to properly get help
+4. To become more comfortable solving my problems and learn how/when to properly get help by asking for help from others 
 5. Have fun in the process of doing something outside my skillset
-
+6. To not get derailed or discouraged because it's hard to do things outside my skillset
 - Bonus Objective: Develop my sense of self-confidence to see something through from start to finish with steadfast commitment and dignity.
 
 ## AI-Usage
