@@ -28,6 +28,7 @@ I will also add that even with Ublock Origin and several other extensions, findi
 
 ## Links to Resources
 
+- [C Programming: A Modern Approach has been on my desk for like 10 years and I only read through it this summer](http://knking.com/books/c2/)
 - [An excellent write-up by Jamey Pittman](https://www.gamedeveloper.com/design/the-pac-man-dossier)
 - [The same Pittman writing on different website](https://www.gamedeveloper.com/design/the-pac-man-dossier)
 - [Mike Shah's C Programming Series](https://www.youtube.com/playlist?list=PLvv0ScY6vfd8M-Mi_Vyrg7KgISTW3Sklt)
