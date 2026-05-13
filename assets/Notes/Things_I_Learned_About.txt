@@ -14,3 +14,4 @@
     - https://gamedev.net/tutorials/programming/artificial-intelligence/the-total-beginners-guide-to-game-ai-r4942/
     - https://www.gameaipro.com/
     - The Cherno https://www.youtube.com/watch?v=Z-CILn2w9K0
+11.) Having a consistent style is important
