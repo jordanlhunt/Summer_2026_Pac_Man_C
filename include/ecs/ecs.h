@@ -7,10 +7,6 @@
   512 // 512 is double the size of all the maximum of entities the game may have
 #define MAX_SYSTEMS 32
 // Forward Declare
-struct Position;
-struct Velocity;
-struct Renderable;
-struct PlayerControlled;
 struct GameContext;
 struct SDL_Renderer;
 // Component type
@@ -19,7 +15,7 @@ typedef enum ComponentType {
   COMPONENT_POSITION = 1 << 0,
   COMPONENT_VELOCITY = 1 << 1,
   COMPONENT_RENDERABLE = 1 << 2,
-  COMPONENT_PLAYER_INPUT = 1 << 3,
+  COMPONENT_PLAYER_CONTROLLED = 1 << 3,
 } ComponentType;
 // Entity Coordinator (I don't like the word 'manager' because of MEGACORPs have
 // polluted it)
@@ -30,7 +26,7 @@ Entity ECS_CreateEntity();
 bool ECS_HasComponent(Entity entity, ComponentType componentType);
 void ECS_AddComponent(Entity entity, ComponentType componentType);
 void ECS_RemoveComponent(Entity entity, ComponentType componentType);
-// Getters
+// Getters and Setter
 Position *ECS_GetPosition(Entity entity);
 Velocity *ECS_GetVelocity(Entity entity);
 Renderable *ECS_GetRenderable(Entity entity);
@@ -40,6 +36,5 @@ PlayerControlled *ECS_GetPlayerControlled(Entity entity);
 typedef void (*System)(GameContext *gameContext, SDL_Renderer *renderer);
 void ECS_RegisterSystem(System system);
 void ECS_Update(GameContext *gameContext, SDL_Renderer *renderer);
-void ECS_SetGameContext(GameContext *gameContext);
-void ECS_SetSDLRenderer(SDL_Renderer *renderer);
+
 #endif

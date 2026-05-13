@@ -1,6 +1,7 @@
 // ecs/components.h
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
+typedef enum Direction { NONE, UP, DOWN, LEFT, RIGHT } Direction;
 typedef struct Position {
   int row;
   int column;
@@ -8,16 +9,16 @@ typedef struct Position {
 typedef struct Velocity {
   int deltaRow;
   int deltaColumn;
-  int speed;
 } Velocity;
 typedef struct Renderable {
   int red;
   int green;
   int blue;
   int alpha;
-  int width, height;
+  int width;
+  int height;
 } Renderable;
 typedef struct PlayerControlled {
-  bool isEnabled;
+  Direction currentDirection;
 } PlayerControlled;
 #endif

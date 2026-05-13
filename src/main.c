@@ -23,7 +23,8 @@ int main(int argc, char *argv[]) {
   Entity player = ECS_CreateEntity();
 
   ECS_AddComponent(player, COMPONENT_POSITION | COMPONENT_VELOCITY |
-                               COMPONENT_RENDERABLE | COMPONENT_PLAYER_INPUT);
+                               COMPONENT_RENDERABLE |
+                               COMPONENT_PLAYER_CONTROLLED);
   int startRow = 0;
   int startColumn = 0;
   for (int row = 0; row < MAP_ROWS; row++) {

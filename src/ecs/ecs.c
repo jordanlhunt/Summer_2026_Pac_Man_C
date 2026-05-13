@@ -26,6 +26,7 @@ void ECS_Initialize() {
          sizeof(staticPlayerControlledEntities));
   staticSystemsCounter = 0;
   staticNextAvailableSlot = 1;
+  ECS_SetGameContext(gameContext);
 }
 Entity ECS_CreateEntity() {
   for (Entity i = staticNextAvailableSlot; i < MAX_ENTITIES; i++) {
@@ -81,7 +82,7 @@ Renderable *ECS_GetRenderable(Entity entity) {
 }
 PlayerControlled *ECS_GetPlayerControlled(Entity entity) {
   PlayerControlled *playerControlled = NULL;
-  if (ECS_HasComponent(entity, COMPONENT_PLAYER_INPUT)) {
+  if (ECS_HasComponent(entity, COMPONENT_PLAYER_CONTROLLED)) {
     playerControlled = &staticPlayerControlledEntities[entity];
   }
   return playerControlled;
@@ -91,8 +92,8 @@ void ECS_RegisterSystem(System system) {
     staticSystems[staticSystemsCounter++] = system;
   }
 }
-void ECS_Update() {
+void ECS_Update(GameContext *gameContext, SDL_Renderer *renderer) {
   for (int i = 0; i < staticSystemsCounter; i++) {
-    staticSystems[i]();
+    staticSystems[i](gameContext, renderer);
   }
 }
