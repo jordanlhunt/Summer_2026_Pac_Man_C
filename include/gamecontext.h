@@ -15,7 +15,6 @@ typedef struct GameContext {
   //  Graphics graphics;
   Input input;
   LevelData levelData;
-  Player player;
   // Ghost ghosts[4];
   // GameState currentGameState;
   int currentScore;
@@ -23,7 +22,7 @@ typedef struct GameContext {
   bool isFrightenedGhostModeActive;
   bool isRoundWon;
   float frightenedGhostModeTimer;
-
+  Entity playerEntity;
   // Audio audio;
 } GameContext;
 
