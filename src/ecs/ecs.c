@@ -1,4 +1,5 @@
 #include "../../include/ecs/ecs.h"
+#include <stdbool.h>
 #include <string.h>
 // Static/Persistent Variables
 static Position staticPositions[MAX_ENTITIES];
@@ -23,4 +24,15 @@ void ECS_Initialize() {
          sizeof(staticPlayerControlledEntities));
   staticSystemsCounter = 0;
   staticNextAvailableSlot = 1;
+}
+Entity ECS_CreateEntity() {
+  for (Entity i = staticNextAvailableSlot; i < MAX_ENTITIES; i++) {
+    if (!staticEntitySlotUsed[i]) {
+      staticEntitySlotUsed[i] = true;
+      staticComponentMasks[i] = COMPONENT_NONE;
+      staticNextAvailableSlot = i + 1;
+      return i;
+    }
+  }
+  return 0;
 }
