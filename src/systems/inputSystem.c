@@ -1,5 +1,4 @@
 #include "../../include/systems/inputSystem.h"
-#include <stdbool.h>
 
 void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (ECS_HasComponent(gameContext->playerEntity,
@@ -11,5 +10,11 @@ void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   velocity->deltaColumn = 0;
   if (gameContext->input.moveUp) {
     velocity->deltaRow = -1;
+  } else if (gameContext->input.moveDown) {
+    velocity->deltaRow = 1;
+  } else if (gameContext->input.moveLeft) {
+    velocity->deltaColumn = -1;
+  } else if (gameContext->input.moveRight) {
+    velocity->deltaColumn = 1;
   }
 }

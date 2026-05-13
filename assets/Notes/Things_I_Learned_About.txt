@@ -1,8 +1,10 @@
+This is a collection of things I learned about during this project. This is by no means I fully understand everything in the list, this is simply meant to chronicle my learning. It's also meant to give me something to look back on to see my progress as well as things to review deeper.
+
 1.) Circular Dependencies and how to use forward delectations and proper use of header files and how to avoid them.
 2.) Game Design Patterns
     - Game Loop pattern
     - Update Method pattern
-3.) Separation of Concerns 
+3.) Separation of Concerns
 4.) Data-oriented Design
 5.) Facade pattern
 6.) Encapsulation
@@ -15,3 +17,4 @@
     - https://www.gameaipro.com/
     - The Cherno https://www.youtube.com/watch?v=Z-CILn2w9K0
 11.) Having a consistent style is important
+12.) Function Pointers
