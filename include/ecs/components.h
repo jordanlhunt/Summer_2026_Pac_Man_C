@@ -2,12 +2,13 @@
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
 typedef struct Position {
-  int x;
-  int y;
+  int row;
+  int column;
 } Position;
 typedef struct Velocity {
-  int deltaX;
-  int deltaY;
+  int deltaRow;
+  int deltaColumn;
+  int speed;
 } Velocity;
 typedef struct Renderable {
   int red;
@@ -17,6 +18,6 @@ typedef struct Renderable {
   int width, height;
 } Renderable;
 typedef struct PlayerControlled {
-  int dummy;
+  bool isEnabled;
 } PlayerControlled;
 #endif
