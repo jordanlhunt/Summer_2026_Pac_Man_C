@@ -36,3 +36,61 @@ Entity ECS_CreateEntity() {
   }
   return 0;
 }
+void ECS_DestroyEntity(Entity entity) {
+  if (entity == 0 || entity >= MAX_ENTITIES) {
+    return;
+  }
+  staticEntitySlotUsed[entity] = false;
+  staticComponentMasks[entity] = COMPONENT_NONE;
+}
+bool ECS_HasComponent(Entity entity, ComponentType componentType) {
+  bool hasComponent = false;
+  if ((staticComponentMasks[entity] & componentType) != 0) {
+    hasComponent = true;
+  }
+  return hasComponent;
+}
+void ECS_AddComponent(Entity entity, ComponentType componentType) {
+  staticComponentMasks[entity] |= componentType;
+}
+void ECS_RemoveComponent(Entity entity, ComponentType componentType) {
+  staticComponentMasks[entity] &= ~componentType;
+}
+Position *ECS_GetPosition(Entity entity) {
+  Position *currentPosition = NULL;
+  if (ECS_HasComponent(entity, COMPONENT_POSITION)) {
+    currentPosition = &staticPositions[entity];
+  }
+  return currentPosition;
+}
+Velocity *ECS_GetVelocity(Entity entity) {
+  Velocity *currentVelocity = NULL;
+  if (ECS_HasComponent(entity, COMPONENT_VELOCITY)) {
+    currentVelocity = &staticVelocities[entity];
+  }
+  return currentVelocity;
+}
+Renderable *ECS_GetRenderable(Entity entity) {
+  Renderable *renderData = NULL;
+  if (ECS_HasComponent(entity, COMPONENT_RENDERABLE)) {
+    renderData = &staticRenderables[entity];
+  }
+  return renderData;
+}
+PlayerControlled *ECS_GetPlayerControlled(Entity entity) {
+  PlayerControlled *playerControlled = NULL;
+  if (ECS_HasComponent(entity, COMPONENT_PLAYER_INPUT)) {
+    playerControlled = &staticPlayerControlledEntities[entity];
+  }
+  return playerControlled;
+}
+void ECS_RegisterSystem(System system) {
+  if (staticSystemsCounter < MAX_SYSTEMS) {
+    staticSystems[staticSystemsCounter++] = system;
+  }
+}
+void ECS_Update() {
+  for (int i = 0; i < staticSystemsCounter; i++) {
+    staticSystems[i]();
+  }
+}

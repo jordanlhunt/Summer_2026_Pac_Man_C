@@ -13,9 +13,20 @@ int main(int argc, char *argv[]) {
   SDL_Renderer *renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   GameContext gameContext = {0};
+  // Entity Component system
+  ECS_Initialize();
+  Entity player = ECS_CreateEntity();
+  ECS_AddComponent(player, COMPONENT_POSITION | COMPONENT_VELOCITY |
+                               COMPONENT_RENDERABLE | COMPONENT_PLAYER_INPUT);
+  Position *playerPosition = ECS_GetPosition(player);
+  playerPosition.x = startColumn * MAP_GRID_CELL_SIZE;
+  playerPosition.y = startRow * MAP_GRID_CELL_SIZE;
+
+  // Set Renderable and other ECS Stuff
+
+  gameContext.playerEntity = player;
   gameContext.currentScore = 0;
   LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
-  InitializePlayer(&gameContext);
   InitializeGameContext(&gameContext);
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();
