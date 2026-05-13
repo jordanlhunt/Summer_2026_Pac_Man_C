@@ -2,6 +2,7 @@
 #define ECS_H
 #include "../common.h"
 #include "components.h"
+#include "entity.h"
 #define MAX_ENTITIES                                                           \
   512 // 512 is double the size of all the maximum of entities the game may have
 #define MAX_SYSTEMS 32
@@ -10,7 +11,8 @@ struct Position;
 struct Velocity;
 struct Renderable;
 struct PlayerControlled;
-typedef uint32_t Entity;
+struct GameContext;
+struct SDL_Renderer;
 // Component type
 typedef enum ComponentType {
   COMPONENT_NONE = 0,
@@ -33,8 +35,11 @@ Position *ECS_GetPosition(Entity entity);
 Velocity *ECS_GetVelocity(Entity entity);
 Renderable *ECS_GetRenderable(Entity entity);
 PlayerControlled *ECS_GetPlayerControlled(Entity entity);
-// Function Pointers
-typedef void (*System)();
+
+// Function Pointer to register systems
+typedef void (*System)(GameContext *gameContext, SDL_Renderer *renderer);
 void ECS_RegisterSystem(System system);
-void ECS_Update();
+void ECS_Update(GameContext *gameContext, SDL_Renderer *renderer);
+void ECS_SetGameContext(GameContext *gameContext);
+void ECS_SetSDLRenderer(SDL_Renderer *renderer);
 #endif

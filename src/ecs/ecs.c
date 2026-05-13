@@ -6,6 +6,8 @@ static Position staticPositions[MAX_ENTITIES];
 static Velocity staticVelocities[MAX_ENTITIES];
 static Renderable staticRenderables[MAX_ENTITIES];
 static PlayerControlled staticPlayerControlledEntities[MAX_ENTITIES];
+static GameContext *globalGameContext = NULL;
+static SDL_Renderer *globalSDLRenderer = NULL;
 // Bitmask to keep track of what components has
 static uint32_t staticComponentMasks[MAX_ENTITIES];
 // Entity Pool
