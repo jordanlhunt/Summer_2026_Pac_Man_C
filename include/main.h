@@ -9,6 +9,7 @@
 #include "../include/systems/inputSystem.h"
 #include "../include/systems/movementSystem.h"
 #include "../include/systems/renderSystem.h"
+#include "../include/gameinitialization.h"
 #include "common.h"
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>

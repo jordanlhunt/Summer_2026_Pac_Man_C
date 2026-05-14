@@ -1,27 +1,29 @@
 #include "../include/main.h"
 int main(int argc, char *argv[]) {
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    printf("[main.c] - SDL could not initialize! SDL_Error: %s\n",
-           SDL_GetError());
-    {
-      return 1;
-    }
-  }
-  SDL_Window *window = SDL_CreateWindow("Hac-Man", SDL_WINDOWPOS_UNDEFINED,
-                                        SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-                                        SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
-  SDL_Renderer *renderer =
-      SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+    SDLContext sdlContext = {0};
   GameContext gameContext = {0};
 
+  if(InitializeSDL(&sdlContext) == false){
+      return 1;
+  }
+  ECS_Initialize();
+  InitializeSystems();
   LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
   InitializeGameContext(&gameContext);
 
+  Entity player = ECS_CreateEntity();
+  if(InitializePlayer(&gameContext, player) == false){
+      return 1;
+  }
+  gameContext.playerEntity= player;
+
+  // Game Loop
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();
   SDL_Event sdl_event;
-  SDL_ShowWindow(window);
+
+  SDL_ShowWindow(SDLContext.window);
   while (isQuit == false) {
     // Create a Delta Time for all the various Timers
     Uint32 currentTime = SDL_GetTicks();
@@ -37,20 +39,11 @@ int main(int argc, char *argv[]) {
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
-    PlayerMovementResult moveResult = UpdatePlayer(&gameContext);
-    if (moveResult.didPlayerMove) {
-      HandlePlayerTileCollision(&gameContext, moveResult.row, moveResult.column,
-                                moveResult.collidedTile);
-    }
+
     // Handle the Frightened Ghost Mode
-    if (gameContext.isFrightenedGhostModeActive == true) {
-      gameContext.frightenedGhostModeTimer -= deltaTime;
-      if (gameContext.frightenedGhostModeTimer <= 0.0) {
-        gameContext.isFrightenedGhostModeActive = false;
-        gameContext.frightenedGhostModeTimer = 0.0f;
-        printf("[main.c] - Ghost Timer is 0, Ghost are no longer FRIGHTENED\n");
-      }
-    }
+    UpdateFrightenedModeTimer(&gameContext, deltaTime);
+
+
     SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255); // Matrix Green
     if (gameContext.isFrightenedGhostModeActive == true) {
       // Change the background color for visual feedback
@@ -72,9 +65,15 @@ void delayFramerate(Uint32 startTime) {
     SDL_Delay(FRAMERATE_DELAY - elapsedTime);
   }
 }
-/* Tears down the game on close */
-void cleanup(SDL_Renderer *renderer, SDL_Window *sdlWindow) {
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(sdlWindow);
-  SDL_Quit();
+
+void UpdateFrightenedModeTimer(GameContext gameContext, float deltaTime)
+{
+    if (gameContext.isFrightenedGhostModeActive == true) {
+      gameContext.frightenedGhostModeTimer -= deltaTime;
+      if (gameContext.frightenedGhostModeTimer <= 0.0) {
+        gameContext.isFrightenedGhostModeActive = false;
+        gameContext.frightenedGhostModeTimer = 0.0f;
+        printf("[main.c] - Ghost Timer is 0, Ghost are no longer FRIGHTENED\n");
+      }
+    }
 }
