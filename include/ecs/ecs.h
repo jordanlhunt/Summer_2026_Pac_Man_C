@@ -33,8 +33,9 @@ Renderable *ECS_GetRenderable(Entity entity);
 PlayerControlled *ECS_GetPlayerControlled(Entity entity);
 
 // Function Pointer to register systems
-typedef void (*System)(GameContext *gameContext, SDL_Renderer *renderer);
+typedef void (*System)(struct GameContext *gameContext,
+                       struct SDL_Renderer *renderer);
 void ECS_RegisterSystem(System system);
-void ECS_Update(GameContext *gameContext, SDL_Renderer *renderer);
+void ECS_Update(struct GameContext *gameContext, struct SDL_Renderer *renderer);
 
 #endif

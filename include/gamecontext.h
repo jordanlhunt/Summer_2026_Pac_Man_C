@@ -1,7 +1,7 @@
 #ifndef GAMECONTEXT_H
 #define GAMECONTEXT_H
 #include "common.h"
-#include "entity.h"
+#include "ecs/entity.h"
 #include "input.h"
 #include "leveldata.h"
 #include "map.h"

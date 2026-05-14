@@ -3,7 +3,7 @@
 #include "../../include/ecs/ecs.h"
 #include "../../include/gamecontext.h"
 #include "../../include/map.h"
-typedef struct GameContext GameContext;
-typedef struct SDL_Renderer SDL_Renderer;
-void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer);
+
+void MovementSystem(struct GameContext *gameContext,
+                    struct SDL_Renderer *renderer);
 #endif
