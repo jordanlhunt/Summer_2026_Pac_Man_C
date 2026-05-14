@@ -12,48 +12,11 @@ int main(int argc, char *argv[]) {
                                         SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
   SDL_Renderer *renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
   GameContext gameContext = {0};
-  gameContext.playerEntity = player;
-  gameContext.currentScore = 0;
+
   LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
   InitializeGameContext(&gameContext);
-
-  // Entity Component system
-  ECS_Initialize();
-  Entity player = ECS_CreateEntity();
-
-  ECS_AddComponent(player, COMPONENT_POSITION | COMPONENT_VELOCITY |
-                               COMPONENT_RENDERABLE |
-                               COMPONENT_PLAYER_CONTROLLED);
-  int startRow = 0;
-  int startColumn = 0;
-  for (int row = 0; row < MAP_ROWS; row++) {
-    for (int col = 0; col < MAP_COLUMNS; col++) {
-      if (GetMapTile(&gameContext.levelData, row, col) == TILE_PLAYER) {
-        startRow = row;
-        startColumn = col;
-        // Clear the spawn tile so it doesn't render as a player tile
-        SetMapTile(&gameContext.levelData, row, col, TILE_EMPTY);
-      }
-    }
-  }
-  Position *playerPosition = ECS_GetPosition(player);
-  playerPosition->row = startRow;
-  playerPosition->column = startColumn;
-  Velocity *playerVelocity = ECS_GetVelocity(player);
-  playerVelocity->deltaRow = 0;
-  playerVelocity->deltaRow = 0;
-
-  Renderable *renderData = ECS_GetRenderable(player);
-  renderData->red = 255;
-  renderData->blue = 0;
-  renderData->green = 255;
-  renderData->alpha = 255;
-  renderData->width = MAP_GRID_CELL_SIZE;
-  renderData->height = MAP_GRID_CELL_SIZE;
-  gameContext.playerEntity = player;
-
-  // Set Renderable and other ECS Stuff
 
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();
