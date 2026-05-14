@@ -18,4 +18,9 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   }
   MapTile targetTile =
       GetMapTile(&gameContext->levelData, targetRow, targetColumn);
+  if (targetTile == TILE_WALL || targetTile == TILE_GHOST_DOOR) {
+    return;
+  }
+  position->row = targetRow;
+  position->column = targetColumn;
 }
