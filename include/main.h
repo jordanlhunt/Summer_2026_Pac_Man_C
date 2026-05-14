@@ -5,6 +5,10 @@
 #include "../include/leveldata.h"
 #include "../include/map.h"
 #include "../include/player.h"
+#include "../include/systems/collisionSystem.h"
+#include "../include/systems/inputSystem.h"
+#include "../include/systems/movementSystem.h"
+#include "../include/systems/renderSystem.h"
 #include "common.h"
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>
