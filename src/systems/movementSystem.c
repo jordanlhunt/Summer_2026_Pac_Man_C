@@ -13,7 +13,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   int targetColumn = position->column + velocity->deltaColumn;
   // Bounds Check
   if (targetRow < 0 || targetRow >= MAP_ROWS || targetColumn < 0 ||
-      targetColumn < 0 || targetColumn >= MAP_COLUMNS) {
+      targetColumn >= MAP_COLUMNS) {
     return;
   }
   MapTile targetTile =

@@ -1,4 +1,5 @@
 #include "../../include/ecs/ecs.h"
+#include <SDL2/SDL_render.h>
 #include <stdbool.h>
 #include <string.h>
 // Static/Persistent Variables
@@ -6,8 +7,6 @@ static Position staticPositions[MAX_ENTITIES];
 static Velocity staticVelocities[MAX_ENTITIES];
 static Renderable staticRenderables[MAX_ENTITIES];
 static PlayerControlled staticPlayerControlledEntities[MAX_ENTITIES];
-static GameContext *globalGameContext = NULL;
-static SDL_Renderer *globalSDLRenderer = NULL;
 // Bitmask to keep track of what components has
 static uint32_t staticComponentMasks[MAX_ENTITIES];
 // Entity Pool
@@ -26,7 +25,6 @@ void ECS_Initialize() {
          sizeof(staticPlayerControlledEntities));
   staticSystemsCounter = 0;
   staticNextAvailableSlot = 1;
-  ECS_SetGameContext(gameContext);
 }
 Entity ECS_CreateEntity() {
   for (Entity i = staticNextAvailableSlot; i < MAX_ENTITIES; i++) {
@@ -92,7 +90,7 @@ void ECS_RegisterSystem(System system) {
     staticSystems[staticSystemsCounter++] = system;
   }
 }
-void ECS_Update(GameContext *gameContext, SDL_Renderer *renderer) {
+void ECS_Update(struct GameContext *gameContext, SDL_Renderer *renderer) {
   for (int i = 0; i < staticSystemsCounter; i++) {
     staticSystems[i](gameContext, renderer);
   }
