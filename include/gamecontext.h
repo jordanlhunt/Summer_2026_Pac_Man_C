@@ -15,7 +15,7 @@ typedef struct GameContext {
   //  Graphics graphics;
   Input input;
   LevelData levelData;
-  // Ghost ghosts[4];
+  // Ghost ghostsEntities[4];
   // GameState currentGameState;
   int currentScore;
   int remainingPellets;

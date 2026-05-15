@@ -1,5 +1,5 @@
 #include "../include/main.h"
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   SDLContext sdlContext = {0};
   GameContext gameContext = {0};
   if (InitializeSDL(&sdlContext) == false) {
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();
   SDL_Event sdl_event;
-  SDL_ShowWindow(SDLContext.window);
+  SDL_ShowWindow(sdlContext.gameWindow);
   while (isQuit == false) {
     // Create a Delta Time for all the various Timers
     Uint32 currentTime = SDL_GetTicks();
@@ -35,19 +35,21 @@ int main(int argc, char* argv[]) {
       isQuit = true;
     }
     // Handle the Frightened Ghost Mode
-    UpdateFrightenedModeTimer(&gameContext, deltaTime);
-    SDL_SetRenderDrawColor(renderer, 100, 216, 107, 255);  // Matrix Green
+    updateFrightenedModeTimer(&gameContext, deltaTime);
+    SDL_SetRenderDrawColor(sdlContext.renderer, 100, 216, 107,
+                           255); // Matrix Green
     if (gameContext.isFrightenedGhostModeActive == true) {
       // Change the background color for visual feedback
-      SDL_SetRenderDrawColor(renderer, 206, 32, 41, 255);  // Fire Engine Red
+      SDL_SetRenderDrawColor(sdlContext.renderer, 206, 32, 41,
+                             255); // Fire Engine Red
     }
-    SDL_RenderClear(renderer);
-    DrawMap(&gameContext.levelData, renderer);
-    DrawPlayer(&gameContext, renderer);
-    SDL_RenderPresent(renderer);
+    SDL_RenderClear(sdlContext.renderer);
+    DrawMap(&gameContext.levelData, sdlContext.renderer);
+    ECS_Update(&gameContext, sdlContext.renderer);
+    SDL_RenderPresent(sdlContext.renderer);
     delayFramerate(currentTime);
   }
-  cleanup(renderer, window);
+  Shutdown(&sdlContext);
   return 0;
 }
 // Caps the game's execution speed to maintain a consistent 60 FPS
@@ -57,12 +59,12 @@ void delayFramerate(Uint32 startTime) {
     SDL_Delay(FRAMERATE_DELAY - elapsedTime);
   }
 }
-void UpdateFrightenedModeTimer(GameContext gameContext, float deltaTime) {
-  if (gameContext.isFrightenedGhostModeActive == true) {
-    gameContext.frightenedGhostModeTimer -= deltaTime;
-    if (gameContext.frightenedGhostModeTimer <= 0.0) {
-      gameContext.isFrightenedGhostModeActive = false;
-      gameContext.frightenedGhostModeTimer = 0.0f;
+void updateFrightenedModeTimer(GameContext *gameContext, float deltaTime) {
+  if (gameContext->isFrightenedGhostModeActive == true) {
+    gameContext->frightenedGhostModeTimer -= deltaTime;
+    if (gameContext->frightenedGhostModeTimer <= 0.0) {
+      gameContext->isFrightenedGhostModeActive = false;
+      gameContext->frightenedGhostModeTimer = 0.0f;
       printf("[main.c] - Ghost Timer is 0, Ghost are no longer FRIGHTENED\n");
     }
   }

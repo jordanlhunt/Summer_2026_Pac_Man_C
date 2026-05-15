@@ -10,11 +10,11 @@
 #include "ecs/entity.h"
 #include "gamecontext.h"
 typedef struct {
-  SDL_Window* gameWindow;
-  SDL_Renderer* renderer;
+  SDL_Window *gameWindow;
+  SDL_Renderer *renderer;
 } SDLContext;
-bool InitializeSDL(SDLContext* sdlContext);
-bool InitializePlayer(GameContext* gameContext, Entity* player);
+bool InitializeSDL(SDLContext *sdlContext);
+bool InitializePlayer(GameContext *gameContext, Entity player);
 void InitializeSystems();
-void Shutdown(SDLContext* sdlContext);
+void Shutdown(SDLContext *sdlContext);
 #endif
