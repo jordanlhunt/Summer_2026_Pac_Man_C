@@ -3,8 +3,7 @@
 #include "../common.h"
 #include "components.h"
 #include "entity.h"
-#define MAX_ENTITIES                                                           \
-  512 // 512 is double the size of all the maximum of entities the game may have
+#define MAX_ENTITIES 512
 #define MAX_SYSTEMS 32
 // Forward Declare
 struct GameContext;
@@ -31,11 +30,9 @@ Position *ECS_GetPosition(Entity entity);
 Velocity *ECS_GetVelocity(Entity entity);
 Renderable *ECS_GetRenderable(Entity entity);
 PlayerControlled *ECS_GetPlayerControlled(Entity entity);
-
 // Function Pointer to register systems
 typedef void (*System)(struct GameContext *gameContext,
                        struct SDL_Renderer *renderer);
 void ECS_RegisterSystem(System system);
 void ECS_Update(struct GameContext *gameContext, struct SDL_Renderer *renderer);
-
 #endif

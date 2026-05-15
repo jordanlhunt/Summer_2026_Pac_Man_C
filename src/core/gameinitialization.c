@@ -46,8 +46,8 @@ bool InitializePlayer(GameContext *gameContext, Entity player) {
 }
 void InitializeSystems() {
   ECS_RegisterSystem(InputSystem);
-  ECS_RegisterSystem(MovementSystem);
   ECS_RegisterSystem(CollisionSystem);
+  ECS_RegisterSystem(MovementSystem);
   ECS_RegisterSystem(RenderSystem);
 }
 void Shutdown(SDLContext *sdlContext) {

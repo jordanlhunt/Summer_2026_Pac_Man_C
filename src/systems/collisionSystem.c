@@ -6,6 +6,11 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     return;
   }
   Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
+  if (ECS_HasComponent(gameContext->playerEntity, COMPONENT_VELOCITY) ==
+      false) {
+    printf("[collisionSystem.c] - Object does not have velocity component");
+    return;
+  }
   if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
     return;
   }
