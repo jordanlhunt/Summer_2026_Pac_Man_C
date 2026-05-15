@@ -5,7 +5,6 @@
 #include "../include/gameinitialization.h"
 #include "../include/leveldata.h"
 #include "../include/map.h"
-#include "../include/player.h"
 #include "../include/systems/collisionSystem.h"
 #include "../include/systems/inputSystem.h"
 #include "../include/systems/movementSystem.h"

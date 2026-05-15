@@ -6,7 +6,6 @@
 #include "leveldata.h"
 #include "map.h"
 #include "maptile.h"
-#include "player.h"
 #define DOT_PELLET_SCORE_VALUE 1
 #define FRIGHTEN_GHOST_MODE_DURATION 6.0f
 #define NUMBER_OF_DOTS 244
