@@ -23,6 +23,7 @@ void ECS_DestroyEntity(Entity entity);
 Entity ECS_CreateEntity();
 // Component Add/Remove
 bool ECS_HasComponent(Entity entity, ComponentType componentType);
+bool ECS_HasComponents(Entity entity, ComponentType componentType);
 void ECS_AddComponent(Entity entity, ComponentType componentType);
 void ECS_RemoveComponent(Entity entity, ComponentType componentType);
 // Getters and Setter

@@ -1,16 +1,16 @@
 #include "../../include/systems/collisionSystem.h"
 
 void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
-  if (ECS_HasComponent(gameContext->playerEntity, COMPONENT_POSITION) ==
-      false) {
+  Entity playerEntity = gameContext->playerEntity;
+
+  if (ECS_HasComponent(playerEntity, COMPONENT_POSITION) == false) {
     return;
   }
-  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
-  if (ECS_HasComponent(gameContext->playerEntity, COMPONENT_VELOCITY) ==
-      false) {
+  if (ECS_HasComponent(playerEntity, COMPONENT_VELOCITY) == false) {
     printf("[collisionSystem.c] - Object does not have velocity component");
     return;
   }
+  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
   if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
     return;
   }

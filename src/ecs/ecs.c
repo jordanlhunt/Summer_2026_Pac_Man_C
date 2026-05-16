@@ -1,7 +1,4 @@
 #include "../../include/ecs/ecs.h"
-#include <SDL2/SDL_render.h>
-#include <stdbool.h>
-#include <string.h>
 // Static/Persistent Variables
 static Position staticPositions[MAX_ENTITIES];
 static Velocity staticVelocities[MAX_ENTITIES];
@@ -27,7 +24,7 @@ void ECS_Initialize() {
   staticNextAvailableSlot = 1;
 }
 Entity ECS_CreateEntity() {
-  for (Entity i = staticNextAvailableSlot; i < MAX_ENTITIES; i++) {
+  for (Entity i = 1; i < MAX_ENTITIES; i++) {
     if (!staticEntitySlotUsed[i]) {
       staticEntitySlotUsed[i] = true;
       staticComponentMasks[i] = COMPONENT_NONE;
@@ -35,6 +32,7 @@ Entity ECS_CreateEntity() {
       return i;
     }
   }
+  printf("[ecs.c] - ECS_CreateEntity: No available entity slots!\n");
   return 0;
 }
 void ECS_DestroyEntity(Entity entity) {
@@ -50,6 +48,13 @@ bool ECS_HasComponent(Entity entity, ComponentType componentType) {
     hasComponent = true;
   }
   return hasComponent;
+}
+bool ECS_HasComponents(Entity entity, ComponentType componentType) {
+  bool hasComponents = false;
+  if ((staticComponentMasks[entity] & componentType) == componentType) {
+    hasComponents = true;
+  }
+  return hasComponents;
 }
 void ECS_AddComponent(Entity entity, ComponentType componentType) {
   staticComponentMasks[entity] |= componentType;
