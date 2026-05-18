@@ -48,12 +48,13 @@ void ECS_DestroyEntity(Entity entity) {
   staticComponentMasks[entity] = COMPONENT_NONE;
   // Remove the entity from the active list
   for (int i = 0; i < staticActiveCount; i++) {
-    // swap the last active entity into the position of the destroyed entity
-    staticActiveEntities[i] = staticActiveEntities[staticActiveCount - 1];
-    // Zero out the last slot
-    staticActiveEntities[staticActiveCount - 1] = 0;
-    staticActiveCount--;
-    break;
+    if (staticActiveEntities[i] == entity) {
+      staticActiveEntities[i] = staticActiveEntities[staticActiveCount - 1];
+      // Zero out the last slot
+      staticActiveEntities[staticActiveCount - 1] = 0;
+      staticActiveCount--;
+      break;
+    }
   }
 }
 bool ECS_HasComponent(Entity entity, ComponentType componentType) {
