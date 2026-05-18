@@ -28,29 +28,3 @@ void CheckForRoundWon(GameContext *gameContext) {
 void InitializeGameContext(GameContext *gameContext) {
   gameContext->remainingPellets = NUMBER_OF_DOTS;
 }
-
-// When the player collides with a  DOT, send a signal to the the gameContext
-// to delete the dot update the score
-void CollideWithDot(GameContext *gameContext, int row, int column,
-                    MapTile collisionTile) {
-  if (collisionTile == TILE_DOT) {
-    collisionTile = TILE_EMPTY;
-    gameContext->currentScore += DOT_PELLET_SCORE_VALUE;
-    ReduceRemainingPellets(gameContext);
-  }
-  SetMapTile(&gameContext->levelData, row, column, collisionTile);
-}
-// When the player collides with a POWER_PELLET, send a signal to the
-// gameContext to delete the dot, update the score, and set ghosts to
-// "frightened"
-void CollideWithPowerPellet(GameContext *gameContext, int row, int column,
-                            MapTile collisionTile) {
-  if (collisionTile == TILE_POWER_PELLET) {
-    printf("CollideWithPowerPellet() is being called");
-    collisionTile = TILE_EMPTY;
-    gameContext->currentScore += POWER_PELLET_SCORE_VALUE;
-    ReduceRemainingPellets(gameContext);
-  }
-  SetMapTile(&gameContext->levelData, row, column, collisionTile);
-  TriggerFrightenedMode(gameContext);
-}
