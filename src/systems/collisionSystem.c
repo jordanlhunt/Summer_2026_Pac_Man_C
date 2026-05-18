@@ -1,5 +1,4 @@
 #include "../../include/systems/collisionSystem.h"
-
 void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   Entity playerEntity = gameContext->playerEntity;
   if (ECS_HasComponent(playerEntity, COMPONENT_POSITION) == false) {
@@ -17,7 +16,6 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   Entity edible = FindEdibleAt(playerPosition->row, playerPosition->column);
   if (edible != NULL) {
     ConsumeEdibleEntity(gameContext, edible);
-    
   }
 }
 static Entity FindEdibleAt(int row, int column) {
@@ -36,7 +34,6 @@ static Entity FindEdibleAt(int row, int column) {
   fprintf("[ecs.c] - Unable to locate edible entity");
   return edibleEntity;
 }
-
 // *Consume* is a PAC-MAN pun. I would usually use "handle"
 static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
   Edible *justEatenEdible = ECS_GetEdible(edibleEntity);
@@ -48,7 +45,7 @@ static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
   if (justEatenEdible->typeEaten == POWER_PELLET) {
     TriggerFrightenedMode(gameContext);
   }
-  ECS_DestroyEntity(justEatenEdible);
+  ECS_DestroyEntity(edibleEntity);
   if (gameContext->isRoundWon == false) {
     CheckForRoundWon(gameContext);
   }
