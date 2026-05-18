@@ -28,33 +28,42 @@ void CheckForRoundWon(GameContext *gameContext) {
 void InitializeGameContext(GameContext *gameContext) {
   gameContext->remainingPellets = NUMBER_OF_DOTS;
 }
-void HandlePlayerTileCollision(GameContext *gameContext, int row, int column,
-                               MapTile collisionTile) {
+void HandlePlayerTileCollision(GameContext *gameContext, int row, int column) {
   // NULL-Check
   if (gameContext == NULL) {
     return;
   }
-  switch (collisionTile) {
-  case TILE_DOT:
-    gameContext->currentScore += DOT_PELLET_SCORE_VALUE;
-    ReduceRemainingPellets(gameContext);
-    SetMapTile(&gameContext->levelData, row, column, TILE_EMPTY);
-    break;
-  case TILE_POWER_PELLET:
-    gameContext->currentScore += POWER_PELLET_SCORE_VALUE;
-    ReduceRemainingPellets(gameContext);
-    SetMapTile(&gameContext->levelData, row, column, TILE_EMPTY);
-    TriggerFrightenedMode(gameContext);
-    break;
-  default:
-    break;
-  }
-  if (gameContext->isRoundWon == false) {
-    CheckForRoundWon(gameContext);
+  int activeEntities = ECS_GetActiveEntityCount();
+  for (int i = 0; i < activeEntities; i++) {
+    Entity activeEntity = ECS_GetActiveEntity(i);
+    // Check if player ran into something edible
+    if (ECS_HasComponents(activeEntity,
+                          COMPONENT_EDIBLE | COMPONENT_POSITION)) {
+      printf("Has hit an active entity that is edible and has a position");
+    }
+
+    // switch (collisionTile) {
+    // case TILE_DOT:
+    //   gameContext->currentScore += DOT_PELLET_SCORE_VALUE;
+    //   ReduceRemainingPellets(gameContext);
+    //   SetMapTile(&gameContext->levelData, row, column, TILE_EMPTY);
+    //   break;
+    // case TILE_POWER_PELLET:
+    //   gameContext->currentScore += POWER_PELLET_SCORE_VALUE;
+    //   ReduceRemainingPellets(gameContext);
+    //   SetMapTile(&gameContext->levelData, row, column, TILE_EMPTY);
+    //   TriggerFrightenedMode(gameContext);
+    //   break;
+    // default:
+    //   break;
+    // }
+    if (gameContext->isRoundWon == false) {
+      CheckForRoundWon(gameContext);
+    }
   }
 }
-// When the player collides with a  DOT, send a signal to the the gameContext to
-// delete the dot update the score
+// When the player collides with a  DOT, send a signal to the the gameContext
+// to delete the dot update the score
 void CollideWithDot(GameContext *gameContext, int row, int column,
                     MapTile collisionTile) {
   if (collisionTile == TILE_DOT) {

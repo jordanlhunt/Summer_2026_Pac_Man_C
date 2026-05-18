@@ -1,5 +1,6 @@
 #ifndef GAMECONTEXT_H
 #define GAMECONTEXT_H
+#include "../include/ecs/ecs.h"
 #include "common.h"
 #include "ecs/entity.h"
 #include "input.h"
@@ -25,8 +26,7 @@ typedef struct GameContext {
   // Audio audio;
 } GameContext;
 
-void HandlePlayerTileCollision(GameContext *gameContext, int row, int column,
-                               MapTile collisionTile);
+void HandlePlayerTileCollision(GameContext *gameContext, int row, int column);
 void TriggerFrightenedMode(GameContext *gameContext);
 void TriggerRoundWon(GameContext *gameContext);
 void ReduceRemainingPellets(GameContext *gameContext);

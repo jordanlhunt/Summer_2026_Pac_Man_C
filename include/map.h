@@ -1,10 +1,10 @@
 #ifndef MAP_H
 #define MAP_H
+#include "../include/ecs/ecs.h"
 #include "common.h"
+#include "ecs/entity.h"
 #include "leveldata.h"
 #include "maptile.h"
-#include <SDL2/SDL_rect.h>
-#include <stdio.h>
 void LoadMap(LevelData *levelData, const char *filePath);
 void DrawMap(LevelData *levelData, SDL_Renderer *renderer);
 MapTile GetMapTile(LevelData *levelData, int row, int col);

@@ -15,6 +15,8 @@ typedef enum ComponentType {
   COMPONENT_VELOCITY = 1 << 1,
   COMPONENT_RENDERABLE = 1 << 2,
   COMPONENT_PLAYER_CONTROLLED = 1 << 3,
+  COMPONENT_EDIBLE = 1 << 4,
+  COMPONENT_ISACTIVE = 1 << 5
 } ComponentType;
 // Entity Coordinator (I don't like the word 'manager' because of MEGACORPs have
 // polluted it)
@@ -27,6 +29,7 @@ bool ECS_HasComponents(Entity entity, ComponentType componentType);
 void ECS_AddComponent(Entity entity, ComponentType componentType);
 void ECS_RemoveComponent(Entity entity, ComponentType componentType);
 // Getters and Setter
+Entity *ECS_GetEntities();
 Position *ECS_GetPosition(Entity entity);
 Velocity *ECS_GetVelocity(Entity entity);
 Renderable *ECS_GetRenderable(Entity entity);
@@ -36,4 +39,6 @@ typedef void (*System)(struct GameContext *gameContext,
                        struct SDL_Renderer *renderer);
 void ECS_RegisterSystem(System system);
 void ECS_Update(struct GameContext *gameContext, struct SDL_Renderer *renderer);
+int ECS_GetActiveEntitiesCount();
+Entity ECS_GetActiveEntity(int index);
 #endif

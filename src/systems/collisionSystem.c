@@ -14,9 +14,9 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
     return;
   }
-  Position *position = ECS_GetPosition(gameContext->playerEntity);
-  MapTile collisionTile =
-      GetMapTile(&gameContext->levelData, position->row, position->column);
-  HandlePlayerTileCollision(gameContext, position->row, position->column,
-                            collisionTile);
+  Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
+  MapTile collisionTile = GetMapTile(
+      &gameContext->levelData, playerPosition->row, playerPosition->column);
+  HandlePlayerTileCollision(gameContext, playerPosition->row,
+                            playerPosition->column);
 }

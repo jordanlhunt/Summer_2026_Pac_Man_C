@@ -21,4 +21,11 @@ typedef struct Renderable {
 typedef struct PlayerControlled {
   Direction currentDirection;
 } PlayerControlled;
+typedef struct Edible {
+  int scoreValue;
+  int typeEaten;
+} Edible;
+typedef struct Active {
+  bool isActive;
+} Active;
 #endif

@@ -7,7 +7,8 @@ void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         "[inputSystem.c] - player does not have player_controlled component\n");
     return;
   }
-  if (ECS_HasComponent(gameContext->playerEntity, COMPONENT_VELOCITY)) {
+  if (ECS_HasComponent(gameContext->playerEntity, COMPONENT_VELOCITY) ==
+      false) {
     printf("[inputSystem.c] - player does not have component velocity\n");
     return;
   }

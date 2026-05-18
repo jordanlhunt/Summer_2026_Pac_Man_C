@@ -65,7 +65,17 @@ void LoadMap(LevelData *levelData, const char *filePath) {
     if (row < MAP_ROWS) {
       for (int column = 0; column < MAP_COLUMNS; column++) {
         if (currentLine[column] != '\0') {
-          levelData->mapTiles[row][column] = CharToMapTile(currentLine[column]);
+          // Create dotEntities
+          if (levelData->mapTiles[row][column] == '.') {
+            Entity dotEntity = ECS_CreateEntity();
+            ECS_AddComponent(dotEntity, COMPONENT_POSITION | COMPONENT_EDIBLE);
+            Position *dotPosition = ECS_GetPosition(dotEntity);
+            dotPosition->row = row;
+            dotPosition->column = column;
+            levelData->mapTiles[row][column] = TILE_EMPTY;
+          }
+          // if (levelData->mapTiles[row][column] == '+') {
+          // }
         } else {
           levelData->mapTiles[row][column] = TILE_EMPTY;
         }
