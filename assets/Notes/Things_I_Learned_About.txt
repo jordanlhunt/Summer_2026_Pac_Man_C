@@ -18,3 +18,4 @@ This is a collection of things I learned about during this project. This is by n
     - The Cherno https://www.youtube.com/watch?v=Z-CILn2w9K0
 11.) Having a consistent style is important
 12.) Function Pointers
+13.) When I'm really programming I get stuck, go look up something, and try something and then get stuck again. That's not a bad thing, that's the whole gig.

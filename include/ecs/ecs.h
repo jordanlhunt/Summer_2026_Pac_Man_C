@@ -34,6 +34,8 @@ Position *ECS_GetPosition(Entity entity);
 Velocity *ECS_GetVelocity(Entity entity);
 Renderable *ECS_GetRenderable(Entity entity);
 PlayerControlled *ECS_GetPlayerControlled(Entity entity);
+Edible *ECS_GetEdible(Entity entity);
+
 // Function Pointer to register systems
 typedef void (*System)(struct GameContext *gameContext,
                        struct SDL_Renderer *renderer);

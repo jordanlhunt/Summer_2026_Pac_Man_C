@@ -1,6 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 #include "../include/ecs/ecs.h"
+#include "../include/gamecontext.h"
 #include "common.h"
 #include "ecs/entity.h"
 #include "leveldata.h"

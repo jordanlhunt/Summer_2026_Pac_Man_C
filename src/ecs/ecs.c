@@ -5,6 +5,7 @@ static Velocity staticVelocities[MAX_ENTITIES];
 static Renderable staticRenderables[MAX_ENTITIES];
 static PlayerControlled staticPlayerControlledEntities[MAX_ENTITIES];
 static Entity staticActiveEntities[MAX_ENTITIES];
+static Edible staticEdibles[MAX_ENTITIES];
 // Bitmask to keep track of what components has
 static uint32_t staticComponentMasks[MAX_ENTITIES];
 // Entity Pool
@@ -22,6 +23,7 @@ void ECS_Initialize() {
   memset(staticPlayerControlledEntities, 0,
          sizeof(staticPlayerControlledEntities));
   memset(staticActiveEntities, 0, sizeof(staticActiveEntities));
+  memset(staticEdibles, 0, sizeof(staticEdibles));
   staticSystemsCounter = 0;
   staticActiveCount = 0;
 }
@@ -119,4 +121,12 @@ Entity ECS_GetActiveEntity(int index) {
   }
   printf("[ecs.c - ECS_GetActiveEntity] - Invalid index");
   return 0;
+}
+
+Edible *ECS_GetEdible(Entity entity) {
+  Edible *edible = NULL;
+  if (ECS_HasComponent(entity, COMPONENT_EDIBLE)) {
+    return &staticEdibles[entity];
+  }
+  return edible;
 }

@@ -65,95 +65,111 @@ void LoadMap(LevelData *levelData, const char *filePath) {
     if (row < MAP_ROWS) {
       for (int column = 0; column < MAP_COLUMNS; column++) {
         if (currentLine[column] != '\0') {
-          // Create dotEntities
-          if (levelData->mapTiles[row][column] == '.') {
+          // Create the MapTile
+          MapTile mapTile = CharToMapTile(currentLine[column]);
+          switch (mapTile) {
+          case TILE_DOT:
             Entity dotEntity = ECS_CreateEntity();
-            ECS_AddComponent(dotEntity, COMPONENT_POSITION | COMPONENT_EDIBLE);
+            ECS_AddComponent(dotEntity, COMPONENT_POSITION | COMPONENT_EDIBLE |
+                                            COMPONENT_RENDERABLE);
             Position *dotPosition = ECS_GetPosition(dotEntity);
             dotPosition->row = row;
             dotPosition->column = column;
-            levelData->mapTiles[row][column] = TILE_EMPTY;
+            Edible *dotEdible = ECS_GetEdible(dotEntity);
+            dotEdible->scoreValue = DOT_PELLET_SCORE_VALUE;
+            dotEdible->typeEaten = DOT;
+            levelData->mapTiles[row][column] = TILE_DOT;
+            break;
+          case TILE_POWER_PELLET:
+            Entity powerPelletEntity = ECS_CreateEntity();
+            ECS_AddComponent(powerPelletEntity, COMPONENT_POSITION |
+                                                    COMPONENT_EDIBLE |
+                                                    COMPONENT_RENDERABLE);
+            Position *powerPelletPosition = ECS_GetPosition(powerPelletEntity);
+            powerPelletPosition->row = row;
+            powerPelletPosition->column = column;
+            Edible *powerPelletEdible = ECS_GetEdible(powerPelletEntity);
+            powerPelletEdible->scoreValue = POWER_PELLET_SCORE_VALUE;
+            powerPelletEdible->typeEaten = POWER_PELLET;
+            levelData->mapTiles[row][column] = TILE_DOT;
+            break;
+          default:
+            levelData->mapTiles[row][column] = mapTile;
+            break;
           }
-          // if (levelData->mapTiles[row][column] == '+') {
-          // }
-        } else {
-          levelData->mapTiles[row][column] = TILE_EMPTY;
         }
       }
-      row++;
-    }
-  }
-  // Error Handling
-  if (row < MAP_ROWS) {
-    fprintf(stderr, "[map.c] - Warning: Expected %d rows, but found %d.\n",
-            MAP_ROWS, row);
-  }
-  fclose(mazeTextFile);
-}
-void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
-  SDL_Rect tileRect;
-  tileRect.w = MAP_GRID_CELL_SIZE;
-  tileRect.h = MAP_GRID_CELL_SIZE;
-  for (int row = 0; row < MAP_ROWS; row++) {
-    for (int col = 0; col < MAP_COLUMNS; col++) {
-      MapTile newMapTile = levelData->mapTiles[row][col];
-      tileRect.x = col * MAP_GRID_CELL_SIZE;
-      tileRect.y = row * MAP_GRID_CELL_SIZE;
-      switch (newMapTile) {
-      case TILE_WALL:
-        // Walls are Blue
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        break;
-      case TILE_GHOST_DOOR:
-        // Ghost Door is Pink
-        // TODO: Look at official Pac-Man game and make it whatever the game
-        // actually is
-        SDL_SetRenderDrawColor(renderer, 255, 105, 108, 255);
-        break;
-      case TILE_DOT:
-        // Dots are peach for now
-        // TODO: Look at official Pac-Man game and make it whatever the game
-        // actually is
-        SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
-        break;
-      case TILE_POWER_PELLET:
-        // Power Pallets are white
-        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-        break;
-      case TILE_PLAYER:
-        // Player is Yellow
-        // TODO: Make the player actually a player entity rather than just a
-        // marker on the map
-        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-        break;
-      case TILE_GHOST:
-        // Ghosts are RED for now.
-        // TODO: Make each ghost it's own ghost entity rather than than just a
-        // marker on the map and draw its specific ghost logic
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        break;
-      case TILE_FRUIT:
-        // Fruit is orange for now.
-        // TODO: Make each fruit it's own fruit entity rather than just a marker
-        // on the map.
-        SDL_SetRenderDrawColor(renderer, 255, 154, 51, 255);
-        break;
-      case TILE_EMPTY:
-        // Empty space will be all black
-        // TODO: Fix it so when empty space can be used to move through
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        break;
-      default:
-        break;
+      // Error Handling
+      if (row < MAP_ROWS) {
+        fprintf(stderr, "[map.c] - Warning: Expected %d rows, but found %d.\n",
+                MAP_ROWS, row);
       }
-      SDL_RenderFillRect(renderer, &tileRect);
+      fclose(mazeTextFile);
     }
-  }
-}
-MapTile GetMapTile(LevelData *levelData, int row, int col) {
-  MapTile someMapTile = levelData->mapTiles[row][col];
-  return someMapTile;
-}
-void SetMapTile(LevelData *levelData, int row, int col, MapTile newTile) {
-  levelData->mapTiles[row][col] = newTile;
-}
+    void DrawMap(LevelData * levelData, SDL_Renderer * renderer) {
+      SDL_Rect tileRect;
+      tileRect.w = MAP_GRID_CELL_SIZE;
+      tileRect.h = MAP_GRID_CELL_SIZE;
+      for (int row = 0; row < MAP_ROWS; row++) {
+        for (int col = 0; col < MAP_COLUMNS; col++) {
+          MapTile newMapTile = levelData->mapTiles[row][col];
+          tileRect.x = col * MAP_GRID_CELL_SIZE;
+          tileRect.y = row * MAP_GRID_CELL_SIZE;
+          switch (newMapTile) {
+          case TILE_WALL:
+            // Walls are Blue
+            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+            break;
+          case TILE_GHOST_DOOR:
+            // Ghost Door is Pink
+            // TODO: Look at official Pac-Man game and make it whatever the game
+            // actually is
+            SDL_SetRenderDrawColor(renderer, 255, 105, 108, 255);
+            break;
+          case TILE_DOT:
+            // Dots are peach for now
+            // TODO: Look at official Pac-Man game and make it whatever the game
+            // actually is
+            SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+            break;
+          case TILE_POWER_PELLET:
+            // Power Pallets are white
+            SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+            break;
+          case TILE_PLAYER:
+            // Player is Yellow
+            // TODO: Make the player actually a player entity rather than just a
+            // marker on the map
+            SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+            break;
+          case TILE_GHOST:
+            // Ghosts are RED for now.
+            // TODO: Make each ghost it's own ghost entity rather than than just
+            // a marker on the map and draw its specific ghost logic
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            break;
+          case TILE_FRUIT:
+            // Fruit is orange for now.
+            // TODO: Make each fruit it's own fruit entity rather than just a
+            // marker on the map.
+            SDL_SetRenderDrawColor(renderer, 255, 154, 51, 255);
+            break;
+          case TILE_EMPTY:
+            // Empty space will be all black
+            // TODO: Fix it so when empty space can be used to move through
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            break;
+          default:
+            break;
+          }
+          SDL_RenderFillRect(renderer, &tileRect);
+        }
+      }
+    }
+    MapTile GetMapTile(LevelData * levelData, int row, int col) {
+      MapTile someMapTile = levelData->mapTiles[row][col];
+      return someMapTile;
+    }
+    void SetMapTile(LevelData * levelData, int row, int col, MapTile newTile) {
+      levelData->mapTiles[row][col] = newTile;
+    }

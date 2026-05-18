@@ -21,9 +21,15 @@ typedef struct Renderable {
 typedef struct PlayerControlled {
   Direction currentDirection;
 } PlayerControlled;
+typedef enum EdibleType {
+  DOT,
+  POWER_PELLET,
+  FRUIT,
+  FRIGHTENED_GHOST
+} EdibleType;
 typedef struct Edible {
   int scoreValue;
-  int typeEaten;
+  EdibleType typeEaten;
 } Edible;
 typedef struct Active {
   bool isActive;
