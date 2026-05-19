@@ -1,13 +1,13 @@
 #SRCS specifies which files to compile as part of the project
 SRCS = src/main.c \
        src/core/audio.c \
-       src/core/entity.c \
        src/core/gamecontext.c \
        src/core/gamestate.c \
        src/core/graphics.c \
        src/core/input.c \
        src/core/leveldata.c \
        src/ecs/ecs.c \
+       src/ecs/entities/entity.c \
        src/map/map.c \
        src/systems/collisionSystem.c \
        src/systems/movementSystem.c \
