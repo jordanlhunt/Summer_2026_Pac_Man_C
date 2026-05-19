@@ -14,25 +14,25 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   }
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
   Entity edible = FindEdibleAt(playerPosition->row, playerPosition->column);
-  if (edible != NULL) {
+  if (edible != ENTITY_NULL) {
     ConsumeEdibleEntity(gameContext, edible);
   }
 }
 static Entity FindEdibleAt(int row, int column) {
   int activeCount = ECS_GetActiveEntitiesCount();
-  Entity edibleEntity = NULL;
+  Entity edibleEntity = ECS_CreateEntity();
   for (int i = 0; i < activeCount; i++) {
     edibleEntity = ECS_GetActiveEntity(i);
     if (ECS_HasComponents(edibleEntity,
-                          COMPONENT_POSITION | COMPONENT_EDIBLE) == false) {
+                          COMPONENT_POSITION | COMPONENT_EDIBLE) == true) {
       Position *ediblePosition = ECS_GetPosition(edibleEntity);
       if (ediblePosition->row == row && ediblePosition->column) {
         return edibleEntity;
       }
     }
   }
-  fprintf("[ecs.c] - Unable to locate edible entity");
-  return edibleEntity;
+  printf("[ecs.c] - Unable to locate edible entity");
+  return ENTITY_NULL;
 }
 // *Consume* is a PAC-MAN pun. I would usually use "handle"
 static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {

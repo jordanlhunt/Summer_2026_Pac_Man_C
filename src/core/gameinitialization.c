@@ -29,7 +29,7 @@ bool InitializePlayer(GameContext *gameContext, Entity player) {
     }
   }
   if (isSpawnLocationFound == false) {
-    printf("[gameInitialization.c - NO TILE_PLAYER spawn location found! \n");
+    printf("[gameInitialization.c] - NO TILE_PLAYER spawn location found! \n");
     return false;
   }
   Velocity *velocity = ECS_GetVelocity(player);
