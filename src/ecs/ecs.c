@@ -123,7 +123,6 @@ Entity ECS_GetActiveEntity(int index) {
   printf("[ecs.c - ECS_GetActiveEntity] - Invalid index");
   return 0;
 }
-
 Edible *ECS_GetEdible(Entity entity) {
   Edible *edible = NULL;
   if (ECS_HasComponent(entity, COMPONENT_EDIBLE)) {

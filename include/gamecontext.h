@@ -20,7 +20,6 @@ typedef struct GameContext {
   Entity playerEntity;
   // Audio audio;
 } GameContext;
-
 void TriggerFrightenedMode(GameContext *gameContext);
 void TriggerRoundWon(GameContext *gameContext);
 void ReduceRemainingPellets(GameContext *gameContext);

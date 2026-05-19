@@ -1,10 +1,8 @@
 // constants.h
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
-
 #define DOT_PELLET_SCORE_VALUE 1
 #define POWER_PELLET_SCORE_VALUE 50
 #define FRIGHTEN_GHOST_MODE_DURATION 6.0f
 #define NUMBER_OF_DOTS 244
-
 #endif

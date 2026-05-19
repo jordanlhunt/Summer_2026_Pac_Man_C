@@ -6,7 +6,6 @@
 #include "ecs/ecs.h"
 #include "leveldata.h"
 #include "maptile.h"
-
 void LoadMap(LevelData *levelData, const char *filePath);
 void DrawMap(LevelData *levelData, SDL_Renderer *renderer);
 MapTile GetMapTile(LevelData *levelData, int row, int col);
