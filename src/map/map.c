@@ -108,6 +108,12 @@ void LoadMap(LevelData *levelData, const char *filePath) {
             levelData->mapTiles[row][column] = TILE_EMPTY;
             break;
           }
+          case TILE_GHOST: {
+            Entity ghostEntity = ECS_CreateEntity();
+            ECS_AddComponent(ghostEntity,
+                             COMPONENT_POSITION | COMPONENT_VELOCITY |
+                                 COMPONENT_RENDERABLE | COMPONENT_GHOST);
+          }
           default: {
             levelData->mapTiles[row][column] = mapTile;
             break;
