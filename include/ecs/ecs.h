@@ -16,7 +16,9 @@ typedef enum ComponentType {
   COMPONENT_RENDERABLE = 1 << 2,
   COMPONENT_PLAYER_CONTROLLED = 1 << 3,
   COMPONENT_EDIBLE = 1 << 4,
-  COMPONENT_ISACTIVE = 1 << 5
+  COMPONENT_ISACTIVE = 1 << 5,
+  COMPONENT_GHOSTAI = 1 << 6,
+  COMPONENT_GHOSTTYPE = 1 << 7
 } ComponentType;
 // Entity Coordinator (I don't like the word 'manager' because of MEGACORPs have
 // polluted it)
