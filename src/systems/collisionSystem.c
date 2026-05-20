@@ -20,13 +20,13 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
 }
 static Entity FindEdibleAt(int row, int column) {
   int activeCount = ECS_GetActiveEntitiesCount();
-  Entity edibleEntity = ECS_CreateEntity();
+  Entity edibleEntity;
   for (int i = 0; i < activeCount; i++) {
     edibleEntity = ECS_GetActiveEntity(i);
     if (ECS_HasComponents(edibleEntity,
                           COMPONENT_POSITION | COMPONENT_EDIBLE) == true) {
       Position *ediblePosition = ECS_GetPosition(edibleEntity);
-      if (ediblePosition->row == row && ediblePosition->column) {
+      if (ediblePosition->row == row && ediblePosition->column == column) {
         return edibleEntity;
       }
     }
