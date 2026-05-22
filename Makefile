@@ -13,6 +13,7 @@ SRCS = src/main.c \
        src/systems/movementSystem.c \
        src/systems/inputSystem.c \
        src/systems/renderSystem.c \
+       src/systems/ghostSystem.c \
        src/core/gameinitialization.c
 #OBJ_Name specifies the name of the executable
 OBJ_Name = hac_man_summer_project

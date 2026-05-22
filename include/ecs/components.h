@@ -1,7 +1,7 @@
 // ecs/components.h
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
-typedef enum Direction { NONE, UP, DOWN, LEFT, RIGHT } Direction;
+typedef enum Direction { ZERO_DIRECTION, UP, DOWN, LEFT, RIGHT } Direction;
 typedef struct Position {
   int row;
   int column;
@@ -45,11 +45,12 @@ typedef enum GhostMode {
   GHOSTMODE_CHASE,
   GHOSTMODE_FRIGHTENED,
   GHOSTMODE_EATEN
-};
+} GhostMode;
 typedef struct Ghost {
   GhostType ghostType;
   GhostMode ghostMode;
   int scatterTargetRow;
   int scatterTargetColumn;
+  Direction currentDirection;
 } Ghost;
 #endif

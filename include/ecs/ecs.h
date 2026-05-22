@@ -33,6 +33,7 @@ void ECS_RemoveComponent(Entity entity, ComponentType componentType);
 Entity *ECS_GetEntities();
 Position *ECS_GetPosition(Entity entity);
 Velocity *ECS_GetVelocity(Entity entity);
+Ghost *ECS_GetGhost(Entity entity);
 Renderable *ECS_GetRenderable(Entity entity);
 PlayerControlled *ECS_GetPlayerControlled(Entity entity);
 Edible *ECS_GetEdible(Entity entity);

@@ -6,6 +6,7 @@ static Renderable staticRenderables[MAX_ENTITIES];
 static PlayerControlled staticPlayerControlledEntities[MAX_ENTITIES];
 static Entity staticActiveEntities[MAX_ENTITIES];
 static Edible staticEdibles[MAX_ENTITIES];
+static Ghost staticGhosts[MAX_ENTITIES];
 // Bitmask to keep track of what components has
 static uint32_t staticComponentMasks[MAX_ENTITIES];
 // Entity Pool
@@ -24,6 +25,7 @@ void ECS_Initialize() {
          sizeof(staticPlayerControlledEntities));
   memset(staticActiveEntities, 0, sizeof(staticActiveEntities));
   memset(staticEdibles, 0, sizeof(staticEdibles));
+  memset(staticGhosts, 0, sizeof(staticGhosts));
   staticSystemsCounter = 0;
   staticActiveCount = 0;
 }
@@ -104,6 +106,13 @@ PlayerControlled *ECS_GetPlayerControlled(Entity entity) {
     playerControlled = &staticPlayerControlledEntities[entity];
   }
   return playerControlled;
+}
+Ghost *ECS_GetGhost(Entity entity) {
+  Ghost *ghost = NULL;
+  if (ECS_HasComponent(entity, COMPONENT_GHOST)) {
+    ghost = &staticGhosts[entity];
+  }
+  return ghost;
 }
 void ECS_RegisterSystem(System system) {
   if (staticSystemsCounter < MAX_SYSTEMS) {

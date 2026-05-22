@@ -113,58 +113,64 @@ void LoadMap(LevelData *levelData, const char *filePath) {
             ECS_AddComponent(ghostEntity,
                              COMPONENT_POSITION | COMPONENT_VELOCITY |
                                  COMPONENT_RENDERABLE | COMPONENT_GHOST);
+
             Position *ghostPosition = ECS_GetPosition(ghostEntity);
             ghostPosition->row = row;
             ghostPosition->column = column;
-            Ghost *ghost = ECS_GetGhost(ghost);
+            Ghost *ghost = ECS_GetGhost(ghostEntity);
             ghost->ghostMode = GHOSTMODE_SCATTER;
-                // Create the four different ghosts
-                if(currentLine[column]== 'B'){
-                    ghost->ghostType = GHOSTTYPE_BLINKY;
-                    ghost->scatterTargetRow=0;
-                    ghost->scatterTargetColumn = MAP_COLUMNS;
-                    Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
-                    ghostRenderData->red = 255;
-                    ghostRenderData->blue = 0;
-                    ghostRenderData->green=0;
-                    ghostRenderData->width =MAP_GRID_CELL_SIZE;
-                   ghostRenderData->height = MAP_GRID_CELL_SIZE;
-                   break;
-                }
-                if(currentLine[column] == 'P')
-                { ghost->ghostType = GHOSTTYPE_PINKY;
-                ghost->scatterTargetRow=0;
-                ghost->scatterTargetColumn = MAP_COLUMNS;
-                Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
-                ghostRenderData->red = 255;
-                ghostRenderData->blue = 192;
-                ghostRenderData->green=203;
-                ghostRenderData->width =MAP_GRID_CELL_SIZE;
-               ghostRenderData->height = MAP_GRID_CELL_SIZE;
-               break;}
-                if(currentLine[column] == 'I') { ghost->ghostType = GHOSTTYPE_INKY;
-                ghost->scatterTargetRow=0;
-                ghost->scatterTargetColumn = MAP_COLUMNS;
-                Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
-                ghostRenderData->red = 0;
-                ghostRenderData->blue = 255;
-                ghostRenderData->green=255;
-                ghostRenderData->width =MAP_GRID_CELL_SIZE;
-               ghostRenderData->height = MAP_GRID_CELL_SIZE;
-               break;}
-                if(currentLine[column] == 'C') {
-                    ghost->ghostType = GHOSTTYPE_CLYDE;
-                    ghost->scatterTargetRow=0;
-                    ghost->scatterTargetColumn = MAP_COLUMNS;
-                    Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
-                    ghostRenderData->red = 255;
-                    ghostRenderData->blue = 165;
-                    ghostRenderData->green=0;
-                    ghostRenderData->width =MAP_GRID_CELL_SIZE;
-                   ghostRenderData->height = MAP_GRID_CELL_SIZE;
-                   break;
-                }
-
+            ghost->currentDirection = ZERO_DIRECTION;
+            // Create the four different ghosts
+            if (currentLine[column] == 'B') {
+              ghost->ghostType = GHOSTTYPE_BLINKY;
+              ghost->scatterTargetRow = 0;
+              ghost->scatterTargetColumn = MAP_COLUMNS;
+              Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
+              ghostRenderData->red = 255;
+              ghostRenderData->blue = 0;
+              ghostRenderData->green = 0;
+              ghostRenderData->width = MAP_GRID_CELL_SIZE;
+              ghostRenderData->height = MAP_GRID_CELL_SIZE;
+              break;
+            }
+            if (currentLine[column] == 'P') {
+              ghost->ghostType = GHOSTTYPE_PINKY;
+              ghost->scatterTargetRow = 0;
+              ghost->scatterTargetColumn = MAP_COLUMNS;
+              Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
+              ghostRenderData->red = 255;
+              ghostRenderData->blue = 192;
+              ghostRenderData->green = 203;
+              ghostRenderData->width = MAP_GRID_CELL_SIZE;
+              ghostRenderData->height = MAP_GRID_CELL_SIZE;
+              break;
+            }
+            if (currentLine[column] == 'I') {
+              ghost->ghostType = GHOSTTYPE_INKY;
+              ghost->scatterTargetRow = 0;
+              ghost->scatterTargetColumn = MAP_COLUMNS;
+              Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
+              ghostRenderData->red = 0;
+              ghostRenderData->blue = 255;
+              ghostRenderData->green = 255;
+              ghostRenderData->width = MAP_GRID_CELL_SIZE;
+              ghostRenderData->height = MAP_GRID_CELL_SIZE;
+              break;
+            }
+            if (currentLine[column] == 'C') {
+              ghost->ghostType = GHOSTTYPE_CLYDE;
+              ghost->scatterTargetRow = 0;
+              ghost->scatterTargetColumn = MAP_COLUMNS;
+              Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
+              ghostRenderData->red = 255;
+              ghostRenderData->blue = 127;
+              ghostRenderData->green = 0;
+              ghostRenderData->width = MAP_GRID_CELL_SIZE;
+              ghostRenderData->height = MAP_GRID_CELL_SIZE;
+              break;
+            }
+            levelData->mapTiles[row][column] = TILE_EMPTY;
+            break;
           }
           default: {
             levelData->mapTiles[row][column] = mapTile;
