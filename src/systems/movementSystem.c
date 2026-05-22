@@ -1,5 +1,7 @@
 #include "../../include/systems/movementSystem.h"
 void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
+  int activeEntitieCount = ECS_GetActiveEntitiesCount();
+
   if (ECS_HasComponent(gameContext->playerEntity,
                        COMPONENT_POSITION | COMPONENT_VELOCITY) == false) {
     return;
