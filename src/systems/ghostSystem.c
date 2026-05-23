@@ -49,6 +49,10 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
   Position *position = ECS_GetPosition(ghostEntity);
   Velocity *velocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
+  // Testing Purposes
+  if (ghost->ghostType != GHOSTTYPE_BLINKY) {
+    return;
+  }
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
   Direction directionToTarget = ZERO_DIRECTION;
   int bestDistanceToTarget = INT_MAX;
@@ -87,7 +91,7 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   for (int i = 0; i < activeEntitiesCount; i++) {
     Entity activeEntity = ECS_GetActiveEntity(i);
     if (ECS_HasComponents(activeEntity, COMPONENT_GHOST | COMPONENT_POSITION |
-                                            COMPONENT_VELOCITY)) {
+                                            COMPONENT_VELOCITY) == false) {
       continue;
     }
     Ghost *ghost = ECS_GetGhost(activeEntity);

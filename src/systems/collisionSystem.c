@@ -31,7 +31,8 @@ static Entity FindEdibleAt(int row, int column) {
       }
     }
   }
-  printf("[ecs.c] - Unable to locate edible entity");
+  // printf("[collisionSystem.c] - Unable to locate edible entity. Are you
+  // hitting a wall?\n");
   return ENTITY_NULL;
 }
 // *Consume* is a PAC-MAN pun. I would usually use "handle"

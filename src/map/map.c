@@ -1,4 +1,6 @@
 #include "../../include/map.h"
+#include <stdio.h>
+#include <stdlib.h>
 // Helper Function
 static MapTile CharToMapTile(char mapChar) {
   switch (mapChar) {
@@ -118,6 +120,11 @@ void LoadMap(LevelData *levelData, const char *filePath) {
             ghostPosition->row = row;
             ghostPosition->column = column;
             Ghost *ghost = ECS_GetGhost(ghostEntity);
+            if (ghost == NULL) {
+              printf("[map.c] - Ghost component missing from entity %u\n",
+                     ghostEntity);
+              exit(1);
+            }
             ghost->ghostMode = GHOSTMODE_SCATTER;
             ghost->currentDirection = ZERO_DIRECTION;
             // Create the four different ghosts
@@ -139,8 +146,8 @@ void LoadMap(LevelData *levelData, const char *filePath) {
               ghost->scatterTargetColumn = MAP_COLUMNS;
               Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
               ghostRenderData->red = 255;
-              ghostRenderData->blue = 192;
-              ghostRenderData->green = 203;
+              ghostRenderData->blue = 203;
+              ghostRenderData->green = 192;
               ghostRenderData->width = MAP_GRID_CELL_SIZE;
               ghostRenderData->height = MAP_GRID_CELL_SIZE;
               break;
@@ -163,8 +170,8 @@ void LoadMap(LevelData *levelData, const char *filePath) {
               ghost->scatterTargetColumn = MAP_COLUMNS;
               Renderable *ghostRenderData = ECS_GetRenderable(ghostEntity);
               ghostRenderData->red = 255;
-              ghostRenderData->blue = 127;
-              ghostRenderData->green = 0;
+              ghostRenderData->blue = 0;
+              ghostRenderData->green = 127;
               ghostRenderData->width = MAP_GRID_CELL_SIZE;
               ghostRenderData->height = MAP_GRID_CELL_SIZE;
               break;
@@ -207,7 +214,7 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         // Ghost Door is Pink
         // TODO: Look at official Pac-Man game and make it whatever the game
         // actually is
-        SDL_SetRenderDrawColor(renderer, 255, 105, 108, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         break;
       case TILE_GHOST:
         // Ghosts are RED for now. For testing purposes only
