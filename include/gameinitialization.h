@@ -3,6 +3,7 @@
 #include "../include/ecs/ecs.h"
 #include "../include/map.h"
 #include "../include/systems/collisionSystem.h"
+#include "../include/systems/ghostSystem.h"
 #include "../include/systems/inputSystem.h"
 #include "../include/systems/movementSystem.h"
 #include "../include/systems/renderSystem.h"

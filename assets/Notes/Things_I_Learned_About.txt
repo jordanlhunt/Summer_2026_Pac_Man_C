@@ -1,9 +1,12 @@
 This is a collection of things I learned about during this project. This is by no means I fully understand everything in the list, this is simply meant to chronicle my learning. It's also meant to give me something to look back on to see my progress as well as things to review deeper.
 
-1.) Circular Dependencies and how to use forward delectations and proper use of header files and how to avoid them.
+Also some of the insights I have gained working on this project. None of them are particularly novel or unique, I gained a lot of wisdom I could have gained YEARS ago if I had just listened to people smarter than but I didn’t on account of my stupid pride and my stupid thought that everyone else was stupid. Other people aren’t not stupid, I am not stupid, however not seeing the wisdom in others is in fact stupid; there is always something to learn from others.
+
+1.) Circular Dependencies and how to use forward declarations and proper use of header files and how to avoid them.
 2.) Game Design Patterns
     - Game Loop pattern
-    - Update Method pattern
+    - Update Method
+    - Entity Component System
 3.) Separation of Concerns
 4.) Data-oriented Design
 5.) Facade pattern
@@ -20,3 +23,9 @@ This is a collection of things I learned about during this project. This is by n
 12.) Function Pointers
 13.) When I'm really programming I get stuck, go look up something, and try something and then get stuck again. That's not a bad thing, that's the whole gig.
 14.) Anyone who says they do it all in one shot is either lying or trying to sell you something
+15.) Learning how to use your tools is important, it's not super important but it's nice to know hotkeys and other tips & tricks to make writing code a bit easier.
+16.) I notice patterns emerge in programming. Understanding the pattern is important. Also understanding *WHY* a pattern is good (or bad) is important-er.
+17.) An extension of #13 but for real getting stuck, unstucking yourself, and getting stuck in new slightly different way is like 90% of the learning process as a whole. There is no avoiding that.
+18.) Getting stuck isn't a bad, it's not a sign of failure, it's a necessary component for growing skills. This is true for many disciplines
+19.) There is an avoidable amount of reading that has to be done. Being good at something requires practice and theory. Reading my textbooks must. Not skimming, not summaries, not just getting the gist, but active reading is a must to git gud.
+20.) Asking for help is cool and good, however always ask for help the right way. Provide context, provide your proof you tried something and that you tried to solve it on your own before reaching out. The other person will appreciate that.

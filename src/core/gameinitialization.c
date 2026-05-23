@@ -49,6 +49,7 @@ void InitializeSystems() {
   ECS_RegisterSystem(CollisionSystem);
   ECS_RegisterSystem(MovementSystem);
   ECS_RegisterSystem(RenderSystem);
+  ECS_RegisterSystem(GhostSystem);
 }
 void Shutdown(SDLContext *sdlContext) {
   SDL_DestroyRenderer(sdlContext->renderer);
