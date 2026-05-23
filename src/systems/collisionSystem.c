@@ -17,6 +17,7 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (edible != ENTITY_NULL) {
     ConsumeEdibleEntity(gameContext, edible);
   }
+  // ADD COLLISION FOR PLAYER AND GHOST
 }
 static Entity FindEdibleAt(int row, int column) {
   int activeCount = ECS_GetActiveEntitiesCount();

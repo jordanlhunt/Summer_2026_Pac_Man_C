@@ -1,6 +1,5 @@
 // TODO: Create a System that handles Ghosts doing stuff.
 #include "../../include/systems/ghostSystem.h"
-
 static int DistanceSquared(int row1, int column1, int row2, int column2) {
   int distanceSquared = 0;
   int deltaRow = row2 - row1;
@@ -8,7 +7,6 @@ static int DistanceSquared(int row1, int column1, int row2, int column2) {
   distanceSquared = (deltaRow * deltaRow) + (deltaColumn * deltaColumn);
   return distanceSquared;
 }
-
 static int DirectionToDeltaRow(Direction direction) {
   if (direction == UP) {
     return -1;
@@ -18,7 +16,6 @@ static int DirectionToDeltaRow(Direction direction) {
     return 0;
   }
 }
-
 static int DirectionToDeltaColumn(Direction direction) {
   if (direction == LEFT) {
     return -1;
@@ -28,7 +25,6 @@ static int DirectionToDeltaColumn(Direction direction) {
     return 0;
   }
 }
-
 static Direction OppositeDirection(Direction direction) {
   switch (direction) {
   case UP:
@@ -43,7 +39,6 @@ static Direction OppositeDirection(Direction direction) {
     return ZERO_DIRECTION;
   }
 }
-
 static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
                                   int targetColumn, LevelData *levelData) {
   Position *position = ECS_GetPosition(ghostEntity);

@@ -115,7 +115,6 @@ void LoadMap(LevelData *levelData, const char *filePath) {
             ECS_AddComponent(ghostEntity,
                              COMPONENT_POSITION | COMPONENT_VELOCITY |
                                  COMPONENT_RENDERABLE | COMPONENT_GHOST);
-
             Position *ghostPosition = ECS_GetPosition(ghostEntity);
             ghostPosition->row = row;
             ghostPosition->column = column;
