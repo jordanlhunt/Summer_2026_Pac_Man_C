@@ -81,6 +81,14 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
     velocity->deltaColumn = DirectionToDeltaColumn(directionToTarget);
   }
 }
+// After leaving Scatter, the ghost needs to enter a chase mode. The dossier
+// describes each ghosts behavior Right now I'm just focusing on blinky cause
+// he's the easier. This ghost targets the player directly
+static void GetChaseTarget(Entity entity, GameContext *gameContext,
+                           int *targetRow, int *targetColumn) {
+  Ghost *ghost = ECS_GetGhost(entity);
+  Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
+}
 void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   int activeEntitiesCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntitiesCount; i++) {
