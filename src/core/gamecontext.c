@@ -28,3 +28,20 @@ void CheckForRoundWon(GameContext *gameContext) {
 void InitializeGameContext(GameContext *gameContext) {
   gameContext->remainingPellets = NUMBER_OF_DOTS;
 }
+
+void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
+  // Do not switch between Chase and Scatter when ghosts are frightened
+  if (gameContext->isFrightenedGhostModeActive) {
+    return;
+  }
+  gameContext->ghostModeTimer -= deltaTime;
+  if (gameContext->ghostModeTimer <= 0.0f) {
+    if (gameContext->currentGhostMode == GHOSTMODE_SCATTER) {
+      gameContext->currentGhostMode = GHOSTMODE_CHASE;
+      gameContext->ghostModeTimer = CHASE_TIME_LIMIT;
+    } else {
+      gameContext->currentGhostMode = GHOSTMODE_SCATTER;
+      gameContext->ghostModeTimer = SCATTER_TIME_LIMIT;
+    }
+  }
+}

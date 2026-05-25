@@ -88,7 +88,65 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
                            int *targetRow, int *targetColumn) {
   Ghost *ghost = ECS_GetGhost(entity);
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
+  PlayerControlled *playerControlled =
+      ECS_GetPlayerControlled(gameContext->playerEntity);
+  switch (ghost->ghostType) {
+  // Blinky directly targets the player's current location
+  case GHOSTTYPE_BLINKY: {
+    *targetRow = playerPosition->row;
+    *targetColumn = playerPosition->column;
+    break;
+  }
+  // Pink attempts to get "ahead" of the player to ambush them by going to
+  // wherever 4 tiles ahead are. "machibuse" (待ち伏せ) is to ambush
+  case GHOSTTYPE_PINKY: {
+    *targetRow = playerPosition->row +
+                 (DirectionToDeltaRow(playerControlled->currentDirection) * 4);
+    *targetColumn =
+        playerPosition->column +
+        (DirectionToDeltaColumn(playerControlled->currentDirection) * 4);
+    break;
+  }
+  default: {
+    // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
+    *targetRow = playerPosition->row;
+    *targetColumn = playerPosition->column;
+    break;
+  }
+  }
 }
+
+static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
+  Position *ghostPosition = ECS_GetPosition(ghostEntity);
+  Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
+  Ghost *ghost = ECS_GetGhost(ghostEntity);
+  Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
+  Direction validDirections[4];
+  int validDirectionCount = 0;
+
+  for (int i = 0; i < 4; i++) {
+    Direction possibleDirection = directions[i];
+    if (possibleDirection == OppositeDirection(ghost->currentDirection)) {
+      continue;
+    }
+    int newRow = ghostPosition->row + DirectionToDeltaRow(possibleDirection);
+    int newColumn =
+        ghostPosition->column + DirectionToDeltaColumn(possibleDirection);
+    MapTile mapTile = GetMapTile(levelData, newRow, newColumn);
+    if (mapTile == TILE_WALL || mapTile == TILE_GHOST_DOOR) {
+      continue;
+    }
+    validDirectionCount += 1;
+    validDirections[validDirectionCount] = possibleDirection;
+  }
+  if (validDirectionCount > 0) {
+    Direction chosenDirection = validDirections[rand() % validDirectionCount];
+    ghost->currentDirection = chosenDirection;
+    ghostVelocity->deltaRow = DirectionToDeltaRow(chosenDirection);
+    ghostVelocity->deltaColumn = DirectionToDeltaColumn(chosenDirection);
+  }
+}
+
 void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   int activeEntitiesCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntitiesCount; i++) {
@@ -98,9 +156,22 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       continue;
     }
     Ghost *ghost = ECS_GetGhost(activeEntity);
-    if (ghost->ghostMode == GHOSTMODE_SCATTER) {
+    // Frigtened Mode
+    if (gameContext->isFrightenedGhostModeActive == true) {
+      MoveGhostRandomly(activeEntity, &gameContext->levelData);
+    }
+    // Scatter Mode
+    else if (gameContext->currentGhostMode == GHOSTMODE_SCATTER) {
       MoveGhostTowardTarget(activeEntity, ghost->scatterTargetRow,
                             ghost->scatterTargetColumn,
+                            &gameContext->levelData);
+    }
+    // Chase Mode
+    else {
+      int targetRow;
+      int targetColumn;
+      GetChaseTarget(activeEntity, gameContext, &targetRow, &targetRow);
+      MoveGhostTowardTarget(activeEntity, targetRow, targetColumn,
                             &gameContext->levelData);
     }
     // TODO: ADD CHASE, FRIGHTENED, and EATEN
