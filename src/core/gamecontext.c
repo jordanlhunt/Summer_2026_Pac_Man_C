@@ -20,6 +20,9 @@ void ReduceRemainingPellets(GameContext *gameContext) {
   printf("Remaining Dots: %d\n", gameContext->remainingPellets);
 }
 void CheckForRoundWon(GameContext *gameContext) {
+  if (gameContext == NULL) {
+    return;
+  }
   if (gameContext->remainingPellets == 0) {
     TriggerRoundWon(gameContext);
     printf("Round Won! Great job player!\n");
@@ -27,9 +30,17 @@ void CheckForRoundWon(GameContext *gameContext) {
 }
 void InitializeGameContext(GameContext *gameContext) {
   gameContext->remainingPellets = NUMBER_OF_DOTS;
+  gameContext->currentScore = 0;
+  gameContext->isFrightenedGhostModeActive = false;
+  gameContext->isRoundWon = false;
+  gameContext->currentGhostMode = GHOSTMODE_SCATTER;
+  gameContext->ghostModeTimer = SCATTER_TIME_LIMIT;
 }
 
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
+  if (gameContext == NULL) {
+    return;
+  }
   // Do not switch between Chase and Scatter when ghosts are frightened
   if (gameContext->isFrightenedGhostModeActive) {
     return;

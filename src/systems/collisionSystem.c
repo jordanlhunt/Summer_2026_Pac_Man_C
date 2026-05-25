@@ -1,4 +1,5 @@
 #include "../../include/systems/collisionSystem.h"
+#include <stdio.h>
 void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   Entity playerEntity = gameContext->playerEntity;
   if (ECS_HasComponent(playerEntity, COMPONENT_POSITION) == false) {
@@ -17,7 +18,26 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (edible != ENTITY_NULL) {
     ConsumeEdibleEntity(gameContext, edible);
   }
-  // ADD COLLISION FOR PLAYER AND GHOST
+  int activeEntitesCount = ECS_GetActiveEntitiesCount();
+  for (int i = 0; i < activeEntitesCount; i++) {
+    Entity activeEntity = ECS_GetActiveEntity(i);
+    Position *ghostPosition = ECS_GetPosition(activeEntity);
+    if (ghostPosition->row != playerPosition->row ||
+        ghostPosition->column != playerPosition->column) {
+      continue;
+    }
+    Ghost *ghost = ECS_GetGhost(activeEntity);
+    // Player has collieded with a frightened ghost
+    if (gameContext->isFrightenedGhostModeActive == true) {
+      gameContext->currentScore += BASE_GHOST_SCORE;
+      ECS_DestroyEntity(activeEntity);
+      printf("[collision.c] - A frightened ghost has been eaten!\n");
+    } else {
+      // Player dies
+      // TODO: Reduce the number of lives restart the game
+      printf("[collision.c] - PAC-MAN has collided with a Ghost! Game Over!\n");
+    }
+  }
 }
 static Entity FindEdibleAt(int row, int column) {
   int activeCount = ECS_GetActiveEntitiesCount();
@@ -32,8 +52,6 @@ static Entity FindEdibleAt(int row, int column) {
       }
     }
   }
-  // printf("[collisionSystem.c] - Unable to locate edible entity. Are you
-  // hitting a wall?\n");
   return ENTITY_NULL;
 }
 // *Consume* is a PAC-MAN pun. I would usually use "handle"
