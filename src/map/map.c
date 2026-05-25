@@ -124,7 +124,6 @@ void LoadMap(LevelData *levelData, const char *filePath) {
                      ghostEntity);
               exit(1);
             }
-            ghost->ghostMode = GHOSTMODE_SCATTER;
             ghost->currentDirection = ZERO_DIRECTION;
             // Create the four different ghosts
             if (currentLine[column] == 'B') {
