@@ -6,31 +6,41 @@
 #include "ecs/entity.h"
 #include "input.h"
 #include "leveldata.h"
-#include <stdlib.h>
-#include <time.h>
+
 typedef enum GhostMode {
   GHOSTMODE_SCATTER,
   GHOSTMODE_CHASE,
+  GHOSTMODE_FRIGHTENED,
+  GHOSTMODE_EATEN_EYES,
+  GHOSTMODE_IN_GHOSTHOUSE,
+  GHOSTMODE_EXIT_GHOSTHOUSE
 } GhostMode;
 
 typedef struct GameContext {
-  //  Graphics graphics;
-  Input input;
+   Input input;
   LevelData levelData;
-  Ghost ghostsEntities[4];
-  // GameState currentGameState;
-  int currentScore;
+  Ghost ghostsEntities[GHOST_COUNT];
+   int currentScore;
   int remainingPellets;
   bool isFrightenedGhostModeActive;
   bool isRoundWon;
+  bool isGameOver;
   float frightenedGhostModeTimer;
   Entity playerEntity;
   GhostMode currentGhostMode;
   float ghostModeTimer;
   float deltaTime;
+  int playerLives;
+  // TODO: Add Audio, Graphics, and GameState
   // Audio audio;
+  // GameState currentGameState;
+  //  Graphics graphics;
+
 } GameContext;
 
+void TriggerPlayerDeath(GameContext *gameContext);
+void TriggerGameOver(GameContext *gameContext);
+void ResetPlayerPosition(GameContext *gameContext);
 void TriggerFrightenedMode(GameContext *gameContext);
 void TriggerRoundWon(GameContext *gameContext);
 void ReduceRemainingPellets(GameContext *gameContext);

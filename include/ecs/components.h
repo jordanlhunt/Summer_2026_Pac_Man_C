@@ -48,5 +48,6 @@ typedef struct Ghost {
   int scatterTargetRow;
   int scatterTargetColumn;
   Direction currentDirection;
+  int exitGhostHouseThreshold;
 } Ghost;
 #endif
