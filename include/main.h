@@ -12,7 +12,7 @@
 #include "common.h"
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>
-#include <stdio.h>
+#define MAX_DELTA_TIME 0.05f
 void initializeSDL();
 void loadAssets();
 void initializeGameState();

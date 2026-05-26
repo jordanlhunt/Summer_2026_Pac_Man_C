@@ -23,7 +23,12 @@ int main(int argc, char *argv[]) {
     // Create a Delta Time for all the various Timers
     Uint32 currentTime = SDL_GetTicks();
     // Convert from Milliseconds to seconds
-    float deltaTime = (currentTime - previousTime) / 1000.0f;
+    gameContext.deltaTime = (currentTime - previousTime) / 1000.0f;
+    // Clamp deltaTime 
+    if(gameContext.deltaTime > MAX_DELTA_TIME){
+      gameContext.deltaTime = MAX_DELTA_TIME;
+    }
+    
     previousTime = currentTime;
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {

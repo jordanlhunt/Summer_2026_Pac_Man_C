@@ -11,7 +11,7 @@
 #define GHOST_HOUSE_ENTRANCE_ROW 11
 #define GHOST_SPEED 6.0f
 #define GHOST_SPEED_EYES 12.0f
-#define GHOST_SPEED_FRIGHTENED
+#define GHOST_SPEED_FRIGHTENED 5.0f
 #define GHOST_COUNT 4
 #define NUMBER_OF_DOTS 244
 #define PATH_TO_MAZE_FILE "./assets/maze.txt"
