@@ -5,10 +5,13 @@ typedef enum Direction { ZERO_DIRECTION, UP, DOWN, LEFT, RIGHT } Direction;
 typedef struct Position {
   int row;
   int column;
+  float offsetX;
+  float offsetY;
 } Position;
 typedef struct Velocity {
   int deltaRow;
   int deltaColumn;
+  float tilesPerSecond;
 } Velocity;
 typedef struct Renderable {
   int red;

@@ -29,12 +29,14 @@ void CheckForRoundWon(GameContext *gameContext) {
   }
 }
 void InitializeGameContext(GameContext *gameContext) {
+  srand((unsigned int)time(NULL)); // Seed the random number generator
   gameContext->remainingPellets = NUMBER_OF_DOTS;
   gameContext->currentScore = 0;
   gameContext->isFrightenedGhostModeActive = false;
   gameContext->isRoundWon = false;
   gameContext->currentGhostMode = GHOSTMODE_SCATTER;
   gameContext->ghostModeTimer = SCATTER_TIME_LIMIT;
+  gameContext->deltaTime = 0.0f;
 }
 
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {

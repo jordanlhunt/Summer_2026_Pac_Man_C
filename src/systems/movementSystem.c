@@ -12,20 +12,21 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
       continue;
     }
-    int targetRow = position->row + velocity->deltaRow;
-    int targetColumn = position->column + velocity->deltaColumn;
-    // Bounds Check
-    if (targetRow < 0 || targetRow >= MAP_ROWS || targetColumn < 0 ||
-        targetColumn >= MAP_COLUMNS) {
-      continue;
+    float distanceToMoveEntity =
+        velocity->tilesPerSecond * gameContext->deltaTime;
+    // Advance sub-tile offsets
+    position->offsetX += velocity->deltaColumn * distanceToMoveEntity;
+    position->offsetY += velocity->deltaRow * distanceToMoveEntity;
+
+    // Check if entity cross threshold into next column
+    if (position->offsetX >= 1.0f) {
+      int nextColumn = position->column + 1;
+      if (nextColumn < MAP_COLUMNS) {
+        MapTile nextTile =
+            GetMapTile(&gameContext->levelData, position->row, nextColumn);
+      }
     }
-    MapTile targetTile =
-        GetMapTile(&gameContext->levelData, targetRow, targetColumn);
-    if (targetTile == TILE_WALL || targetTile == TILE_GHOST_DOOR) {
-      continue;
-    }
-    position->row = targetRow;
-    position->column = targetColumn;
+
     if (ECS_HasComponent(activeEntity, COMPONENT_PLAYER_CONTROLLED)) {
       printf("[movement.c] - player Row = %d, player Column = %d\n",
              position->row, position->column);

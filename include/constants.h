@@ -1,6 +1,11 @@
-// constants.h
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
+// Global Constants
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+#define GAME_FPS 60
+#define FRAMERATE_DELAY 16
+#define PATH_TO_MAZE_FILE "./assets/maze.txt"
 #define DOT_PELLET_SCORE_VALUE 1
 #define POWER_PELLET_SCORE_VALUE 50
 #define BASE_GHOST_SCORE 200
@@ -8,4 +13,6 @@
 #define NUMBER_OF_DOTS 244
 #define CHASE_TIME_LIMIT 20.0f
 #define SCATTER_TIME_LIMIT 7.0f
+#define PLAYER_SPEED 7.0f
+#define GHOST_SPEED 6.0f
 #endif

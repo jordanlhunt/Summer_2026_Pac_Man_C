@@ -27,6 +27,7 @@ typedef struct GameContext {
   Entity playerEntity;
   GhostMode currentGhostMode;
   float ghostModeTimer;
+  float deltaTime;
   // Audio audio;
 } GameContext;
 
