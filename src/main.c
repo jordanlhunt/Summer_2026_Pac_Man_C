@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
       isQuit = true;
     }
     // Handle the Frightened Ghost Mode
-    updateFrightenedModeTimer(&gameContext, deltaTime);
-    UpdateGhostTimer(&gameContext, deltaTime);
+    updateFrightenedModeTimer(&gameContext, gameContext.deltaTime);
+    UpdateGhostTimer(&gameContext, gameContext.deltaTime);
     SDL_SetRenderDrawColor(sdlContext.renderer, 100, 216, 107,
                            255); // Matrix Green
     if (gameContext.isFrightenedGhostModeActive == true) {

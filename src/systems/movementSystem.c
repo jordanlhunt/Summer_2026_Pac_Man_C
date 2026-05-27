@@ -74,3 +74,4 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       }
     }
   }
+}

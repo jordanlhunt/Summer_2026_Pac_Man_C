@@ -12,8 +12,7 @@
 #define FRIGHTEN_GHOST_MODE_DURATION 6.0f
 #define CHASE_TIME_LIMIT 20.0f
 #define SCATTER_TIME_LIMIT 7.0f
-typedef enum GhostMode
-{
+typedef enum GhostMode {
   GHOSTMODE_SCATTER,
   GHOSTMODE_CHASE,
   GHOSTMODE_FRIGHTENED,
@@ -21,8 +20,7 @@ typedef enum GhostMode
   GHOSTMODE_IN_GHOSTHOUSE,
   GHOSTMODE_EXIT_GHOSTHOUSE
 } GhostMode;
-typedef struct GameContext
-{
+typedef struct GameContext {
   Input input;
   LevelData levelData;
   Ghost ghostsEntities[GHOST_COUNT];
