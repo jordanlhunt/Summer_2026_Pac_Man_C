@@ -1,6 +1,8 @@
 #ifndef MAPTILE_H
 #define MAPTILE_H
-typedef enum MapTile {
+#define NUMBER_OF_DOTS 244
+typedef enum MapTile
+{
   TILE_WALL,
   TILE_DOT,
   TILE_POWER_PELLET,
