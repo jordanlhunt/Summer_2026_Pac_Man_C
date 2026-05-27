@@ -1,32 +1,46 @@
-// TODO: Create a System that handles Ghosts doing stuff.
 #include "../../include/systems/ghostSystem.h"
-static int DistanceSquared(int row1, int column1, int row2, int column2) {
+static int DistanceSquared(int row1, int column1, int row2, int column2)
+{
   int distanceSquared = 0;
   int deltaRow = row2 - row1;
   int deltaColumn = column2 - column1;
   distanceSquared = (deltaRow * deltaRow) + (deltaColumn * deltaColumn);
   return distanceSquared;
 }
-static int DirectionToDeltaRow(Direction direction) {
-  if (direction == UP) {
+static int DirectionToDeltaRow(Direction direction)
+{
+  if (direction == UP)
+  {
     return -1;
-  } else if (direction == DOWN) {
+  }
+  else if (direction == DOWN)
+  {
     return 1;
-  } else {
+  }
+  else
+  {
     return 0;
   }
 }
-static int DirectionToDeltaColumn(Direction direction) {
-  if (direction == LEFT) {
+static int DirectionToDeltaColumn(Direction direction)
+{
+  if (direction == LEFT)
+  {
     return -1;
-  } else if (direction == RIGHT) {
+  }
+  else if (direction == RIGHT)
+  {
     return 1;
-  } else {
+  }
+  else
+  {
     return 0;
   }
 }
-static Direction OppositeDirection(Direction direction) {
-  switch (direction) {
+static Direction OppositeDirection(Direction direction)
+{
+  switch (direction)
+  {
   case UP:
     return DOWN;
   case DOWN:
@@ -40,21 +54,25 @@ static Direction OppositeDirection(Direction direction) {
   }
 }
 static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
-                                  int targetColumn, LevelData *levelData) {
+                                  int targetColumn, LevelData *levelData)
+{
   Position *position = ECS_GetPosition(ghostEntity);
   Velocity *velocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
   // Testing Purposes
-  if (ghost->ghostType != GHOSTTYPE_BLINKY) {
+  if (ghost->ghostType != GHOSTTYPE_BLINKY)
+  {
     return;
   }
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
   Direction directionToTarget = ZERO_DIRECTION;
   int bestDistanceToTarget = INT_MAX;
-  for (int i = 0; i < (sizeof(directions) / sizeof(directions[0])); i++) {
+  for (int i = 0; i < (sizeof(directions) / sizeof(directions[0])); i++)
+  {
     Direction candidateDirection = directions[i];
     // No backwards movement is allowed for ghosts
-    if (candidateDirection == OppositeDirection(ghost->currentDirection)) {
+    if (candidateDirection == OppositeDirection(ghost->currentDirection))
+    {
       continue;
     }
     int newRow = position->row + DirectionToDeltaRow(candidateDirection);
@@ -62,20 +80,24 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
         position->column + DirectionToDeltaColumn(candidateDirection);
     // Can't move through walls
     MapTile tileAheadOfGhost = GetMapTile(levelData, newRow, newColumn);
-    if (tileAheadOfGhost == TILE_WALL) {
+    if (tileAheadOfGhost == TILE_WALL)
+    {
       continue;
     }
-    if (tileAheadOfGhost == TILE_GHOST_DOOR) {
+    if (tileAheadOfGhost == TILE_GHOST_DOOR)
+    {
       continue;
     }
     int distanceSquared =
         DistanceSquared(targetRow, targetColumn, newRow, newColumn);
-    if (distanceSquared < bestDistanceToTarget) {
+    if (distanceSquared < bestDistanceToTarget)
+    {
       bestDistanceToTarget = distanceSquared;
       directionToTarget = candidateDirection;
     }
   }
-  if (directionToTarget != ZERO_DIRECTION) {
+  if (directionToTarget != ZERO_DIRECTION)
+  {
     ghost->currentDirection = directionToTarget;
     velocity->deltaRow = DirectionToDeltaRow(directionToTarget);
     velocity->deltaColumn = DirectionToDeltaColumn(directionToTarget);
@@ -85,21 +107,25 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
 // describes each ghosts behavior Right now I'm just focusing on blinky cause
 // he's the easier. This ghost targets the player directly
 static void GetChaseTarget(Entity entity, GameContext *gameContext,
-                           int *targetRow, int *targetColumn) {
+                           int *targetRow, int *targetColumn)
+{
   Ghost *ghost = ECS_GetGhost(entity);
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
   PlayerControlled *playerControlled =
       ECS_GetPlayerControlled(gameContext->playerEntity);
-  switch (ghost->ghostType) {
+  switch (ghost->ghostType)
+  {
   // Blinky directly targets the player's current location
-  case GHOSTTYPE_BLINKY: {
+  case GHOSTTYPE_BLINKY:
+  {
     *targetRow = playerPosition->row;
     *targetColumn = playerPosition->column;
     break;
   }
   // Pink attempts to get "ahead" of the player to ambush them by going to
   // wherever 4 tiles ahead are. "machibuse" (待ち伏せ) is to ambush
-  case GHOSTTYPE_PINKY: {
+  case GHOSTTYPE_PINKY:
+  {
     *targetRow = playerPosition->row +
                  (DirectionToDeltaRow(playerControlled->currentDirection) * 4);
     *targetColumn =
@@ -107,7 +133,8 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
         (DirectionToDeltaColumn(playerControlled->currentDirection) * 4);
     break;
   }
-  default: {
+  default:
+  {
     // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
     *targetRow = playerPosition->row;
     *targetColumn = playerPosition->column;
@@ -116,7 +143,8 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
   }
 }
 
-static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
+static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData)
+{
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
@@ -124,22 +152,26 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   Direction validDirections[4];
   int validDirectionCount = 0;
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; i++)
+  {
     Direction possibleDirection = directions[i];
-    if (possibleDirection == OppositeDirection(ghost->currentDirection)) {
+    if (possibleDirection == OppositeDirection(ghost->currentDirection))
+    {
       continue;
     }
     int newRow = ghostPosition->row + DirectionToDeltaRow(possibleDirection);
     int newColumn =
         ghostPosition->column + DirectionToDeltaColumn(possibleDirection);
     MapTile mapTile = GetMapTile(levelData, newRow, newColumn);
-    if (mapTile == TILE_WALL || mapTile == TILE_GHOST_DOOR) {
+    if (mapTile == TILE_WALL || mapTile == TILE_GHOST_DOOR)
+    {
       continue;
     }
     validDirectionCount += 1;
     validDirections[validDirectionCount] = possibleDirection;
   }
-  if (validDirectionCount > 0) {
+  if (validDirectionCount > 0)
+  {
     Direction chosenDirection = validDirections[rand() % validDirectionCount];
     ghost->currentDirection = chosenDirection;
     ghostVelocity->deltaRow = DirectionToDeltaRow(chosenDirection);
@@ -147,27 +179,33 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   }
 }
 
-void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
+void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer)
+{
   int activeEntitiesCount = ECS_GetActiveEntitiesCount();
-  for (int i = 0; i < activeEntitiesCount; i++) {
+  for (int i = 0; i < activeEntitiesCount; i++)
+  {
     Entity activeEntity = ECS_GetActiveEntity(i);
     if (ECS_HasComponents(activeEntity, COMPONENT_GHOST | COMPONENT_POSITION |
-                                            COMPONENT_VELOCITY) == false) {
+                                            COMPONENT_VELOCITY) == false)
+    {
       continue;
     }
     Ghost *ghost = ECS_GetGhost(activeEntity);
     // Frigtened Mode
-    if (gameContext->isFrightenedGhostModeActive == true) {
+    if (gameContext->isFrightenedGhostModeActive == true)
+    {
       MoveGhostRandomly(activeEntity, &gameContext->levelData);
     }
     // Scatter Mode
-    else if (gameContext->currentGhostMode == GHOSTMODE_SCATTER) {
+    else if (gameContext->currentGhostMode == GHOSTMODE_SCATTER)
+    {
       MoveGhostTowardTarget(activeEntity, ghost->scatterTargetRow,
                             ghost->scatterTargetColumn,
                             &gameContext->levelData);
     }
     // Chase Mode
-    else {
+    else
+    {
       int targetRow;
       int targetColumn;
       GetChaseTarget(activeEntity, gameContext, &targetRow, &targetRow);

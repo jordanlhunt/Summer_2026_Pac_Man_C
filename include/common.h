@@ -12,4 +12,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+#define GAME_FPS 60
+#define FRAMERATE_DELAY 16
 #endif
