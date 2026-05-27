@@ -1,6 +1,5 @@
 #include "../../include/map.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 // Helper Function
 static MapTile CharToMapTile(char mapChar) {
   switch (mapChar) {
