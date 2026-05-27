@@ -24,11 +24,11 @@ int main(int argc, char *argv[]) {
     Uint32 currentTime = SDL_GetTicks();
     // Convert from Milliseconds to seconds
     gameContext.deltaTime = (currentTime - previousTime) / 1000.0f;
-    // Clamp deltaTime 
-    if(gameContext.deltaTime > MAX_DELTA_TIME){
+    // Clamp deltaTime
+    if (gameContext.deltaTime > MAX_DELTA_TIME) {
       gameContext.deltaTime = MAX_DELTA_TIME;
     }
-    
+
     previousTime = currentTime;
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {
