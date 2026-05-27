@@ -9,8 +9,7 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     printf("[collisionSystem.c] - Object does not have velocity component");
     return;
   }
-  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
-  if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
+  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);  if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
     return;
   }
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
@@ -34,8 +33,8 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       printf("[collision.c] - A frightened ghost has been eaten!\n");
     } else {
       // Player dies
-      // TODO: Reduce the number of lives restart the game
-      printf("[collision.c] - PAC-MAN has collided with a Ghost! Game Over!\n");
+      TriggerPlayerDeath(gameContext);
+      printf("[collision.c] - PAC-MAN has collided with a Ghost!\n");
     }
   }
 }
