@@ -71,7 +71,8 @@ void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
 void TriggerGameOver(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
-  }
+  } if(gameContext->isGameOver)
+  {return;}
   gameContext->isGameOver = true;
   printf("[gamecontext.c] - Game Over. Final Score: %d\n",
          gameContext->currentScore);
