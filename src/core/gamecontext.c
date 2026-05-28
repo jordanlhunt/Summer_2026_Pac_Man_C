@@ -91,4 +91,22 @@ void TriggerPlayerDeath(GameContext *gameContext) {
   ResetGameRound(gameContext);
 }
 
-void ResetPlayerPosition(GameContext *gameContext) {}
+void ResetPlayerPosition(GameContext *gameContext) {
+    if(gameContext == NULL){
+        return;
+    }
+    Position *position = ECS_GetPosition(gameContext->playerEntity);
+    Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
+    for(int row = 0; row < MAP_ROWS; row++){
+        for(int column =0; column < MAP_COLUMNS; column++){
+            if(GetMapTile(&gameContext->levelData, row, column) == TILE_PLAYER){
+                position-> row = row;
+                position->column = column;
+                position-> offsetX = 0.0f;
+                position-> offsetY = 0.0f;
+            }
+    }
+}
+    velocity->deltaRow = 0;
+    velocity->deltaColumn = 0;
+}
