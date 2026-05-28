@@ -35,6 +35,7 @@ bool InitializePlayer(GameContext *gameContext, Entity player) {
   Velocity *velocity = ECS_GetVelocity(player);
   velocity->deltaRow = 0;
   velocity->deltaColumn = 0;
+  velocity->tilesPerSecond = PLAYER_SPEED;
   Renderable *renderData = ECS_GetRenderable(player);
   renderData->red = 255;
   renderData->green = 255;
