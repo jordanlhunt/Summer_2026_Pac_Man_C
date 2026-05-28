@@ -49,8 +49,8 @@ void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     return;
   }
   // Safe to apply the input
-  velocity->deltaColumn = requestedDeltaRow;
-  velocity->deltaRow = requestedDeltaColumn;
+  velocity->deltaColumn = requestedDeltaColumn;
+  velocity->deltaRow = requestedDeltaRow;
   position->offsetX = 0.0f;
   position->offsetY = 0.0f;
 }
