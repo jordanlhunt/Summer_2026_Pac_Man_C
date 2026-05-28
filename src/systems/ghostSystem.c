@@ -136,7 +136,7 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
       continue;
     }
     validDirections[validDirectionCount] = possibleDirection;
-       validDirectionCount += 1;
+    validDirectionCount += 1;
   }
   if (validDirectionCount > 0) {
     Direction chosenDirection = validDirections[rand() % validDirectionCount];

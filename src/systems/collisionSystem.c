@@ -9,7 +9,8 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     printf("[collisionSystem.c] - Object does not have velocity component");
     return;
   }
-  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);  if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
+  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
+  if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
     return;
   }
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
@@ -21,12 +22,12 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   for (int i = 0; i < activeEntitesCount; i++) {
     Entity activeEntity = ECS_GetActiveEntity(i);
     // Skip over non-ghosts
-    if(ECS_HasComponent(activeEntity, COMPONENT_GHOST) == false){
-        continue;
+    if (ECS_HasComponent(activeEntity, COMPONENT_GHOST) == false) {
+      continue;
     }
     // Skip over the player
-    if(activeEntity == playerEntity){
-        continue;
+    if (activeEntity == playerEntity) {
+      continue;
     }
     Position *ghostPosition = ECS_GetPosition(activeEntity);
     if (ghostPosition->row != playerPosition->row ||

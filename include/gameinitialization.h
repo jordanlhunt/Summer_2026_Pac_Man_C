@@ -11,8 +11,7 @@
 #include "ecs/entity.h"
 #include "gamecontext.h"
 #define PLAYER_SPEED 7.0f
-typedef struct
-{
+typedef struct {
   SDL_Window *gameWindow;
   SDL_Renderer *renderer;
 } SDLContext;

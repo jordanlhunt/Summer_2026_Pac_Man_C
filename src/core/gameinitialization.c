@@ -1,8 +1,6 @@
 #include "../../include/gameinitialization.h"
-bool InitializeSDL(SDLContext *sdlContext)
-{
-  if (SDL_Init(SDL_INIT_VIDEO) < 0)
-  {
+bool InitializeSDL(SDLContext *sdlContext) {
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("[gameinitialization.c] - SDL failed to initialize: %s\n",
            SDL_GetError());
     return false;
@@ -14,21 +12,17 @@ bool InitializeSDL(SDLContext *sdlContext)
       SDL_CreateRenderer(sdlContext->gameWindow, -1, SDL_RENDERER_ACCELERATED);
   return true;
 }
-bool InitializePlayer(GameContext *gameContext, Entity player)
-{
+bool InitializePlayer(GameContext *gameContext, Entity player) {
   ECS_AddComponent(player, COMPONENT_POSITION | COMPONENT_VELOCITY |
                                COMPONENT_RENDERABLE |
                                COMPONENT_PLAYER_CONTROLLED);
   bool isSpawnLocationFound = false;
-  for (int row = 0; row < MAP_ROWS; row++)
-  {
-    for (int column = 0; column < MAP_COLUMNS; column++)
-    {
-      if (GetMapTile(&gameContext->levelData, row, column) == TILE_PLAYER)
-      {
+  for (int row = 0; row < MAP_ROWS; row++) {
+    for (int column = 0; column < MAP_COLUMNS; column++) {
+      if (GetMapTile(&gameContext->levelData, row, column) == TILE_PLAYER) {
         Position *playerPosition = ECS_GetPosition(player);
-playerPosition->row = row;
-        gameContext->playerSpawnRow=row;
+        playerPosition->row = row;
+        gameContext->playerSpawnRow = row;
         playerPosition->column = column;
         gameContext->playerSpawnColumn = column;
         SetMapTile(&gameContext->levelData, row, column, TILE_EMPTY);
@@ -36,8 +30,7 @@ playerPosition->row = row;
       }
     }
   }
-  if (isSpawnLocationFound == false)
-  {
+  if (isSpawnLocationFound == false) {
     printf("[gameInitialization.c] - NO TILE_PLAYER spawn location found! \n");
     return false;
   }
@@ -54,16 +47,14 @@ playerPosition->row = row;
   renderData->height = MAP_GRID_CELL_SIZE;
   return true;
 }
-void InitializeSystems()
-{
+void InitializeSystems() {
   ECS_RegisterSystem(InputSystem);
-  ECS_RegisterSystem(CollisionSystem);
   ECS_RegisterSystem(MovementSystem);
-  ECS_RegisterSystem(RenderSystem);
+  ECS_RegisterSystem(CollisionSystem);
   ECS_RegisterSystem(GhostSystem);
+  ECS_RegisterSystem(RenderSystem);
 }
-void Shutdown(SDLContext *sdlContext)
-{
+void Shutdown(SDLContext *sdlContext) {
   SDL_DestroyRenderer(sdlContext->renderer);
   SDL_DestroyWindow(sdlContext->gameWindow);
   SDL_Quit();

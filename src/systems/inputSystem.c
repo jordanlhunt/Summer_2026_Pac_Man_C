@@ -1,15 +1,7 @@
 #include "../../include/systems/inputSystem.h"
 // Turning for PAC-MAN is only allowed when centered on a given tile as
 // described in dossier CH2_Cornering
-static bool IsCenteredOnTile(Position *entityPosition) {
-  // fabsf(float arg) find the absolute value of a floating point value
-  bool isCentered = false;
-  if (fabsf(entityPosition->offsetX) < TURN_TOLERANCE &&
-      fabsf(entityPosition->offsetY) < TURN_TOLERANCE) {
-    isCentered = true;
-  }
-  return isCentered;
-}
+
 void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (!ECS_HasComponent(gameContext->playerEntity,
                         COMPONENT_PLAYER_CONTROLLED)) {
