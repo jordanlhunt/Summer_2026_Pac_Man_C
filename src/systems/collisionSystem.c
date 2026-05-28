@@ -20,6 +20,14 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   int activeEntitesCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntitesCount; i++) {
     Entity activeEntity = ECS_GetActiveEntity(i);
+    // Skip over non-ghosts
+    if(ECS_HasComponent(activeEntity, COMPONENT_GHOST) == false){
+        continue;
+    }
+    // Skip over the player
+    if(activeEntity == playerEntity){
+        continue;
+    }
     Position *ghostPosition = ECS_GetPosition(activeEntity);
     if (ghostPosition->row != playerPosition->row ||
         ghostPosition->column != playerPosition->column) {
