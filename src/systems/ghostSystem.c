@@ -135,8 +135,8 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
     if (mapTile == TILE_WALL || mapTile == TILE_GHOST_DOOR) {
       continue;
     }
-    validDirectionCount += 1;
     validDirections[validDirectionCount] = possibleDirection;
+       validDirectionCount += 1;
   }
   if (validDirectionCount > 0) {
     Direction chosenDirection = validDirections[rand() % validDirectionCount];
@@ -167,8 +167,8 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     }
     // Chase Mode
     else {
-      int targetRow;
-      int targetColumn;
+      int targetRow = 0;
+      int targetColumn = 0;
       GetChaseTarget(activeEntity, gameContext, &targetRow, &targetRow);
       MoveGhostTowardTarget(activeEntity, targetRow, targetColumn,
                             &gameContext->levelData);
