@@ -27,6 +27,8 @@ typedef struct GameContext {
   Ghost ghostsEntities[GHOST_COUNT];
   int currentScore;
   int remainingPellets;
+  int playerSpawnRow;
+  int playerSpawnColumn;
   bool isFrightenedGhostModeActive;
   bool isRoundWon;
   bool isGameOver;

@@ -101,8 +101,8 @@ void ResetPlayerPosition(GameContext *gameContext) {
     for(int row = 0; row < MAP_ROWS; row++){
         for(int column =0; column < MAP_COLUMNS; column++){
             if(GetMapTile(&gameContext->levelData, row, column) == TILE_PLAYER){
-                position-> row = row;
-                position->column = column;
+                position-> row = gameContext->playerSpawnRow;
+                position->column = gameContext->playerSpawnColumn;
                 position-> offsetX = 0.0f;
                 position-> offsetY = 0.0f;
             }
