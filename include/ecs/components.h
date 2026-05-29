@@ -44,6 +44,14 @@ typedef struct Edible {
 typedef struct Active {
   bool isActive;
 } Active;
+typedef enum GhostMode {
+  GHOSTMODE_SCATTER,
+  GHOSTMODE_CHASE,
+  GHOSTMODE_FRIGHTENED,
+  GHOSTMODE_EATEN_EYES,
+  GHOSTMODE_IN_GHOSTHOUSE,
+  GHOSTMODE_EXIT_GHOSTHOUSE
+} GhostMode;
 typedef enum GhostType {
   GHOSTTYPE_BLINKY,
   GHOSTTYPE_PINKY,
@@ -56,5 +64,6 @@ typedef struct Ghost {
   int scatterTargetColumn;
   Direction currentDirection;
   int exitGhostHouseThreshold;
+  GhostMode ghostMode;
 } Ghost;
 #endif

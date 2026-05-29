@@ -34,12 +34,15 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         ghostPosition->column != playerPosition->column) {
       continue;
     }
-    Ghost *ghost = ECS_GetGhost(activeEntity);
+
     // Player has collieded with a frightened ghost
     if (gameContext->isFrightenedGhostModeActive == true) {
       gameContext->currentScore += BASE_GHOST_SCORE;
-      ECS_DestroyEntity(activeEntity);
-      printf("[collision.c] - A frightened ghost has been eaten!\n");
+      Ghost *ghost = ECS_GetGhost(activeEntity);
+      ghost->ghostMode = GHOSTMODE_EATEN_EYES;
+      printf("[collision.c] - A frightened ghost has been eaten! Current "
+             "Score: %d\n",
+             gameContext->currentScore);
     } else {
       // Player dies
       TriggerPlayerDeath(gameContext);

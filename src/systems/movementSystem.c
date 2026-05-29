@@ -112,6 +112,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
           isBlocked = false;
         }
       }
+      // Don't bounce off walls
       if (isBlocked && isPlayer) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;

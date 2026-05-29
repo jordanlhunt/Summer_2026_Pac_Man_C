@@ -1,9 +1,9 @@
 #ifndef GAMECONTEXT_H
 #define GAMECONTEXT_H
+#include "../include/map.h"
 #include "common.h"
 #include "ecs/ecs.h"
 #include "ecs/entity.h"
-#include "../include/map.h"
 #include "input.h"
 #include "leveldata.h"
 #define DOT_PELLET_SCORE_VALUE 1
@@ -13,14 +13,7 @@
 #define FRIGHTEN_GHOST_MODE_DURATION 6.0f
 #define CHASE_TIME_LIMIT 20.0f
 #define SCATTER_TIME_LIMIT 7.0f
-typedef enum GhostMode {
-  GHOSTMODE_SCATTER,
-  GHOSTMODE_CHASE,
-  GHOSTMODE_FRIGHTENED,
-  GHOSTMODE_EATEN_EYES,
-  GHOSTMODE_IN_GHOSTHOUSE,
-  GHOSTMODE_EXIT_GHOSTHOUSE
-} GhostMode;
+
 typedef struct GameContext {
   Input input;
   LevelData levelData;
