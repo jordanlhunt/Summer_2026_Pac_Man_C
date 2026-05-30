@@ -39,7 +39,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     position->offsetY += velocity->deltaRow * distanceToMoveEntity;
     // -- Right
     // Check if entity cross threshold into next column
-    if (position->offsetX >= 1.0f) {
+    if (position->offsetX >= TILE_SIZE) {
       int nextColumn = position->column + 1;
       bool isBlocked = true;
       if (nextColumn < MAP_COLUMNS) {
@@ -56,11 +56,11 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
       } else {
-        position->offsetX -= 1.0f;
+        position->offsetX -= TILE_SIZE;
       }
     }
     // LEFT
-    else if (position->offsetX <= -1.0f) {
+    else if (position->offsetX <= -TILE_SIZE) {
       int nextColumn = position->column - 1;
       bool isBlocked = true;
       if (nextColumn >= 0) {
@@ -76,11 +76,11 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
       } else {
-        position->offsetX += 1.0f;
+        position->offsetX += TILE_SIZE;
       }
     }
     // Down
-    if (position->offsetY >= 1.0f) {
+    if (position->offsetY >= TILE_SIZE) {
       int nextRow = position->row + 1;
       bool isBlocked = true;
       if (nextRow < MAP_ROWS) {
@@ -97,11 +97,11 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetY = 0.0f;
       } else {
-        position->offsetY -= 1.0f;
+        position->offsetY -= TILE_SIZE;
       }
     }
     // Up
-    else if (position->offsetY <= -1.0f) {
+    else if (position->offsetY <= -TILE_SIZE) {
       int nextRow = position->row - 1;
       bool isBlocked = true;
       if (nextRow >= 0) {
@@ -118,7 +118,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetY = 0.0f;
       } else {
-        position->offsetY += 1.0f;
+        position->offsetY += TILE_SIZE;
       }
     }
     if (isPlayer) {

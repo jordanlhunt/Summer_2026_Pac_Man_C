@@ -4,7 +4,7 @@
 #include "../../include/entityUtils.h"
 #include "../../include/gamecontext.h"
 #include "../../include/map.h"
-
+#define TILE_SIZE 1.0f
 void MovementSystem(struct GameContext *gameContext,
                     struct SDL_Renderer *renderer);
 #endif

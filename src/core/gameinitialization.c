@@ -47,6 +47,50 @@ bool InitializePlayer(GameContext *gameContext, Entity player) {
   renderData->height = MAP_GRID_CELL_SIZE;
   return true;
 }
+bool InitializeGhosts(GameContext *gameContext) {
+  struct {
+    GhostType ghostType;
+    int red;
+    int green;
+    int blue;
+    int scatterRow;
+    int scatterColumn;
+    int ghostHouseReleaseThreshold;
+    GhostMode initialMode;
+  } ghostData[GHOST_COUNT] = {
+      {GHOSTTYPE_BLINKY, 255, 0, 0, 0, MAP_COLUMNS - 1, 0, GHOSTMODE_SCATTER},
+      {GHOSTTYPE_PINKY, 255, 184, 255, 0, 0, PINKY_RELEASE_THRESHOLD,
+       GHOSTMODE_IN_GHOSTHOUSE},
+      {GHOSTTYPE_INKY, 0, 255, 255, MAP_ROWS - 1, MAP_COLUMNS - 1,
+       INKY_RELEASE_THRESHOLD, GHOSTMODE_IN_GHOSTHOUSE},
+      {GHOSTTYPE_CLYDE, 255, 184, 82, MAP_ROWS - 1, 0, CLYDE_RELEASE_THRESHOLD,
+       GHOSTMODE_IN_GHOSTHOUSE},
+  };
+  for (int i = 0; i < GHOST_COUNT; i++) {
+    Entity newEntity = ECS_CreateEntity();
+    gameContext->ghostsEntities[i] = newEntity;
+    ECS_AddComponent(newEntity, COMPONENT_POSITION | COMPONENT_VELOCITY |
+                                    COMPONENT_RENDERABLE | COMPONENT_GHOST);
+    Ghost *ghost = ECS_GetGhost(newEntity);
+    ghost->ghostType = ghostData[i].ghostType;
+    ghost->ghostMode = ghostData[i].initialMode;
+    ghost->currentDirection = ZERO_DIRECTION;
+    ghost->scatterTargetRow = ghostData[i].scatterRow;
+    ghost->scatterTargetColumn = ghostData[i].scatterColumn;
+    Velocity *velocity = ECS_GetVelocity(newEntity);
+    velocity->deltaRow = 0;
+    velocity->deltaColumn = 0;
+    velocity->tilesPerSecond = GHOST_SPEED;
+    Renderable *renderData = ECS_GetRenderable(newEntity);
+    renderData->red = ghostData[i].red;
+    renderData->blue = ghostData[i].blue;
+    renderData->green = ghostData[i].green;
+    renderData->alpha = 255;
+    renderData->width = MAP_GRID_CELL_SIZE;
+    renderData->height = MAP_GRID_CELL_SIZE;
+  }
+  return true;
+}
 void InitializeSystems() {
   ECS_RegisterSystem(InputSystem);
   ECS_RegisterSystem(MovementSystem);

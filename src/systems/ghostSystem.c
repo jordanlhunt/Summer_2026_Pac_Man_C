@@ -80,6 +80,46 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
     velocity->deltaColumn = DirectionToDeltaColumn(directionToTarget);
   }
 }
+// After being eaten, turn into eyes and return from current position back into
+// the ghost house
+static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
+  Position *ghostPosition = ECS_GetPosition(ghostEntity);
+  Ghost *ghost = ECS_GetGhost(ghostEntity);
+  Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
+  ghostVelocity->tilesPerSecond = GHOST_SPEED_EYES;
+  MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
+                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData);
+  // Enter the ghost house and reset the ghost to scatter to get back at it.
+  if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
+      ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
+    ghost->ghostMode = GHOSTMODE_SCATTER;
+    ghostVelocity->tilesPerSecond = GHOST_SPEED;
+    ghostPosition->offsetX = 0.0f;
+    ghostPosition->offsetY = 0.0f;
+    printf("[ghostSystem.c] - Ghost has respawned.\n");
+  }
+}
+
+static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
+  Position *ghostPosition = ECS_GetPosition(ghostEntity);
+  Ghost *ghost = ECS_GetGhost(ghostEntity);
+  Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
+  int dotsEaten = NUMBER_OF_DOTS - gameContext->remainingPellets;
+  // Ghosts exit the Ghost House after a threshold is met
+  if (dotsEaten < ghost->exitGhostHouseThreshold) {
+    ghostVelocity->deltaRow = 0;
+    ghostVelocity->deltaColumn = 0;
+    return;
+  }
+  ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
+  MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
+                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData);
+  if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
+      ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
+    ghost->ghostMode = GHOSTMODE_SCATTER;
+    printf("[ghostSystem.c] - Ghost exited house.\n");
+  }
+}
 // After leaving Scatter, the ghost needs to enter a chase mode. The dossier
 // describes each ghosts behavior Right now I'm just focusing on blinky cause
 // he's the easier. This ghost targets the player directly
@@ -91,19 +131,33 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
       ECS_GetPlayerControlled(gameContext->playerEntity);
   switch (ghost->ghostType) {
   // Blinky directly targets the player's current location
+  // "oikake" (追い掛け) is to purse
   case GHOSTTYPE_BLINKY: {
     *targetRow = playerPosition->row;
     *targetColumn = playerPosition->column;
     break;
   }
   // Pink attempts to get "ahead" of the player to ambush them by going to
-  // wherever 4 tiles ahead are. "machibuse" (待ち伏せ) is to ambush
+  // wherever 4 tiles ahead are.
+  // "machibuse" (待ち伏せ) is to ambush
   case GHOSTTYPE_PINKY: {
     *targetRow = playerPosition->row +
                  (DirectionToDeltaRow(playerControlled->currentDirection) * 4);
     *targetColumn =
         playerPosition->column +
         (DirectionToDeltaColumn(playerControlled->currentDirection) * 4);
+    break;
+  }
+  - // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
+    // Inky is the most complex tracking. Least predictable most erratic
+    // "kimagure" (気まぐれ) means to be "fickle" or "capricious"
+      case GHOSTTYPE_INKY: {
+    break;
+  }
+  // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
+  // Clyde uses a proximity tracking
+  //  "otoboke" (お惚け) is to feign ignorance
+  case GHOSTTYPE_CLYDE: {
     break;
   }
   default: {
@@ -155,24 +209,49 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       continue;
     }
     Ghost *ghost = ECS_GetGhost(activeEntity);
-    // Frigtened Mode
-    if (gameContext->isFrightenedGhostModeActive == true) {
-      MoveGhostRandomly(activeEntity, &gameContext->levelData);
+
+    switch (ghost->ghostMode) {
+    case GHOSTMODE_IN_GHOSTHOUSE:
+    case GHOSTMODE_EXIT_GHOSTHOUSE: {
+      UpdateGhostHouseExit(activeEntity, gameContext);
+      break;
     }
-    // Scatter Mode
-    else if (gameContext->currentGhostMode == GHOSTMODE_SCATTER) {
-      MoveGhostTowardTarget(activeEntity, ghost->scatterTargetRow,
-                            ghost->scatterTargetColumn,
-                            &gameContext->levelData);
+    case GHOSTMODE_EATEN_EYES: {
+      UpdateGhostEyes(activeEntity, gameContext);
+      break;
     }
-    // Chase Mode
-    else {
-      int targetRow = 0;
-      int targetColumn = 0;
-      GetChaseTarget(activeEntity, gameContext, &targetRow, &targetRow);
-      MoveGhostTowardTarget(activeEntity, targetRow, targetColumn,
-                            &gameContext->levelData);
+    case GHOSTMODE_FRIGHTENED: {
+      if (gameContext->isFrightenedGhostModeActive == false) {
+        ghost->ghostMode = GHOSTMODE_SCATTER;
+      } else {
+        MoveGhostRandomly(activeEntity, &gameContext->levelData);
+      }
+      break;
     }
-    // TODO: ADD CHASE, FRIGHTENED, and EATEN
+    case GHOSTMODE_CHASE:
+    case GHOSTMODE_SCATTER: {
+      if (gameContext->isFrightenedGhostModeActive == true) {
+        ghost->ghostMode = GHOSTMODE_FRIGHTENED;
+        MoveGhostRandomly(activeEntity, &gameContext->levelData);
+
+      } else if (gameContext->currentGhostMode == GHOSTMODE_SCATTER) {
+        ghost->ghostMode = GHOSTMODE_SCATTER;
+        MoveGhostTowardTarget(activeEntity, ghost->scatterTargetRow,
+                              ghost->scatterTargetColumn,
+                              &gameContext->levelData);
+      } else {
+        ghost->ghostMode = GHOSTMODE_CHASE;
+        int targetRow = 0;
+        int targetColumn = 0;
+        GetChaseTarget(activeEntity, gameContext, &targetRow, &targetColumn);
+        MoveGhostTowardTarget(activeEntity, targetRow, targetColumn,
+                              &gameContext->levelData);
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+    }
   }
 }

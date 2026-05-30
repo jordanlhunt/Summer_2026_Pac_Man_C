@@ -17,7 +17,7 @@
 typedef struct GameContext {
   Input input;
   LevelData levelData;
-  Ghost ghostsEntities[GHOST_COUNT];
+  Entity ghostsEntities[GHOST_COUNT];
   int currentScore;
   int remainingPellets;
   int playerSpawnRow;
