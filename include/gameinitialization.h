@@ -12,6 +12,14 @@
 #include "ecs/entity.h"
 #include "gamecontext.h"
 #define PLAYER_SPEED 7.0f
+#define BLINKY_SPAWN_ROW 11
+#define BLINKY_SPAWN_COLUMN 13
+#define PINKY_SPAWN_ROW 13
+#define PINKY_SPAWN_COLUMN 13
+#define INKY_SPAWN_ROW 14
+#define INKY_SPAWN_COLUMN 12
+#define CLYDE_SPAWN_ROW 14
+#define CLYDE_SPAWN_COLUMN 14
 typedef struct {
   SDL_Window *gameWindow;
   SDL_Renderer *renderer;

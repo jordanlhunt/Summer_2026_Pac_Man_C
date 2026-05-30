@@ -56,15 +56,61 @@ bool InitializeGhosts(GameContext *gameContext) {
     int scatterRow;
     int scatterColumn;
     int ghostHouseReleaseThreshold;
+    int spawnRow;
+    int spawnColumn;
     GhostMode initialMode;
   } ghostData[GHOST_COUNT] = {
-      {GHOSTTYPE_BLINKY, 255, 0, 0, 0, MAP_COLUMNS - 1, 0, GHOSTMODE_SCATTER},
-      {GHOSTTYPE_PINKY, 255, 184, 255, 0, 0, PINKY_RELEASE_THRESHOLD,
-       GHOSTMODE_IN_GHOSTHOUSE},
-      {GHOSTTYPE_INKY, 0, 255, 255, MAP_ROWS - 1, MAP_COLUMNS - 1,
-       INKY_RELEASE_THRESHOLD, GHOSTMODE_IN_GHOSTHOUSE},
-      {GHOSTTYPE_CLYDE, 255, 184, 82, MAP_ROWS - 1, 0, CLYDE_RELEASE_THRESHOLD,
-       GHOSTMODE_IN_GHOSTHOUSE},
+      // Designated initializers for accuracy and clarity
+      // [https://gcc.gnu.org/onlinedocs/gcc/Designated-Inits.html]
+      {
+          .ghostType = GHOSTTYPE_BLINKY,
+          .red = 255,
+          .green = 0,
+          .blue = 0,
+          .scatterRow = 0,
+          .scatterColumn = MAP_COLUMNS - 1,
+          .ghostHouseReleaseThreshold = 0,
+          .spawnRow = BLINKY_SPAWN_ROW,
+          .spawnColumn = BLINKY_SPAWN_COLUMN,
+          .initialMode = GHOSTMODE_SCATTER,
+      },
+      {
+          .ghostType = GHOSTTYPE_PINKY,
+          .red = 255,
+          .green = 184,
+          .blue = 255,
+          .scatterRow = 0,
+          .scatterColumn = 0,
+          .ghostHouseReleaseThreshold = RELEASE_THRESHOLD_PINKY,
+          .spawnRow = PINKY_SPAWN_ROW,
+          .spawnColumn = PINKY_SPAWN_COLUMN,
+          .initialMode = GHOSTMODE_IN_GHOSTHOUSE,
+      },
+      {
+          .ghostType = GHOSTTYPE_INKY,
+          .red = 0,
+          .green = 255,
+          .blue = 255,
+          .scatterRow = MAP_ROWS - 1,
+          .scatterColumn = MAP_COLUMNS - 1,
+          .ghostHouseReleaseThreshold = RELEASE_THRESHOLD_INKY,
+          .spawnRow = INKY_SPAWN_ROW,
+          .spawnColumn = INKY_SPAWN_COLUMN,
+          .initialMode = GHOSTMODE_IN_GHOSTHOUSE,
+      },
+      {
+
+          .ghostType = GHOSTTYPE_CLYDE,
+          .red = 255,
+          .green = 184,
+          .blue = 82,
+          .scatterRow = MAP_ROWS - 1,
+          .scatterColumn = 0,
+          .ghostHouseReleaseThreshold = RELEASE_THRESHOLD_CLYDE,
+          .spawnRow = CLYDE_SPAWN_ROW,
+          .spawnColumn = CLYDE_SPAWN_COLUMN,
+          .initialMode = GHOSTMODE_IN_GHOSTHOUSE,
+      },
   };
   for (int i = 0; i < GHOST_COUNT; i++) {
     Entity newEntity = ECS_CreateEntity();
@@ -77,10 +123,16 @@ bool InitializeGhosts(GameContext *gameContext) {
     ghost->currentDirection = ZERO_DIRECTION;
     ghost->scatterTargetRow = ghostData[i].scatterRow;
     ghost->scatterTargetColumn = ghostData[i].scatterColumn;
+    ghost->exitGhostHouseThreshold = ghostData[i].ghostHouseReleaseThreshold;
     Velocity *velocity = ECS_GetVelocity(newEntity);
     velocity->deltaRow = 0;
     velocity->deltaColumn = 0;
     velocity->tilesPerSecond = GHOST_SPEED;
+    Position *position = ECS_GetPosition(newEntity);
+    position->row = ghostData[i].spawnRow;
+    position->column = ghostData[i].spawnColumn;
+    printf("[gameInitialization.c] - Ghost %d spawned at row=%d col=%d\n", i,
+           position->row, position->column);
     Renderable *renderData = ECS_GetRenderable(newEntity);
     renderData->red = ghostData[i].red;
     renderData->blue = ghostData[i].blue;

@@ -1,5 +1,4 @@
 #include "../../include/gamecontext.h"
-
 static void ResetGameRound(GameContext *gameContext) {
   ResetPlayerPosition(gameContext);
   gameContext->isFrightenedGhostModeActive = false;
@@ -47,7 +46,6 @@ void InitializeGameContext(GameContext *gameContext) {
   gameContext->deltaTime = 0.0f;
   gameContext->playerLives = 3;
 }
-
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
   if (gameContext == NULL) {
     return;
@@ -67,17 +65,17 @@ void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
     }
   }
 }
-
 void TriggerGameOver(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
-  } if(gameContext->isGameOver)
-  {return;}
+  }
+  if (gameContext->isGameOver) {
+    return;
+  }
   gameContext->isGameOver = true;
   printf("[gamecontext.c] - Game Over. Final Score: %d\n",
          gameContext->currentScore);
 }
-
 void TriggerPlayerDeath(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
@@ -91,23 +89,16 @@ void TriggerPlayerDeath(GameContext *gameContext) {
   }
   ResetGameRound(gameContext);
 }
-
 void ResetPlayerPosition(GameContext *gameContext) {
-    if(gameContext == NULL){
-        return;
-    }
-    Position *position = ECS_GetPosition(gameContext->playerEntity);
-    Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
-    for(int row = 0; row < MAP_ROWS; row++){
-        for(int column =0; column < MAP_COLUMNS; column++){
-            if(GetMapTile(&gameContext->levelData, row, column) == TILE_PLAYER){
-                position-> row = gameContext->playerSpawnRow;
-                position->column = gameContext->playerSpawnColumn;
-                position-> offsetX = 0.0f;
-                position-> offsetY = 0.0f;
-            }
-    }
-}
-    velocity->deltaRow = 0;
-    velocity->deltaColumn = 0;
+  if (gameContext == NULL) {
+    return;
+  }
+  Position *position = ECS_GetPosition(gameContext->playerEntity);
+  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
+  position->row = gameContext->playerSpawnRow;
+  position->column = gameContext->playerSpawnColumn;
+  position->offsetX = 0.0f;
+  position->offsetY = 0.0f;
+  velocity->deltaRow = 0;
+  velocity->deltaColumn = 0;
 }

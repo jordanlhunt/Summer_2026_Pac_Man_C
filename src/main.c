@@ -14,6 +14,9 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   gameContext.playerEntity = player;
+  if (InitializeGhosts(&gameContext) == false) {
+    return 1;
+  }
   // Game Loop
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();

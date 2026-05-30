@@ -99,7 +99,6 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
     printf("[ghostSystem.c] - Ghost has respawned.\n");
   }
 }
-
 static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
@@ -148,10 +147,10 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
         (DirectionToDeltaColumn(playerControlled->currentDirection) * 4);
     break;
   }
-  - // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
+    // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
     // Inky is the most complex tracking. Least predictable most erratic
     // "kimagure" (気まぐれ) means to be "fickle" or "capricious"
-      case GHOSTTYPE_INKY: {
+  case GHOSTTYPE_INKY: {
     break;
   }
   // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
@@ -168,7 +167,6 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
   }
   }
 }
-
 static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
@@ -176,7 +174,6 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
   Direction validDirections[4];
   int validDirectionCount = 0;
-
   for (int i = 0; i < 4; i++) {
     Direction possibleDirection = directions[i];
     if (possibleDirection == OppositeDirection(ghost->currentDirection)) {
@@ -199,7 +196,6 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
     ghostVelocity->deltaColumn = DirectionToDeltaColumn(chosenDirection);
   }
 }
-
 void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   int activeEntitiesCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntitiesCount; i++) {
@@ -209,7 +205,7 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       continue;
     }
     Ghost *ghost = ECS_GetGhost(activeEntity);
-
+    Velocity *ghostVelocity = ECS_GetVelocity(activeEntity);
     switch (ghost->ghostMode) {
     case GHOSTMODE_IN_GHOSTHOUSE:
     case GHOSTMODE_EXIT_GHOSTHOUSE: {
@@ -224,6 +220,7 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (gameContext->isFrightenedGhostModeActive == false) {
         ghost->ghostMode = GHOSTMODE_SCATTER;
       } else {
+
         MoveGhostRandomly(activeEntity, &gameContext->levelData);
       }
       break;
@@ -233,7 +230,6 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (gameContext->isFrightenedGhostModeActive == true) {
         ghost->ghostMode = GHOSTMODE_FRIGHTENED;
         MoveGhostRandomly(activeEntity, &gameContext->levelData);
-
       } else if (gameContext->currentGhostMode == GHOSTMODE_SCATTER) {
         ghost->ghostMode = GHOSTMODE_SCATTER;
         MoveGhostTowardTarget(activeEntity, ghost->scatterTargetRow,
