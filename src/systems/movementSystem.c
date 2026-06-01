@@ -26,24 +26,32 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     // tilesPersecond is 10.0 and deltaTime should be 0.016 (one frame at 60FPS)
     float distanceToMoveEntity =
         velocity->tilesPerSecond * gameContext->deltaTime;
-    // Block player before moving into a wall
-    if (isPlayer) {
-      if (IsCenteredOnTile(position)) {
-        int nextRow = position->row + velocity->deltaRow;
-        int nextColumn = position->column + velocity->deltaColumn;
-        bool isOutOfBounds = (nextRow < 0 || nextRow >= MAP_ROWS ||
-                              nextColumn < 0 || nextColumn >= MAP_COLUMNS);
-        MapTile nextTile =
-            GetMapTile(&gameContext->levelData, nextRow, nextColumn);
-        if (isOutOfBounds) {
-          velocity->deltaRow = 0;
-          velocity->deltaColumn = 0;
-          position->offsetX = 0.0f;
-          position->offsetY = 0.0f;
-          continue;
-        }
+    // Make sure step ahead is valid before starting on new tile
+    if (IsCenteredOnTile(position)) {
+      int nextRow = position->row + velocity->deltaRow;
+      int nextColumn = position->column + velocity->deltaColumn;
+      bool isOutOfBounds = (nextRow < 0 || nextRow >= MAP_ROWS ||
+                            nextColumn < 0 || nextColumn >= MAP_COLUMNS);
+      // Check if out bounds before looking ahead.
+      if (isOutOfBounds) {
+        velocity->deltaRow = 0;
+        velocity->deltaColumn = 0;
+        position->offsetX = 0.0f;
+        position->offsetY = 0.0f;
+        continue;
+      }
+      // Look ahead
+      MapTile nextTile =
+          GetMapTile(&gameContext->levelData, nextRow, nextColumn);
+      if (IsTileBlockedForEntity(nextTile, isGhost)) {
+        velocity->deltaRow = 0;
+        velocity->deltaColumn = 0;
+        position->offsetX = 0.0f;
+        position->offsetY = 0.0f;
+        continue;
       }
     }
+
     // Advance sub-tile offset and move X/Y pixels
     position->offsetX += velocity->deltaColumn * distanceToMoveEntity;
     position->offsetY += velocity->deltaRow * distanceToMoveEntity;
@@ -55,13 +63,13 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (nextColumn < MAP_COLUMNS) {
         MapTile nextTile =
             GetMapTile(&gameContext->levelData, position->row, nextColumn);
-        if (nextTile != TILE_WALL && (nextTile != TILE_GHOST_DOOR || isGhost)) {
+        if (IsTileBlockedForEntity(nextTile, isGhost) == false) {
           position->column = nextColumn;
           isBlocked = false;
         }
       }
       // Don't bounce off walls
-      if (isBlocked && isPlayer) {
+      if (isBlocked) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
@@ -76,12 +84,13 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (nextColumn >= 0) {
         MapTile nextTile =
             GetMapTile(&gameContext->levelData, position->row, nextColumn);
-        if (nextTile != TILE_WALL && (nextTile != TILE_GHOST_DOOR || isGhost)) {
+        if (IsTileBlockedForEntity(nextTile, isGhost) == false) {
           position->column = nextColumn;
           isBlocked = false;
         }
-      } // Don't bounce off walls
-      if (isBlocked && isPlayer) {
+      }
+      // Don't bounce off walls
+      if (isBlocked) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
@@ -96,13 +105,13 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (nextRow < MAP_ROWS) {
         MapTile nextTile =
             GetMapTile(&gameContext->levelData, nextRow, position->column);
-        if (nextTile != TILE_WALL && (nextTile != TILE_GHOST_DOOR || isGhost)) {
+        if (IsTileBlockedForEntity(nextTile, isGhost) == false) {
           position->row = nextRow;
           isBlocked = false;
         }
       }
       // Don't bounce off walls
-      if (isBlocked && isPlayer) {
+      if (isBlocked) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
         position->offsetY = 0.0f;
@@ -117,13 +126,13 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (nextRow >= 0) {
         MapTile nextTile =
             GetMapTile(&gameContext->levelData, nextRow, position->column);
-        if (nextTile != TILE_WALL && (nextTile != TILE_GHOST_DOOR || isGhost)) {
+        if (IsTileBlockedForEntity(nextTile, isGhost) == false) {
           position->row = nextRow;
           isBlocked = false;
         }
       }
       // Don't bounce off walls
-      if (isBlocked && isPlayer) {
+      if (isBlocked) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
         position->offsetY = 0.0f;
