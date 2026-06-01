@@ -1,4 +1,4 @@
-#SRCS specifies which files to compile as part of the project
+# SRCS specifies which files to compile as part of the project
 SRCS = src/main.c \
        src/core/gamecontext.c \
        src/core/input.c \
@@ -12,23 +12,42 @@ SRCS = src/main.c \
        src/systems/renderSystem.c \
        src/systems/ghostSystem.c \
        src/core/gameinitialization.c
-#OBJ_Name specifies the name of the executable
-OBJ_Name = hac_man_summer_project
-# COMPILER_FLAGS specifies the additional compilation options
-COMPILER_FLAGS = -Wall -Wextra -Werror=implicit-function-declaration
-# LIBRARY_FLAGS specifies the libraries the project is linking
-LIBRARY_FLAGS = -lSDL2 -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+
 # COMPILER specifies the compiler
 COMPILER = gcc
+
+# COMPILER_FLAGS specifies the additional compilation options
+COMPILER_FLAGS = -Wall -Wextra -Werror=implicit-function-declaration
+
+# Include flags
+INCLUDE_FLAGS = -I./include
+
 # Debug flags
 DEBUG_FLAGS = -g -O0
-#Include flags
-INCLUDE_FLAGS = -I./include
+
+# --- OS DETECTION & CONDITIONAL FLAGS ---
+ifeq ($(OS),Windows_NT)
+    # Windows (MinGW) Specifics
+    OBJ_Name = hac_man_summer_project.exe
+    LIBRARY_FLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
+    CLEAN_CMD = rm -f $(OBJ_Name)
+else
+    # Linux Specifics
+    OBJ_Name = hac_man_summer_project
+    LIBRARY_FLAGS = -lSDL2 -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+    CLEAN_CMD = rm -f $(OBJ_Name)
+endif
+# ----------------------------------------
+
 OBJS = $(SRCS)
+
 .PHONY: all clean debug
+
 all: $(OBJS)
 	$(COMPILER) $(OBJS) $(INCLUDE_FLAGS) $(COMPILER_FLAGS) $(LIBRARY_FLAGS) -o $(OBJ_Name)
+
 debug: $(OBJS)
 	$(COMPILER) $(OBJS) $(INCLUDE_FLAGS) $(COMPILER_FLAGS) $(DEBUG_FLAGS) $(LIBRARY_FLAGS) -o $(OBJ_Name)
+
 clean:
-	rm -f $(OBJ_Name)
+	$(CLEAN_CMD)

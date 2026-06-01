@@ -46,7 +46,7 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   // changing direction every frame
   if (IsCenteredOnTile(ghostPosition) == false) {
     return;
-  };
+  }
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
   Direction validDirections[4];
   int validDirectionCount = 0;
@@ -83,6 +83,12 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
   Position *position = ECS_GetPosition(ghostEntity);
   Velocity *velocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
+
+  // Only change direction when centered on a tile to fix the jitter. It was
+  // changing direction every frame
+  if (IsCenteredOnTile(position) == false) {
+    return;
+  }
   // Testing Purposes
   if (ghost->ghostType != GHOSTTYPE_BLINKY) {
     return;

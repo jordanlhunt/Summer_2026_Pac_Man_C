@@ -4,14 +4,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_rect.h>
+#include <limits.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdlib.h>
 #include <time.h>
-#include <math.h>
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define GAME_FPS 60

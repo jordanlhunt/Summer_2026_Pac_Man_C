@@ -1,4 +1,13 @@
 #include "../../include/systems/movementSystem.h"
+static bool IsTileBlockedForEntity(MapTile tile, bool isGhost) {
+  if (tile == TILE_WALL) {
+    return true;
+  }
+  if (tile == TILE_GHOST_DOOR && isGhost == false) {
+    return true;
+  }
+  return false;
+}
 void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   int activeEntityCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntityCount; i++) {
@@ -17,15 +26,16 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     // tilesPersecond is 10.0 and deltaTime should be 0.016 (one frame at 60FPS)
     float distanceToMoveEntity =
         velocity->tilesPerSecond * gameContext->deltaTime;
-
     // Block player before moving into a wall
     if (isPlayer) {
       if (IsCenteredOnTile(position)) {
         int nextRow = position->row + velocity->deltaRow;
         int nextColumn = position->column + velocity->deltaColumn;
+        bool isOutOfBounds = (nextRow < 0 || nextRow >= MAP_ROWS ||
+                              nextColumn < 0 || nextColumn >= MAP_COLUMNS);
         MapTile nextTile =
             GetMapTile(&gameContext->levelData, nextRow, nextColumn);
-        if (nextTile == TILE_WALL || nextTile == TILE_GHOST_DOOR) {
+        if (isOutOfBounds) {
           velocity->deltaRow = 0;
           velocity->deltaColumn = 0;
           position->offsetX = 0.0f;
