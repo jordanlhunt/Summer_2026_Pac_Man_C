@@ -34,8 +34,7 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         ghostPosition->column != playerPosition->column) {
       continue;
     }
-
-    // Player has collieded with a frightened ghost
+    // Player has collided with a frightened ghost
     if (gameContext->isFrightenedGhostModeActive == true) {
       gameContext->currentScore += BASE_GHOST_SCORE;
       Ghost *ghost = ECS_GetGhost(activeEntity);
