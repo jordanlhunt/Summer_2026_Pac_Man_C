@@ -2,6 +2,7 @@
 #define GHOST_SYSTEM_H
 #define INT_MAX 2147483647
 #include "../../include/ecs/ecs.h"
+#include "../../include/entityUtils.h"
 #include "../../include/gamecontext.h"
 #include "../../include/map.h"
 #define GHOST_SPEED 6.0f

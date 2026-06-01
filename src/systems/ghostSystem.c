@@ -38,6 +38,46 @@ static Direction OppositeDirection(Direction direction) {
     return ZERO_DIRECTION;
   }
 }
+static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
+  Position *ghostPosition = ECS_GetPosition(ghostEntity);
+  Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
+  Ghost *ghost = ECS_GetGhost(ghostEntity);
+  // Only change direction when centered on a tile to fix the jitter. It was
+  // changing direction every frame
+  if (IsCenteredOnTile(ghostPosition) == false) {
+    return;
+  };
+  Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
+  Direction validDirections[4];
+  int validDirectionCount = 0;
+  for (int i = 0; i < 4; i++) {
+    Direction possibleDirection = directions[i];
+    if (possibleDirection == OppositeDirection(ghost->currentDirection)) {
+      continue;
+    }
+    int newRow = ghostPosition->row + DirectionToDeltaRow(possibleDirection);
+    int newColumn =
+        ghostPosition->column + DirectionToDeltaColumn(possibleDirection);
+    // Bounds Check for edge cases, don't go off the map
+    if (newRow < 0 || newRow >= MAP_ROWS || newColumn < 0 ||
+        newColumn >= MAP_COLUMNS) {
+      continue;
+    }
+    MapTile mapTile = GetMapTile(levelData, newRow, newColumn);
+    if (mapTile == TILE_WALL || mapTile == TILE_GHOST_DOOR) {
+      continue;
+    }
+    validDirections[validDirectionCount] = possibleDirection;
+    validDirectionCount += 1;
+  }
+  if (validDirectionCount > 0) {
+    Direction chosenDirection = validDirections[rand() % validDirectionCount];
+    ghost->currentDirection = chosenDirection;
+    ghostVelocity->deltaRow = DirectionToDeltaRow(chosenDirection);
+    ghostVelocity->deltaColumn = DirectionToDeltaColumn(chosenDirection);
+  }
+}
+
 static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
                                   int targetColumn, LevelData *levelData) {
   Position *position = ECS_GetPosition(ghostEntity);
@@ -59,6 +99,11 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
     int newRow = position->row + DirectionToDeltaRow(candidateDirection);
     int newColumn =
         position->column + DirectionToDeltaColumn(candidateDirection);
+    // Bounds Check for edge cases, don't go off the map
+    if (newRow < 0 || newRow >= MAP_ROWS || newColumn < 0 ||
+        newColumn >= MAP_COLUMNS) {
+      continue;
+    }
     // Can't move through walls
     MapTile tileAheadOfGhost = GetMapTile(levelData, newRow, newColumn);
     if (tileAheadOfGhost == TILE_WALL) {
@@ -165,35 +210,6 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
     *targetColumn = playerPosition->column;
     break;
   }
-  }
-}
-static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
-  Position *ghostPosition = ECS_GetPosition(ghostEntity);
-  Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
-  Ghost *ghost = ECS_GetGhost(ghostEntity);
-  Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
-  Direction validDirections[4];
-  int validDirectionCount = 0;
-  for (int i = 0; i < 4; i++) {
-    Direction possibleDirection = directions[i];
-    if (possibleDirection == OppositeDirection(ghost->currentDirection)) {
-      continue;
-    }
-    int newRow = ghostPosition->row + DirectionToDeltaRow(possibleDirection);
-    int newColumn =
-        ghostPosition->column + DirectionToDeltaColumn(possibleDirection);
-    MapTile mapTile = GetMapTile(levelData, newRow, newColumn);
-    if (mapTile == TILE_WALL || mapTile == TILE_GHOST_DOOR) {
-      continue;
-    }
-    validDirections[validDirectionCount] = possibleDirection;
-    validDirectionCount += 1;
-  }
-  if (validDirectionCount > 0) {
-    Direction chosenDirection = validDirections[rand() % validDirectionCount];
-    ghost->currentDirection = chosenDirection;
-    ghostVelocity->deltaRow = DirectionToDeltaRow(chosenDirection);
-    ghostVelocity->deltaColumn = DirectionToDeltaColumn(chosenDirection);
   }
 }
 void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
