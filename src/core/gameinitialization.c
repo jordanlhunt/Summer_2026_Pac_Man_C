@@ -60,7 +60,7 @@ bool InitializeGhosts(GameContext *gameContext) {
     int spawnColumn;
     GhostMode initialMode;
   } ghostData[GHOST_COUNT] = {
-      // Designated initializers for accuracy and clarity
+      // Designated initializers for accuracy and clarity, I like this method
       // [https://gcc.gnu.org/onlinedocs/gcc/Designated-Inits.html]
       {
           .ghostType = GHOSTTYPE_BLINKY,
