@@ -37,7 +37,7 @@ else
     LIBRARY_FLAGS = -lSDL2 -lm -lSDL2_image -lSDL2_mixer -lSDL2_ttf
     CLEAN_CMD = rm -f $(OBJ_Name)
 endif
-# ----------------------------------------
+
 
 OBJS = $(SRCS)
 
