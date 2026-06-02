@@ -251,6 +251,7 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     case GHOSTMODE_FRIGHTENED: {
       if (gameContext->isFrightenedGhostModeActive == false) {
         ghost->ghostMode = GHOSTMODE_SCATTER;
+        ghostVelocity->tilesPerSecond = GHOST_SPEED_FRIGHTENED;
       } else {
 
         MoveGhostRandomly(activeEntity, &gameContext->levelData);
