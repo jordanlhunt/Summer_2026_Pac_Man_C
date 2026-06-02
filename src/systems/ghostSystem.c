@@ -26,16 +26,21 @@ static int DirectionToDeltaColumn(Direction direction) {
 }
 static Direction OppositeDirection(Direction direction) {
   switch (direction) {
-  case UP:
+  case UP: {
     return DOWN;
-  case DOWN:
+  }
+  case DOWN: {
     return UP;
-  case LEFT:
+  }
+  case LEFT: {
     return RIGHT;
-  case RIGHT:
+  }
+  case RIGHT: {
     return LEFT;
-  default:
+  }
+  default: {
     return ZERO_DIRECTION;
+  }
   }
 }
 static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
@@ -75,21 +80,23 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
     ghost->currentDirection = chosenDirection;
     ghostVelocity->deltaRow = DirectionToDeltaRow(chosenDirection);
     ghostVelocity->deltaColumn = DirectionToDeltaColumn(chosenDirection);
+    ghostPosition->offsetX = 0.0f;
+    ghostPosition->offsetY = 0.0f;
   }
 }
 
 static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
                                   int targetColumn, LevelData *levelData) {
-  Position *position = ECS_GetPosition(ghostEntity);
-  Velocity *velocity = ECS_GetVelocity(ghostEntity);
+  Position *ghostPosition = ECS_GetPosition(ghostEntity);
+  Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
 
   // Only change direction when centered on a tile to fix the jitter. It was
   // changing direction every frame
-  if (IsCenteredOnTile(position) == false) {
+  if (IsCenteredOnTile(ghostPosition) == false) {
     return;
   }
-  // Testing Purposes
+  // TODO: Remove this after BLINKY is working
   if (ghost->ghostType != GHOSTTYPE_BLINKY) {
     return;
   }
@@ -102,9 +109,9 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
     if (candidateDirection == OppositeDirection(ghost->currentDirection)) {
       continue;
     }
-    int newRow = position->row + DirectionToDeltaRow(candidateDirection);
+    int newRow = ghostPosition->row + DirectionToDeltaRow(candidateDirection);
     int newColumn =
-        position->column + DirectionToDeltaColumn(candidateDirection);
+        ghostPosition->column + DirectionToDeltaColumn(candidateDirection);
     // Bounds Check for edge cases, don't go off the map
     if (newRow < 0 || newRow >= MAP_ROWS || newColumn < 0 ||
         newColumn >= MAP_COLUMNS) {
@@ -127,8 +134,11 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
   }
   if (directionToTarget != ZERO_DIRECTION) {
     ghost->currentDirection = directionToTarget;
-    velocity->deltaRow = DirectionToDeltaRow(directionToTarget);
-    velocity->deltaColumn = DirectionToDeltaColumn(directionToTarget);
+    ghostVelocity->deltaRow = DirectionToDeltaRow(directionToTarget);
+    ghostVelocity->deltaColumn = DirectionToDeltaColumn(directionToTarget);
+    // Snap Ghost to center on a turn
+    ghostPosition->offsetX = 0.0f;
+    ghostPosition->offsetY = 0.0f;
   }
 }
 // After being eaten, turn into eyes and return from current position back into
