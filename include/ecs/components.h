@@ -9,6 +9,13 @@
 #define RELEASE_THRESHOLD_INKY 30
 #define RELEASE_THRESHOLD_CLYDE 90
 typedef enum Direction { ZERO_DIRECTION, UP, DOWN, LEFT, RIGHT } Direction;
+typedef enum RenderLayer {
+  RENDERLAYER_BACKGROUND,
+  RENDERLAYER_EDIBLE,
+  RENDERLAYER_GHOST,
+  RENDERLAYER_PLAYER,
+  RENDERLAYER_NUMBER_OF_LAYERS
+} RenderLayer;
 typedef struct Position {
   int row;
   int column;

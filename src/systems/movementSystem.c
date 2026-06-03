@@ -73,6 +73,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
+        position->offsetY = 0.0f;
       } else {
         position->offsetX = 0.0f;
       }
@@ -94,6 +95,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
+        position->offsetY = 0.0f;
       } else {
         position->offsetX = 0.0f;
       }
@@ -114,6 +116,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (isBlocked) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
+        position->offsetX = 0.0f;
         position->offsetY = 0.0f;
       } else {
         position->offsetY = 0.0f;
@@ -135,6 +138,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (isBlocked) {
         velocity->deltaRow = 0;
         velocity->deltaColumn = 0;
+        position->offsetX = 0.0f;
         position->offsetY = 0.0f;
       } else {
         position->offsetY = 0.0f;
