@@ -74,7 +74,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
       } else {
-        position->offsetX -= TILE_SIZE;
+        position->offsetX = 0.0f;
       }
     }
     // LEFT
@@ -95,7 +95,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetX = 0.0f;
       } else {
-        position->offsetX += TILE_SIZE;
+        position->offsetX = 0.0f;
       }
     }
     // Down
@@ -116,7 +116,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetY = 0.0f;
       } else {
-        position->offsetY -= TILE_SIZE;
+        position->offsetY = 0.0f;
       }
     }
     // Up
@@ -137,7 +137,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         velocity->deltaColumn = 0;
         position->offsetY = 0.0f;
       } else {
-        position->offsetY += TILE_SIZE;
+        position->offsetY = 0.0f;
       }
     }
     if (isPlayer) {
