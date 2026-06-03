@@ -1,7 +1,9 @@
 #include "../../include/systems/renderSystem.h"
 void RenderSystem(GameContext *gameContext, SDL_Renderer *renderer) {
+  (void)renderer;
+  (void)gameContext;
   int activeEntitiesCount = ECS_GetActiveEntitiesCount();
-  for (int layer = 0; layer < RENDERLAYER_NUMBER_OF_LAYERS; layer++) {
+  for (RenderLayer layer = 0; layer < RENDERLAYER_NUMBER_OF_LAYERS; layer++) {
     for (int i = 0; i < activeEntitiesCount; i++) {
       Entity activeEntity = ECS_GetActiveEntity(i);
       if (ECS_HasComponents(activeEntity, COMPONENT_POSITION |

@@ -1,5 +1,8 @@
 #include "../include/main.h"
 int main(int argc, char *argv[]) {
+  (void)argc;
+  (void)argv;
+
   SDLContext sdlContext = {0};
   GameContext gameContext = {0};
   if (InitializeSDL(&sdlContext) == false) {

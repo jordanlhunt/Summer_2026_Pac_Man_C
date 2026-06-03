@@ -1,6 +1,39 @@
 #include "../../include/systems/collisionSystem.h"
 #include <stdio.h>
+static Entity FindEdibleAt(int row, int column) {
+  int activeCount = ECS_GetActiveEntitiesCount();
+  Entity edibleEntity;
+  for (int i = 0; i < activeCount; i++) {
+    edibleEntity = ECS_GetActiveEntity(i);
+    if (ECS_HasComponents(edibleEntity,
+                          COMPONENT_POSITION | COMPONENT_EDIBLE) == true) {
+      Position *ediblePosition = ECS_GetPosition(edibleEntity);
+      if (ediblePosition->row == row && ediblePosition->column == column) {
+        return edibleEntity;
+      }
+    }
+  }
+  return ENTITY_NULL;
+}
+// *Consume* is a PAC-MAN pun. I would usually use "handle"
+static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
+  Edible *justEatenEdible = ECS_GetEdible(edibleEntity);
+  gameContext->currentScore += justEatenEdible->scoreValue;
+  if (justEatenEdible->typeEaten == POWER_PELLET ||
+      justEatenEdible->typeEaten == DOT) {
+    ReduceRemainingPellets(gameContext);
+  }
+  if (justEatenEdible->typeEaten == POWER_PELLET) {
+    TriggerFrightenedMode(gameContext);
+  }
+  ECS_DestroyEntity(edibleEntity);
+  if (gameContext->isRoundWon == false) {
+    CheckForRoundWon(gameContext);
+  }
+}
+
 void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
+  (void)renderer;
   Entity playerEntity = gameContext->playerEntity;
   if (ECS_HasComponent(playerEntity, COMPONENT_POSITION) == false) {
     return;
@@ -43,36 +76,5 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       TriggerPlayerDeath(gameContext);
       printf("[collision.c] - PAC-MAN has collided with a Ghost!\n");
     }
-  }
-}
-static Entity FindEdibleAt(int row, int column) {
-  int activeCount = ECS_GetActiveEntitiesCount();
-  Entity edibleEntity;
-  for (int i = 0; i < activeCount; i++) {
-    edibleEntity = ECS_GetActiveEntity(i);
-    if (ECS_HasComponents(edibleEntity,
-                          COMPONENT_POSITION | COMPONENT_EDIBLE) == true) {
-      Position *ediblePosition = ECS_GetPosition(edibleEntity);
-      if (ediblePosition->row == row && ediblePosition->column == column) {
-        return edibleEntity;
-      }
-    }
-  }
-  return ENTITY_NULL;
-}
-// *Consume* is a PAC-MAN pun. I would usually use "handle"
-static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
-  Edible *justEatenEdible = ECS_GetEdible(edibleEntity);
-  gameContext->currentScore += justEatenEdible->scoreValue;
-  if (justEatenEdible->typeEaten == POWER_PELLET ||
-      justEatenEdible->typeEaten == DOT) {
-    ReduceRemainingPellets(gameContext);
-  }
-  if (justEatenEdible->typeEaten == POWER_PELLET) {
-    TriggerFrightenedMode(gameContext);
-  }
-  ECS_DestroyEntity(edibleEntity);
-  if (gameContext->isRoundWon == false) {
-    CheckForRoundWon(gameContext);
   }
 }

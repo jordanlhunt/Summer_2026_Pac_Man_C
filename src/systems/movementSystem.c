@@ -9,6 +9,8 @@ static bool IsTileBlockedForEntity(MapTile tile, bool isGhost) {
   return false;
 }
 void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
+  (void)renderer;
+
   int activeEntityCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntityCount; i++) {
     Entity activeEntity = ECS_GetActiveEntity(i);
@@ -21,7 +23,6 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
       continue;
     }
-    bool isPlayer = ECS_HasComponent(activeEntity, COMPONENT_PLAYER_CONTROLLED);
     bool isGhost = ECS_HasComponents(activeEntity, COMPONENT_GHOST);
     // tilesPersecond is 10.0 and deltaTime should be 0.016 (one frame at 60FPS)
     float distanceToMoveEntity =
@@ -143,10 +144,6 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       } else {
         position->offsetY = 0.0f;
       }
-    }
-    if (isPlayer) {
-      printf("[movement.c] - player Row = %d, player Column = %d\n",
-             position->row, position->column);
     }
   }
 }

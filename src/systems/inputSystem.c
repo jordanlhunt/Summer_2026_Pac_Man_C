@@ -3,6 +3,7 @@
 // described in dossier CH2_Cornering
 
 void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
+  (void)renderer;
   if (!ECS_HasComponent(gameContext->playerEntity,
                         COMPONENT_PLAYER_CONTROLLED)) {
     printf(

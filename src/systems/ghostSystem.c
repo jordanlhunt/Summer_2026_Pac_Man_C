@@ -229,6 +229,7 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
   }
 }
 void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
+  (void)renderer;
   int activeEntitiesCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntitiesCount; i++) {
     Entity activeEntity = ECS_GetActiveEntity(i);

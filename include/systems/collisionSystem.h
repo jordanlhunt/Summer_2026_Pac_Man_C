@@ -6,6 +6,4 @@
 typedef struct GameContext GameContext;
 typedef struct SDL_Renderer SDL_Renderer;
 void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer);
-static Entity FindEdibleAt(int row, int column);
-static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity);
 #endif
