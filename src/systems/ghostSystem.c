@@ -96,10 +96,6 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
   if (IsCenteredOnTile(ghostPosition) == false) {
     return;
   }
-  // TODO: Remove this after BLINKY is working
-  if (ghost->ghostType != GHOSTTYPE_BLINKY) {
-    return;
-  }
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
   Direction directionToTarget = ZERO_DIRECTION;
   int bestDistanceToTarget = INT_MAX;
