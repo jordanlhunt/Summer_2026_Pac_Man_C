@@ -27,6 +27,7 @@ typedef struct Renderable {
   int alpha;
   int width;
   int height;
+  RenderLayer renderLayer;
 } Renderable;
 typedef struct PlayerControlled {
   Direction currentDirection;
