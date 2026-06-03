@@ -23,6 +23,20 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
       continue;
     }
+
+    // Check if inside the tunnel and wrap around if so
+    if (position->row == TUNNEL_ROW) {
+      if (position->column <= TUNNEL_ROW_LEFT_SIDE &&
+          velocity->deltaColumn < 0) {
+        position->column = TUNNEL_ROW_RIGHT_SIDE;
+        position->offsetX = 0.0f;
+      } else if (position->column >= TUNNEL_ROW_RIGHT_SIDE &&
+                 velocity->deltaColumn > 0) {
+        position->column = TUNNEL_ROW_LEFT_SIDE + 1;
+        position->offsetX = 0.0f;
+      }
+    }
+
     bool isGhost = ECS_HasComponents(activeEntity, COMPONENT_GHOST);
     // tilesPersecond is 10.0 and deltaTime should be 0.016 (one frame at 60FPS)
     float distanceToMoveEntity =
@@ -41,6 +55,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         position->offsetY = 0.0f;
         continue;
       }
+
       // Look ahead
       MapTile nextTile =
           GetMapTile(&gameContext->levelData, nextRow, nextColumn);

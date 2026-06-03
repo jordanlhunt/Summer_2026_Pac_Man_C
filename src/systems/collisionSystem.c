@@ -75,6 +75,7 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       // Player dies
       TriggerPlayerDeath(gameContext);
       printf("[collision.c] - PAC-MAN has collided with a Ghost!\n");
+      break;
     }
   }
 }

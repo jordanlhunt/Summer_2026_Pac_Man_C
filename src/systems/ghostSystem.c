@@ -47,6 +47,10 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
+
+  if (ghost->ghostType != 6) {
+    return;
+  }
   // Only change direction when centered on a tile to fix the jitter. It was
   // changing direction every frame
   if (IsCenteredOnTile(ghostPosition) == false) {
@@ -248,9 +252,9 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     case GHOSTMODE_FRIGHTENED: {
       if (gameContext->isFrightenedGhostModeActive == false) {
         ghost->ghostMode = GHOSTMODE_SCATTER;
-        ghostVelocity->tilesPerSecond = GHOST_SPEED_FRIGHTENED;
+        ghostVelocity->tilesPerSecond = GHOST_SPEED;
       } else {
-
+        ghostVelocity->tilesPerSecond = GHOST_SPEED_FRIGHTENED;
         MoveGhostRandomly(activeEntity, &gameContext->levelData);
       }
       break;
