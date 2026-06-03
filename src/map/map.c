@@ -81,6 +81,7 @@ void LoadMap(LevelData *levelData, const char *filePath) {
             dotRenderData->alpha = 255;
             dotRenderData->width = MAP_GRID_CELL_SIZE;
             dotRenderData->height = MAP_GRID_CELL_SIZE;
+            dotRenderData->renderLayer = RENDERLAYER_EDIBLE;
             Position *dotPosition = ECS_GetPosition(dotEntity);
             dotPosition->row = row;
             dotPosition->column = column;
@@ -103,6 +104,7 @@ void LoadMap(LevelData *levelData, const char *filePath) {
             powerPelletRenderData->alpha = 255;
             powerPelletRenderData->width = MAP_GRID_CELL_SIZE;
             powerPelletRenderData->height = MAP_GRID_CELL_SIZE;
+            powerPelletRenderData->renderLayer = RENDERLAYER_EDIBLE;
             Position *powerPelletPosition = ECS_GetPosition(powerPelletEntity);
             powerPelletPosition->row = row;
             powerPelletPosition->column = column;

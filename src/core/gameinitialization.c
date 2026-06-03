@@ -45,6 +45,7 @@ bool InitializePlayer(GameContext *gameContext, Entity player) {
   renderData->alpha = 255;
   renderData->width = MAP_GRID_CELL_SIZE;
   renderData->height = MAP_GRID_CELL_SIZE;
+  renderData->renderLayer = RENDERLAYER_PLAYER;
   return true;
 }
 bool InitializeGhosts(GameContext *gameContext) {
@@ -140,6 +141,7 @@ bool InitializeGhosts(GameContext *gameContext) {
     renderData->alpha = 255;
     renderData->width = MAP_GRID_CELL_SIZE;
     renderData->height = MAP_GRID_CELL_SIZE;
+    renderData->renderLayer = RENDERLAYER_GHOST;
   }
   return true;
 }
