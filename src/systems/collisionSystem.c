@@ -9,10 +9,6 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     printf("[collisionSystem.c] - Object does not have velocity component");
     return;
   }
-  Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
-  if (velocity->deltaRow == 0 && velocity->deltaColumn == 0) {
-    return;
-  }
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
   Entity edible = FindEdibleAt(playerPosition->row, playerPosition->column);
   if (edible != ENTITY_NULL) {

@@ -103,7 +103,7 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
   Direction directionToTarget = ZERO_DIRECTION;
   int bestDistanceToTarget = INT_MAX;
-  for (int i = 0; i < (sizeof(directions) / sizeof(directions[0])); i++) {
+  for (size_t i = 0; i < (sizeof(directions) / sizeof(directions[0])); i++) {
     Direction candidateDirection = directions[i];
     // No backwards movement is allowed for ghosts
     if (candidateDirection == OppositeDirection(ghost->currentDirection)) {
