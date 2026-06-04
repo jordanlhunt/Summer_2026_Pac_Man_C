@@ -253,6 +253,10 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       if (gameContext->isFrightenedGhostModeActive == false) {
         ghost->ghostMode = GHOSTMODE_SCATTER;
         ghostVelocity->tilesPerSecond = GHOST_SPEED;
+        // Remove the edible component
+        if(ECS_HasComponent(activeEntity,COMPONENT_EDIBLE) == true){
+            ECS_RemoveComponent(activeEntity, COMPONENT_EDIBLE);
+        }
       } else {
         ghostVelocity->tilesPerSecond = GHOST_SPEED_FRIGHTENED;
         MoveGhostRandomly(activeEntity, &gameContext->levelData);
@@ -263,7 +267,14 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     case GHOSTMODE_SCATTER: {
       if (gameContext->isFrightenedGhostModeActive == true) {
         ghost->ghostMode = GHOSTMODE_FRIGHTENED;
+
+        // When Frigtened it is now edible
+        ECS_AddComponent(activeEntity,COMPONENT_EDIBLE);
+        Edible *edibleGhost= ECS_GetEdible(activeEntity);
+        edibleGhost->typeEaten = FRIGHTENED_GHOST;
+        edibleGhost->scoreValue = BASE_GHOST_SCORE;
         MoveGhostRandomly(activeEntity, &gameContext->levelData);
+
       } else if (gameContext->currentGhostMode == GHOSTMODE_SCATTER) {
         ghost->ghostMode = GHOSTMODE_SCATTER;
         MoveGhostTowardTarget(activeEntity, ghost->scatterTargetRow,

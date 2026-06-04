@@ -26,6 +26,13 @@ static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
   if (justEatenEdible->typeEaten == POWER_PELLET) {
     TriggerFrightenedMode(gameContext);
   }
+  if(justEatenEdible->typeEaten == FRIGHTENED_GHOST){
+      Ghost *ghost = ECS_GetGhost(edibleEntity);
+      ghost->ghostMode = GHOSTMODE_EATEN_EYES;
+      printf("[collision.c] - A frightened ghost has been eaten! Current "
+             "Score: %d\n",
+             gameContext->currentScore);
+  }
   ECS_DestroyEntity(edibleEntity);
   if (gameContext->isRoundWon == false) {
     CheckForRoundWon(gameContext);
@@ -58,21 +65,17 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     if (activeEntity == playerEntity) {
       continue;
     }
+
+Ghost *ghost = ECS_GetGhost(activeEntity);
     Position *ghostPosition = ECS_GetPosition(activeEntity);
+
     if (ghostPosition->row != playerPosition->row ||
         ghostPosition->column != playerPosition->column) {
       continue;
     }
-    // Player has collided with a frightened ghost
-    if (gameContext->isFrightenedGhostModeActive == true) {
-      gameContext->currentScore += BASE_GHOST_SCORE;
-      Ghost *ghost = ECS_GetGhost(activeEntity);
-      ghost->ghostMode = GHOSTMODE_EATEN_EYES;
-      printf("[collision.c] - A frightened ghost has been eaten! Current "
-             "Score: %d\n",
-             gameContext->currentScore);
-      break;
-    } else {
+    // Kill the player if the player collides with a NOT frightened and NOT EYE_MODE ghost
+  if(ghost->ghostMode != GHOST_MODE_FRIGHTENED &&
+          ghost->ghostMode != GHOST_MODE_EATEN_EYES)
       // Player dies
       TriggerPlayerDeath(gameContext);
       printf("[collision.c] - PAC-MAN has collided with a Ghost!\n");
