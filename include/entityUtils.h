@@ -17,7 +17,4 @@ static inline bool IsGhostCentered(Position *entityPosition) {
          fabsf(entityPosition->offsetY) < GHOST_TURN_TOLERANCE;
 }
 
-// Keep old name for compatibility if needed, or replace all calls
-#define IsCenteredOnTile(p) IsGhostCentered(p) // default to ghost behavior
-
 #endif
