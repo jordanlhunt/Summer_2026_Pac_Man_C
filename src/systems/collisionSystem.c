@@ -71,6 +71,7 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       printf("[collision.c] - A frightened ghost has been eaten! Current "
              "Score: %d\n",
              gameContext->currentScore);
+      break;
     } else {
       // Player dies
       TriggerPlayerDeath(gameContext);

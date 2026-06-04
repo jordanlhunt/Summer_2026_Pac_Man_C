@@ -42,7 +42,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     float distanceToMoveEntity =
         velocity->tilesPerSecond * gameContext->deltaTime;
     // Make sure step ahead is valid before starting on new tile
-    if (IsCenteredOnTile(position)) {
+    if (IsGhostCentered(position)) {
       int nextRow = position->row + velocity->deltaRow;
       int nextColumn = position->column + velocity->deltaColumn;
       bool isOutOfBounds = (nextRow < 0 || nextRow >= MAP_ROWS ||

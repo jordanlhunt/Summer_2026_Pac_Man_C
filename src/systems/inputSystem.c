@@ -31,7 +31,7 @@ void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (requestedDeltaColumn == 0 && requestedDeltaRow == 0) {
     return;
   }
-  if (IsCenteredOnTile(position) == false) {
+  if (IsPlayerCentered(position) == false) {
     return;
   }
   // check the next tile ahead is not a wall or a GHOSTDOOR

@@ -53,7 +53,7 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   }
   // Only change direction when centered on a tile to fix the jitter. It was
   // changing direction every frame
-  if (IsCenteredOnTile(ghostPosition) == false) {
+  if (IsGhostCentered(ghostPosition) == false) {
     return;
   }
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
@@ -97,7 +97,7 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
 
   // Only change direction when centered on a tile to fix the jitter. It was
   // changing direction every frame
-  if (IsCenteredOnTile(ghostPosition) == false) {
+  if (IsGhostCentered(ghostPosition) == false) {
     return;
   }
   Direction directions[4] = {UP, DOWN, LEFT, RIGHT};
