@@ -160,5 +160,8 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         position->offsetY = 0.0f;
       }
     }
+    // Clamp to prevent floating point errors
+    position->offsetX = fmaxf(fminf(position->offsetX, TILE_SIZE), -TILE_SIZE);
+    position->offsetY = fmaxf(fminf(position->offsetY, TILE_SIZE), -TILE_SIZE);
   }
 }
