@@ -47,10 +47,6 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
-
-  if (ghost->ghostType != 6) {
-    return;
-  }
   // Only change direction when centered on a tile to fix the jitter. It was
   // changing direction every frame
   if (IsGhostCentered(ghostPosition) == false) {
@@ -90,7 +86,8 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
 }
 
 static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
-                                  int targetColumn, LevelData *levelData) {
+                                  int targetColumn, LevelData *levelData,
+                                  bool canPassThroughGhostDoor) {
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
@@ -122,7 +119,8 @@ static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
     if (tileAheadOfGhost == TILE_WALL) {
       continue;
     }
-    if (tileAheadOfGhost == TILE_GHOST_DOOR) {
+    if (tileAheadOfGhost == TILE_GHOST_DOOR &&
+        canPassThroughGhostDoor == false) {
       continue;
     }
     int distanceSquared =
@@ -148,8 +146,10 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
   Ghost *ghost = ECS_GetGhost(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   ghostVelocity->tilesPerSecond = GHOST_SPEED_EYES;
+  // As a eyes it can pass through the ghost door
   MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
-                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData);
+                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
+                        true);
   // Enter the ghost house and reset the ghost to scatter to get back at it.
   if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
       ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
@@ -172,8 +172,10 @@ static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
     return;
   }
   ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
+  // Leaving ghost needs to be be able to pass through the door
   MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
-                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData);
+                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
+                        true);
   if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
       ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
     ghost->ghostMode = GHOSTMODE_SCATTER;
@@ -284,14 +286,14 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         ghost->ghostMode = GHOSTMODE_SCATTER;
         MoveGhostTowardTarget(activeEntity, ghost->scatterTargetRow,
                               ghost->scatterTargetColumn,
-                              &gameContext->levelData);
+                              &gameContext->levelData, false);
       } else {
         ghost->ghostMode = GHOSTMODE_CHASE;
         int targetRow = 0;
         int targetColumn = 0;
         GetChaseTarget(activeEntity, gameContext, &targetRow, &targetColumn);
         MoveGhostTowardTarget(activeEntity, targetRow, targetColumn,
-                              &gameContext->levelData);
+                              &gameContext->levelData, false);
       }
       break;
     }
