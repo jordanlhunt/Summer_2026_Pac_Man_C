@@ -32,7 +32,10 @@ static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
     printf("[collision.c] - A frightened ghost has been eaten! Current "
            "Score: %d\n",
            gameContext->currentScore);
+    // Don't destroy FRIGRENED_GHOSTS because they must remain on the map
+    return;
   }
+  // Destroy Dots, Power Pellets, and/or fruit
   ECS_DestroyEntity(edibleEntity);
   if (gameContext->isRoundWon == false) {
     CheckForRoundWon(gameContext);
