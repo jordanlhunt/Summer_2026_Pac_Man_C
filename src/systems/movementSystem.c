@@ -32,7 +32,7 @@ void MovementSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         position->offsetX = 0.0f;
       } else if (position->column >= TUNNEL_ROW_RIGHT_SIDE &&
                  velocity->deltaColumn > 0) {
-        position->column = TUNNEL_ROW_LEFT_SIDE + 1;
+        position->column = TUNNEL_ROW_LEFT_SIDE;
         position->offsetX = 0.0f;
       }
     }

@@ -80,6 +80,9 @@ void TriggerPlayerDeath(GameContext *gameContext) {
   if (gameContext == NULL) {
     return;
   }
+  if (gameContext->isGameOver == true) {
+    return;
+  }
   gameContext->playerLives -= 1;
   printf("[gamecontext.c] - Player has died. Lives remaining: %d\n",
          gameContext->playerLives);

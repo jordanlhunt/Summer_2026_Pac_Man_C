@@ -54,9 +54,12 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   }
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
   Entity edible = FindEdibleAt(playerPosition->row, playerPosition->column);
+  // Eat Frightened Ghosts, Dots, Power Pellets, and/or fruit
   if (edible != ENTITY_NULL) {
     ConsumeEdibleEntity(gameContext, edible);
   }
+
+  // Player colliding with Ghosts
   int activeEntitesCount = ECS_GetActiveEntitiesCount();
   for (int i = 0; i < activeEntitesCount; i++) {
     Entity activeEntity = ECS_GetActiveEntity(i);
@@ -83,7 +86,7 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
       // Player dies
       TriggerPlayerDeath(gameContext);
       printf("[collision.c] - PAC-MAN has collided with a Ghost!\n");
-      break;
+      return;
     }
   }
 }
