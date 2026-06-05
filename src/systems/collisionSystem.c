@@ -85,7 +85,6 @@ void CollisionSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         ghost->ghostMode != GHOSTMODE_EATEN_EYES) {
       // Player dies
       TriggerPlayerDeath(gameContext);
-      printf("[collision.c] - PAC-MAN has collided with a Ghost!\n");
       return;
     }
   }
