@@ -5,7 +5,7 @@
 #include "ecs/components.h"
 
 #define PLAYER_TURN_TOLERANCE 0.5f
-#define GHOST_TURN_TOLERANCE 0.04f
+#define GHOST_TURN_TOLERANCE 0.4f
 
 static inline bool IsPlayerCentered(Position *entityPosition) {
   return fabsf(entityPosition->offsetX) < PLAYER_TURN_TOLERANCE &&
