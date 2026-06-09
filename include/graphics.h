@@ -15,6 +15,8 @@
 #define GHOST_FLASHING_SPEED 6.0f
 #define GHOST_EYES 5
 
+#define PUBLICPIXELTTF "assets/font/PublicPixel.ttf"
+
 typedef struct SpriteAnimation2Frames {
   SDL_Rect ghostFrames[GHOST_ANIMATION_FRAMES];
 } SpriteAnimation2Frames;
