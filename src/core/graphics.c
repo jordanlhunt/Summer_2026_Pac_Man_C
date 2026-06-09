@@ -371,3 +371,24 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
   SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
                  &destinationRectangle);
 }
+bool InitializeTTF() {
+  if (TTF_Init() == -1) {
+    return false;
+  }
+  globalFont = TTF_Open(PUBLICPIXELTTF);
+  return true;
+}
+void ShutdownGraphics() {
+  if (globalSpriteSheet != NULL) {
+    if (globalSpriteSheet->texture != NULL) {
+      SDL_DestroyTexture(globalSpriteSheet->texture);
+      free(globalSpriteSheet);
+      globalSpriteSheet = NULL;
+    }
+  }
+}
+void ShutdownTTF() {
+  if (globalFont != NULL) {
+    TTF_Quit();
+  }
+}
