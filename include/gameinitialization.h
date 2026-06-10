@@ -1,6 +1,7 @@
 #ifndef GAME_INITIALIZATION_H
 #define GAME_INITIALIZATION_H
 #include "../include/ecs/ecs.h"
+#include "../include/graphics.h"
 #include "../include/map.h"
 #include "../include/systems/collisionSystem.h"
 #include "../include/systems/ghostSystem.h"

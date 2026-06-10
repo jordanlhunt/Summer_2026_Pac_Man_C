@@ -3,6 +3,7 @@
 #define MAP_H
 #include "common.h"
 #include "ecs/ecs.h"
+#include "graphics.h"
 #include "leveldata.h"
 #include "maptile.h"
 #define PATH_TO_MAZE_FILE "./assets/maze.txt"

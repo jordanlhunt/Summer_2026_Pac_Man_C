@@ -4,6 +4,7 @@
 #include "common.h"
 #include "ecs/ecs.h"
 #include "ecs/entity.h"
+#include "graphics.h"
 #include "input.h"
 #include "leveldata.h"
 #define DOT_PELLET_SCORE_VALUE 1

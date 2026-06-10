@@ -10,21 +10,39 @@ void RenderSystem(GameContext *gameContext, SDL_Renderer *renderer) {
                                               COMPONENT_RENDERABLE) == false) {
         continue;
       }
-      Position *position = ECS_GetPosition(activeEntity);
       Renderable *renderData = ECS_GetRenderable(activeEntity);
       // Only render entities on the correct layer
       if (renderData->renderLayer != layer) {
         continue;
       }
-      // Convert position to pixels rather than tiles
-      float pixelX =
-          (position->column + position->offsetX) * MAP_GRID_CELL_SIZE;
-      float pixelY = (position->row + position->offsetY) * MAP_GRID_CELL_SIZE;
-      SDL_Rect renderRect = {(int)pixelX, (int)pixelY, renderData->width,
-                             renderData->height};
-      SDL_SetRenderDrawColor(renderer, renderData->red, renderData->green,
-                             renderData->blue, renderData->alpha);
-      SDL_RenderFillRect(renderer, &renderRect);
+      // Draw Based on component Type
+      if (ECS_HasComponent(activeEntity, COMPONENT_PLAYER_CONTROLLED)) {
+        GraphicsDrawPlayer(renderer, activeEntity, gameContext);
+      } else if (ECS_HasComponent(activeEntity, COMPONENT_GHOST)) {
+        GraphicsDrawGhost(renderer, activeEntity, gameContext);
+
+      }
+      // TODO: Create a Graphics function for Edible (dots, powerPellets,
+      // fruit)
+      else if (ECS_HasComponent(activeEntity, COMPONENT_EDIBLE)) {
+        Position *position = ECS_GetPosition(activeEntity);
+        SDL_Rect sourceRectangle = {
+            (int)((position->column + position->offsetX) * MAP_GRID_CELL_SIZE),
+            (int)((position->row + position->offsetY) * MAP_GRID_CELL_SIZE),
+            renderData->width, renderData->height};
+        SDL_SetRenderDrawColor(renderer, renderData->red, renderData->green,
+                               renderData->blue, renderData->alpha);
+        SDL_RenderFillRect(renderer, &sourceRectangle);
+      } else {
+        Position *position = ECS_GetPosition(activeEntity);
+        SDL_Rect sourceRectangle = {
+            (int)((position->column + position->offsetX) * MAP_GRID_CELL_SIZE),
+            (int)((position->row + position->offsetY) * MAP_GRID_CELL_SIZE),
+            renderData->width, renderData->height};
+        SDL_SetRenderDrawColor(renderer, renderData->red, renderData->green,
+                               renderData->blue, renderData->alpha);
+        SDL_RenderFillRect(renderer, &sourceRectangle);
+      }
     }
   }
 }

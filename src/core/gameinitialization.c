@@ -10,6 +10,11 @@ bool InitializeSDL(SDLContext *sdlContext) {
       SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
   sdlContext->renderer =
       SDL_CreateRenderer(sdlContext->gameWindow, -1, SDL_RENDERER_ACCELERATED);
+  if (InitializeGraphics(sdlContext->renderer, SOURCESPRITESHEETPNG) == false) {
+    printf("[gameinitialization.c] - SDL failed to initialize graphics: %s\n",
+           SDL_GetError());
+    InitializeTTF();
+  }
   return true;
 }
 bool InitializePlayer(GameContext *gameContext, Entity player) {
@@ -153,6 +158,8 @@ void InitializeSystems() {
   ECS_RegisterSystem(RenderSystem);
 }
 void Shutdown(SDLContext *sdlContext) {
+  ShutdownGraphics();
+  ShutdownTTF();
   SDL_DestroyRenderer(sdlContext->renderer);
   SDL_DestroyWindow(sdlContext->gameWindow);
   SDL_Quit();

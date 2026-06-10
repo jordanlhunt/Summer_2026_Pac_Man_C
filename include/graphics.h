@@ -4,8 +4,9 @@
 #include "ecs/components.h"
 #include "ecs/ecs.h"
 #include "ecs/entity.h"
-#include "gamecontext.h"
+#include "leveldata.h"
 #include "maptile.h"
+
 #define GENERAL_SPRITE_SIZE 16
 #define SMALL_SPRITE_SIZE 8
 #define PACMAN_ANIMATION_FRAMES 3
@@ -14,8 +15,12 @@
 #define GHOST_ANIMATION_FRAMES 2
 #define GHOST_FLASHING_SPEED 6.0f
 #define GHOST_EYES 5
+#define GHOST_DIRECTIONS 5
 
 #define PUBLICPIXELTTF "assets/font/PublicPixel.ttf"
+#define SOURCESPRITESHEETPNG "assets/art/SourceSpriteSheet.png"
+
+typedef struct GameContext GameContext;
 
 typedef struct SpriteAnimation2Frames {
   SDL_Rect ghostFrames[GHOST_ANIMATION_FRAMES];
@@ -24,7 +29,7 @@ typedef struct SpriteAnimation2Frames {
 typedef struct SpriteGroupGhost {
   // Direction Enums is 5: ZERO_DIRECTION will default to RIGHT
   SpriteAnimation2Frames ghostDirections[GHOST_EYES];
-}
+} SpriteGroupGhost;
 
 typedef struct SpriteSheet {
   SDL_Texture *texture;
@@ -39,7 +44,7 @@ typedef struct SpriteSheet {
   SDL_Rect pacmanDown[PACMAN_ANIMATION_FRAMES];
   SDL_Rect pacmanDeath[PACMAN_DEATH_ANIMATION_FRAMES];
   // Ghosts
-  SDL_Rect ghostNormal[GHOST_COUNT][GHOST_DIRECTIONS][GHOST_ANIMATION_FRAMES];
+  SpriteGroupGhost ghostNormal[GHOST_COUNT];
   SDL_Rect ghostFrightened[GHOST_ANIMATION_FRAMES];
   SDL_Rect ghostFlashing[GHOST_ANIMATION_FRAMES];
   SDL_Rect ghostEyes[GHOST_EYES];
@@ -68,13 +73,12 @@ typedef struct SpriteSheet {
 } SpriteSheet;
 extern TTF_Font *globalFont;
 extern SpriteSheet *globalSpriteSheet;
-// pointer to GameContext for deltaTime
 
 bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath);
 bool InitializeTTF();
 void ShutdownGraphics();
 void ShutdownTTF();
-void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile);
+void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y);
 void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
                        GameContext *gameContext);
 void GraphicsDrawPlayer(SDL_Renderer *renderer, Entity playerEntity,

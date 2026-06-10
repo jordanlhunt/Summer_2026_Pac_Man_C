@@ -149,12 +149,13 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
       case TILE_WALL:
         // Walls are Blue
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_RenderFillRect(renderer, &tileRect);
         break;
       case TILE_GHOST_DOOR:
         // Ghost Door is Pink
         // TODO: Look at official Pac-Man game and make it whatever the game
         // actually is
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        GraphicsDrawTile(renderer, TILE_GHOST_DOOR, tileRect.x, tileRect.y);
         break;
       case TILE_GHOST:
         // Ghosts are RED for now. For testing purposes only
@@ -176,7 +177,6 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
       default:
         break;
       }
-      SDL_RenderFillRect(renderer, &tileRect);
     }
   }
 }

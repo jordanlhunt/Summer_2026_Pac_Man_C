@@ -1,12 +1,15 @@
 #include "../../include/graphics.h"
+#include "../../include/gamecontext.h"
 SpriteSheet *globalSpriteSheet = NULL;
 TTF_Font *globalFont = NULL;
 // PAC-MAN Animation State
 static float staticPacmanAnimationTimer = 0.0f;
-static int staticPacmanCurrentFrame;
+static int staticPacmanCurrentFrame = 0;
 // Ghost Animation State
+static float staticGhostFrightTimer = 0.0f;
 static float staticGhostFlashTimer = 0.0f;
 static int staticGhostFlashFrame = 0;
+static int staticGhostFrightFrame = 0;
 bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
   SDL_Surface *sourceSpriteSheetSurface = IMG_Load(spriteSheetPath);
   if (sourceSpriteSheetSurface == NULL) {
@@ -72,130 +75,134 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
   // BLINKY
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[RIGHT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){456, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[RIGHT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){472, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[LEFT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){488, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[LEFT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){504, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[UP]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){520, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[UP]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){536, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[DOWN]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){552, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_BLINKY]
       .ghostDirections[DOWN]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){568, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // PINKY
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[RIGHT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){456, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[RIGHT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){472, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[LEFT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){488, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[LEFT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){504, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[UP]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){520, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[UP]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){536, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[DOWN]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){552, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_PINKY]
       .ghostDirections[DOWN]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){568, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // INKY
   globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
       .ghostDirections[RIGHT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){456, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
       .ghostDirections[RIGHT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){472, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
       .ghostDirections[LEFT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){488, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
       .ghostDirections[LEFT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){504, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
-  globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY].ghostDirections[UP].frames[0] =
+  globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
+      .ghostDirections[UP]
+      .ghostFrames[0] =
       (SDL_Rect){520, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
-  globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY].ghostDirections[UP].frames[1] =
+  globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
+      .ghostDirections[UP]
+      .ghostFrames[1] =
       (SDL_Rect){536, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
       .ghostDirections[DOWN]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){552, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_INKY]
       .ghostDirections[DOWN]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){568, 96, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // CLYDE
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[RIGHT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){456, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[RIGHT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){472, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[LEFT]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){488, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[LEFT]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){504, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[UP]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){520, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[UP]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){536, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[DOWN]
-      .frames[0] =
+      .ghostFrames[0] =
       (SDL_Rect){552, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostNormal[GHOSTTYPE_CLYDE]
       .ghostDirections[DOWN]
-      .frames[1] =
+      .ghostFrames[1] =
       (SDL_Rect){568, 112, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // Populate ZERO_DIRECTION fallbacks to prevent undefined behavior issues
   for (int i = 0; i < GHOST_COUNT; i++) {
@@ -267,7 +274,7 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
       (SDL_Rect){488, 144, GENERAL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
   return true;
 }
-void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile) {
+void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y) {
   SDL_Rect sourceRectangle;
   switch (tile) {
   case TILE_DOT: {
@@ -278,15 +285,17 @@ void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile) {
     sourceRectangle = globalSpriteSheet->powerPellet;
     break;
   }
+  case TILE_GHOST_DOOR: {
+    sourceRectangle = globalSpriteSheet->ghostDoor;
+    break;
   }
-case TILE_GHOST_DOOR: {
-  sourceRectangle = globalSpriteSheet->ghostDoor;
-  break;
-}
-default:
-  return;
-}
-SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle, NULL);
+  default:
+    return;
+  }
+  SDL_Rect destinationRectangle = {x, y, MAP_GRID_CELL_SIZE,
+                                   MAP_GRID_CELL_SIZE};
+  SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
+                 &destinationRectangle);
 }
 void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
                        GameContext *gameContext) {
@@ -314,7 +323,7 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
   switch (ghostComponent->ghostMode) {
   case GHOSTMODE_EATEN_EYES: {
     Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
-    Direction eyDirection = ZERO_DIRECTION;
+    Direction eyeDirection = ZERO_DIRECTION;
     if (ghostVelocity != NULL) {
       if (ghostVelocity->deltaColumn > 0) {
         eyeDirection = RIGHT;
@@ -356,26 +365,67 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
   default: {
     static int normalFrame = 0;
     static float normalTimer = 0.0f;
-    normalFrame += gameContext->deltaTime;
+    normalTimer += gameContext->deltaTime;
     if (normalTimer >= 0.15f) {
       normalTimer = 0.0f;
       normalFrame = (normalFrame + 1) % 2;
     }
     Direction currentDirection = ghostComponent->currentDirection;
+    if (currentDirection < 0 || currentDirection >= 5) {
+      currentDirection = ZERO_DIRECTION;
+    }
     sourceRectangle = globalSpriteSheet->ghostNormal[ghostIndex]
                           .ghostDirections[currentDirection]
-                          .frames[normalFrame];
+                          .ghostFrames[normalFrame];
     break;
   }
   }
   SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
                  &destinationRectangle);
 }
+void GraphicsDrawPlayer(SDL_Renderer *renderer, Entity playerEntity,
+                        GameContext *gameContext) {
+  if (globalSpriteSheet == NULL) {
+    printf("[graphics.c] - GraphicsDrawPlayer() globalSpriteSheet is NULL\n");
+  }
+  Position *playerPosition = ECS_GetPosition(playerEntity);
+  Velocity *playerVelocity = ECS_GetVelocity(playerEntity);
+  SDL_Rect *animationFrames = NULL;
+  // Point to the start of the array for each Pacman animation sets
+  if (playerVelocity->deltaColumn > 0) {
+    animationFrames = globalSpriteSheet->pacmanRight;
+  } else if (playerVelocity->deltaColumn < 0) {
+    animationFrames = globalSpriteSheet->pacmanLeft;
+  } else if (playerVelocity->deltaRow > 0) {
+    animationFrames = globalSpriteSheet->pacmanDown;
+  } else if (playerVelocity->deltaRow < 0) {
+    animationFrames = globalSpriteSheet->pacmanUp;
+  } else {
+    // Not moving fact right for now. TODO: Face the last direction
+    animationFrames = globalSpriteSheet->pacmanRight;
+  }
+  staticPacmanAnimationTimer += gameContext->deltaTime;
+  if (staticPacmanAnimationTimer >= (1.0f / PACMAN_ANIMATION_FPS)) {
+    staticPacmanAnimationTimer = 0.0f;
+    staticPacmanCurrentFrame =
+        (staticPacmanCurrentFrame + 1) % PACMAN_ANIMATION_FRAMES;
+  }
+  SDL_Rect sourceRectangle = animationFrames[staticPacmanCurrentFrame];
+  SDL_Rect destinationRectangle = {
+      (int)((playerPosition->column + playerPosition->offsetX) *
+            MAP_GRID_CELL_SIZE),
+      (int)((playerPosition->row + playerPosition->offsetY) *
+            MAP_GRID_CELL_SIZE),
+      MAP_GRID_CELL_SIZE, MAP_GRID_CELL_SIZE};
+  SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
+                 &destinationRectangle);
+}
+
 bool InitializeTTF() {
   if (TTF_Init() == -1) {
     return false;
   }
-  globalFont = TTF_Open(PUBLICPIXELTTF);
+  globalFont = TTF_OpenFont(PUBLICPIXELTTF, 12);
   return true;
 }
 void ShutdownGraphics() {
