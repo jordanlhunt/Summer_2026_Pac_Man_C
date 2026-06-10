@@ -211,14 +211,14 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
   }
   // Ghost Frightened
   globalSpriteSheet->ghostFrightened[0] =
-      (SDL_Rect){456, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){584, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostFrightened[1] =
-      (SDL_Rect){472, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){600, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // Ghost Flashing
   globalSpriteSheet->ghostFlashing[0] =
-      (SDL_Rect){488, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){616, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostFlashing[1] =
-      (SDL_Rect){504, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){632, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // Ghost Eyes
   globalSpriteSheet->ghostEyes[RIGHT] =
       (SDL_Rect){520, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
