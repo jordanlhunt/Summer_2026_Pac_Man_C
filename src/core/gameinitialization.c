@@ -154,7 +154,7 @@ void InitializeSystems() {
   ECS_RegisterSystem(InputSystem);
   ECS_RegisterSystem(MovementSystem);
   ECS_RegisterSystem(CollisionSystem);
-  ECS_RegisterSystem(GhostSystem);
+  // ECS_RegisterSystem(GhostSystem);
   ECS_RegisterSystem(RenderSystem);
 }
 void Shutdown(SDLContext *sdlContext) {
