@@ -18,27 +18,37 @@ void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   Velocity *velocity = ECS_GetVelocity(gameContext->playerEntity);
   int requestedDeltaRow = 0;
   int requestedDeltaColumn = 0;
-  if (gameContext->input.moveUp) {
+  // Only consider turning when centered on a tile
+  if (IsPlayerCentered(position) == false) {
+    return;
+  }
+  if (gameContext->pendingDirection == ZERO_DIRECTION) {
+    return;
+  }
+
+  if (gameContext->pendingDirection == UP) {
     requestedDeltaRow = -1;
-  } else if (gameContext->input.moveDown) {
+  } else if (gameContext->pendingDirection == DOWN) {
     requestedDeltaRow = 1;
-  } else if (gameContext->input.moveLeft) {
+  } else if (gameContext->pendingDirection == LEFT) {
     requestedDeltaColumn = -1;
-  } else if (gameContext->input.moveRight) {
+  } else if (gameContext->pendingDirection == RIGHT) {
     requestedDeltaColumn = 1;
   }
   // if no key is pressed exit function
   if (requestedDeltaColumn == 0 && requestedDeltaRow == 0) {
     return;
   }
-  if (IsPlayerCentered(position) == false) {
-    return;
-  }
+
   // check the next tile ahead is not a wall or a GHOSTDOOR
   int nextRow = position->row + requestedDeltaRow;
   int nextColumn = position->column + requestedDeltaColumn;
   MapTile nextTile = GetMapTile(&gameContext->levelData, nextRow, nextColumn);
   if (nextTile == TILE_WALL || nextTile == TILE_GHOST_DOOR) {
+    return;
+  }
+  if (velocity->deltaRow == requestedDeltaRow &&
+      velocity->deltaColumn == requestedDeltaColumn) {
     return;
   }
   // Safe to apply the input

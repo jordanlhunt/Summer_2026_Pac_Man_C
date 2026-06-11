@@ -45,6 +45,7 @@ void InitializeGameContext(GameContext *gameContext) {
   gameContext->ghostModeTimer = SCATTER_TIME_LIMIT;
   gameContext->deltaTime = 0.0f;
   gameContext->playerLives = 3;
+  gameContext->pendingDirection = ZERO_DIRECTION;
 }
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
   if (gameContext == NULL) {
@@ -104,4 +105,5 @@ void ResetPlayerPosition(GameContext *gameContext) {
   position->offsetY = 0.0f;
   velocity->deltaRow = 0;
   velocity->deltaColumn = 0;
+  gameContext->pendingDirection = ZERO_DIRECTION;
 }

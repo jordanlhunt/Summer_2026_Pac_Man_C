@@ -16,26 +16,23 @@
 #define SCATTER_TIME_LIMIT 7.0f
 
 typedef struct GameContext {
-  Input input;
-  LevelData levelData;
-  Entity ghostsEntities[GHOST_COUNT];
-  int currentScore;
-  int remainingPellets;
-  int playerSpawnRow;
-  int playerSpawnColumn;
   bool isFrightenedGhostModeActive;
-  bool isRoundWon;
   bool isGameOver;
-  float frightenedGhostModeTimer;
+  bool isRoundWon;
+  Direction pendingDirection;
+  Entity ghostsEntities[GHOST_COUNT];
   Entity playerEntity;
-  GhostMode currentGhostMode;
-  float ghostModeTimer;
   float deltaTime;
+  float frightenedGhostModeTimer;
+  float ghostModeTimer;
+  GhostMode currentGhostMode;
+  Input input;
+  int currentScore;
   int playerLives;
-  // TODO: Add Audio, Graphics, and GameState
-  // Audio audio;
-  // GameState currentGameState;
-  //  Graphics graphics;
+  int playerSpawnColumn;
+  int playerSpawnRow;
+  int remainingPellets;
+  LevelData levelData;
 } GameContext;
 void CheckForRoundWon(GameContext *gameContext);
 void InitializeGameContext(GameContext *gameContext);

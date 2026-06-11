@@ -12,19 +12,19 @@ void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
   bool isPressed = (sdlEvent->type == SDL_KEYDOWN);
   switch (sdlEvent->key.keysym.sym) {
   case SDLK_UP: {
-    gameContext->input.moveUp = isPressed;
+    gameContext->pendingDirection = UP;
     break;
   }
   case SDLK_DOWN: {
-    gameContext->input.moveDown = isPressed;
+    gameContext->pendingDirection = DOWN;
     break;
   }
   case SDLK_LEFT: {
-    gameContext->input.moveLeft = isPressed;
+    gameContext->pendingDirection = LEFT;
     break;
   }
   case SDLK_RIGHT: {
-    gameContext->input.moveRight = isPressed;
+    gameContext->pendingDirection = RIGHT;
     break;
   }
   case SDLK_ESCAPE: {
