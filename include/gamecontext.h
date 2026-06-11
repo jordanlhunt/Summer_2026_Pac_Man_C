@@ -14,7 +14,6 @@
 #define FRIGHTEN_GHOST_MODE_DURATION 6.0f
 #define CHASE_TIME_LIMIT 20.0f
 #define SCATTER_TIME_LIMIT 7.0f
-
 typedef struct GameContext {
   bool isFrightenedGhostModeActive;
   bool isGameOver;

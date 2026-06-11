@@ -1,7 +1,6 @@
 #include "../../include/systems/inputSystem.h"
 // Turning for PAC-MAN is only allowed when centered on a given tile as
 // described in dossier CH2_Cornering
-
 void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   (void)renderer;
   if (!ECS_HasComponent(gameContext->playerEntity,
@@ -25,7 +24,6 @@ void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (gameContext->pendingDirection == ZERO_DIRECTION) {
     return;
   }
-
   if (gameContext->pendingDirection == UP) {
     requestedDeltaRow = -1;
   } else if (gameContext->pendingDirection == DOWN) {
@@ -39,7 +37,6 @@ void InputSystem(GameContext *gameContext, SDL_Renderer *renderer) {
   if (requestedDeltaColumn == 0 && requestedDeltaRow == 0) {
     return;
   }
-
   // check the next tile ahead is not a wall or a GHOSTDOOR
   int nextRow = position->row + requestedDeltaRow;
   int nextColumn = position->column + requestedDeltaColumn;

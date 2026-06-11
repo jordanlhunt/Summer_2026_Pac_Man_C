@@ -1,9 +1,7 @@
 #include "../../include/input.h"
-
+#include "../../include/gamecontext.h"
 #include <SDL2/SDL.h>
 #include <stdbool.h>
-
-#include "../../include/gamecontext.h"
 void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
   // Only process keyboard events
   if (sdlEvent->type != SDL_KEYDOWN && sdlEvent->type != SDL_KEYUP) {
