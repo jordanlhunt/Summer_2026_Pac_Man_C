@@ -1,5 +1,7 @@
 #include "../../include/graphics.h"
 #include "../../include/gamecontext.h"
+#include <SDL2/SDL_render.h>
+#include <stdio.h>
 SpriteSheet *globalSpriteSheet = NULL;
 TTF_Font *globalFont = NULL;
 // PAC-MAN Animation State
@@ -293,6 +295,48 @@ void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y) {
   }
   SDL_Rect destinationRectangle = {x, y, MAP_GRID_CELL_SIZE,
                                    MAP_GRID_CELL_SIZE};
+  SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
+                 &destinationRectangle);
+}
+void GraphicsDrawEdible(SDL_Renderer *renderer, Entity edibleEntity) {
+  if (globalSpriteSheet == NULL) {
+    printf("[graphics.c] - GraphicsDrawEdible() globalSpriteSheet is NULL\n");
+  }
+  Edible *edibleComponent = ECS_GetEdible(edibleEntity);
+  if (edibleComponent == NULL) {
+    printf("[graphics.c] - Edible Component is NULL\n");
+    return;
+  }
+  Position *ediblePosition = ECS_GetPosition(edibleEntity);
+  if (ediblePosition == NULL) {
+    printf("[graphics.c] - edible Position is NULL\n");
+    return;
+  }
+  SDL_Rect destinationRectangle = {
+      (int)((ediblePosition->column + ediblePosition->offsetX) *
+            MAP_GRID_CELL_SIZE),
+      (int)((ediblePosition->row + ediblePosition->offsetY) *
+            MAP_GRID_CELL_SIZE),
+      MAP_GRID_CELL_SIZE, MAP_GRID_CELL_SIZE};
+  SDL_Rect sourceRectangle;
+  switch (edibleComponent->typeEaten) {
+  case DOT: {
+    sourceRectangle = globalSpriteSheet->dot;
+    break;
+  }
+  case POWER_PELLET: {
+    sourceRectangle = globalSpriteSheet->powerPellet;
+    break;
+  }
+  case FRUIT: {
+    // If you want to draw a cherry or fruit as fallback
+    sourceRectangle = globalSpriteSheet->cherry;
+    break;
+  }
+  default: {
+    return; // FRIGHTENED_GHOST or unhandled types won't use this logic
+  }
+  }
   SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
                  &destinationRectangle);
 }
