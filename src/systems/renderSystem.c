@@ -20,19 +20,8 @@ void RenderSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         GraphicsDrawPlayer(renderer, activeEntity, gameContext);
       } else if (ECS_HasComponent(activeEntity, COMPONENT_GHOST)) {
         GraphicsDrawGhost(renderer, activeEntity, gameContext);
-
-      }
-      // TODO: Create a Graphics function for Edible (dots, powerPellets,
-      // fruit)
-      else if (ECS_HasComponent(activeEntity, COMPONENT_EDIBLE)) {
-        Position *position = ECS_GetPosition(activeEntity);
-        SDL_Rect sourceRectangle = {
-            (int)((position->column + position->offsetX) * MAP_GRID_CELL_SIZE),
-            (int)((position->row + position->offsetY) * MAP_GRID_CELL_SIZE),
-            renderData->width, renderData->height};
-        SDL_SetRenderDrawColor(renderer, renderData->red, renderData->green,
-                               renderData->blue, renderData->alpha);
-        SDL_RenderFillRect(renderer, &sourceRectangle);
+      } else if (ECS_HasComponent(activeEntity, COMPONENT_EDIBLE)) {
+        GraphicsDrawEdible(renderer, activeEntity);
       } else {
         Position *position = ECS_GetPosition(activeEntity);
         SDL_Rect sourceRectangle = {
