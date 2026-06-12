@@ -20,7 +20,15 @@ void RenderSystem(GameContext *gameContext, SDL_Renderer *renderer) {
         GraphicsDrawPlayer(renderer, activeEntity, gameContext);
       } else if (ECS_HasComponent(activeEntity, COMPONENT_GHOST)) {
         GraphicsDrawGhost(renderer, activeEntity, gameContext);
+<<<<<<< HEAD
       } else if (ECS_HasComponent(activeEntity, COMPONENT_EDIBLE)) {
+=======
+
+      }
+      // TODO: Create a Graphics function for Edible (dots, powerPellets,
+      // fruit)
+      else if (ECS_HasComponent(activeEntity, COMPONENT_EDIBLE)) {
+>>>>>>> ac89c4a (I need to adjust the sprite sheet for the spites, doesn't quite look right but it's sorta drawing)
         GraphicsDrawEdible(renderer, activeEntity);
       } else {
         Position *position = ECS_GetPosition(activeEntity);
