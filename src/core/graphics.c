@@ -36,9 +36,10 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
   }
   /* --  Get all of the sprites from the sheet --  */
   // Maze Tiles
-  globalSpriteSheet->dot = (SDL_Rect){13, 11, 2, 2};
+  globalSpriteSheet->dot =
+      (SDL_Rect){8, 8, SMALL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
   globalSpriteSheet->powerPellet =
-      (SDL_Rect){8, 236, SMALL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
+      (SDL_Rect){8, 24, SMALL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
   globalSpriteSheet->ghostDoor = (SDL_Rect){104, 101, 2, 2};
   // Pac-Man movement, 3 frame chop in all directions
   globalSpriteSheet->pacmanRight[0] =
