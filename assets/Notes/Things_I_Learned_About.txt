@@ -31,6 +31,7 @@ Programming and Software Development Things I learned
 11.) It's easier to do the right way at least for right now. Doing hack-y things aren't clever and I have every reason to do it right. I ought to practice good software development patterns and habits now while I still have the chance.
 12.) Keep changes small. Having to manage what to do next can be a bit overwhelming to manage so create a list or action-plan for your project. Luckily I had the Dossier, but even with that I got lost or forgot what I was supposed to be doing multiple times.
 13.) The Flyweight pattern, I use for my spritesheet. I have seen this many times in the tutorials I have done in the past. I have done Monogame/XNA programming in the past and I have done this many times before but didn't know the name. Sadly I'm not really discovering anything new.
+14.) Debugging using "valgrind", I didn't know what this was until I stumbled upon it on StackOverflow post. Seems like a great way to patch up memory leaks and a good tool to make the most from your code.
 ------------------------------------------------------
 Abstract Morals (in the philosophical sense) I learned
 ------------------------------------------------------

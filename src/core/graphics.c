@@ -483,6 +483,7 @@ void ShutdownGraphics() {
 }
 void ShutdownTTF() {
   if (globalFont != NULL) {
-    TTF_Quit();
+    globalFont = NULL;
   }
+  TTF_Quit();
 }

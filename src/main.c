@@ -10,16 +10,14 @@ int main(int argc, char *argv[]) {
   }
   ECS_Initialize();
   InitializeSystems();
-  LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE);
+  LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE,
+          gameContext.ghostsEntities);
   InitializeGameContext(&gameContext);
   Entity player = ECS_CreateEntity();
   if (InitializePlayer(&gameContext, player) == false) {
     return 1;
   }
   gameContext.playerEntity = player;
-  if (InitializeGhosts(&gameContext) == false) {
-    return 1;
-  }
   // Game Loop
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();

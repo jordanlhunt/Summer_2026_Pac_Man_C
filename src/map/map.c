@@ -1,35 +1,105 @@
 #include "../../include/map.h"
-
 // Helper Function
 static MapTile CharToMapTile(char mapChar) {
   switch (mapChar) {
-  case 'W':
+  case 'W': {
     return TILE_WALL;
-  case '.':
+  }
+  case '.': {
     return TILE_DOT;
-  case '+':
+  }
+  case '+': {
     return TILE_POWER_PELLET;
-  case ' ':
-    return TILE_EMPTY;
-  case 'X':
-    return TILE_PLAYER;
-  case 'B':
-    return TILE_EMPTY;
-  case 'P':
-    return TILE_EMPTY;
-  case 'I':
-    return TILE_EMPTY;
-  case 'C':
-    return TILE_EMPTY;
-  case '-':
-    return TILE_GHOST_DOOR;
-  case 'F':
-    return TILE_FRUIT;
-  default:
+  }
+  case ' ': {
     return TILE_EMPTY;
   }
+  case 'X': {
+    return TILE_PLAYER;
+  }
+  case '-': {
+    return TILE_GHOST_DOOR;
+  }
+  case 'F': {
+    return TILE_FRUIT;
+  }
+  default: {
+    return TILE_EMPTY;
+  }
+  }
 }
-void LoadMap(LevelData *levelData, const char *filePath) {
+static void SpawnGhost(Entity ghostEntities[], GhostType ghostType, int row,
+                       int column) {
+  struct SpawnGhostData {
+    int red;
+    int green;
+    int blue;
+    int scatterRow;
+    int scatterColumn;
+    int releaseThreshold;
+    GhostMode ghostmode;
+  } ghostSpawnData[GHOST_COUNT] = {
+      // Designated initializers for accuracy and clarity, I like this method
+      // [https://gcc.gnu.org/onlinedocs/gcc/Designated-Inits.html]
+      [GHOSTTYPE_BLINKY] = {.red = 255,
+                            .green = 0,
+                            .blue = 0,
+                            .scatterRow = 0,
+                            .scatterColumn = MAP_COLUMNS - 1,
+                            .releaseThreshold = 0,
+                            .ghostmode = GHOSTMODE_SCATTER},
+      [GHOSTTYPE_PINKY] = {.red = 255,
+                           .green = 184,
+                           .blue = 255,
+                           .scatterRow = 0,
+                           .scatterColumn = MAP_COLUMNS - 1,
+                           .releaseThreshold = RELEASE_THRESHOLD_PINKY,
+                           .ghostmode = GHOSTMODE_IN_GHOSTHOUSE},
+      [GHOSTTYPE_INKY] = {.red = 255,
+                          .green = 0,
+                          .blue = 0,
+                          .scatterRow = 0,
+                          .scatterColumn = MAP_COLUMNS - 1,
+                          .releaseThreshold = RELEASE_THRESHOLD_INKY,
+                          .ghostmode = GHOSTMODE_IN_GHOSTHOUSE},
+      [GHOSTTYPE_CLYDE] = {.red = 255,
+                           .green = 0,
+                           .blue = 0,
+                           .scatterRow = 0,
+                           .scatterColumn = MAP_COLUMNS - 1,
+                           .releaseThreshold = RELEASE_THRESHOLD_CLYDE,
+                           .ghostmode = GHOSTMODE_IN_GHOSTHOUSE}};
+  Entity newEntity = ECS_CreateEntity();
+  ghostEntities[ghostType] = newEntity;
+  ECS_AddComponent(newEntity, COMPONENT_POSITION | COMPONENT_VELOCITY |
+                                  COMPONENT_RENDERABLE | COMPONENT_GHOST);
+  Ghost *ghost = ECS_GetGhost(newEntity);
+  ghost->ghostType = ghostType;
+  ghost->ghostMode = ghostSpawnData[ghostType].ghostmode;
+  ghost->currentDirection = ZERO_DIRECTION;
+  ghost->scatterTargetColumn = ghostSpawnData[ghostType].scatterColumn;
+  ghost->scatterTargetRow = ghostSpawnData[ghostType].scatterRow;
+  ghost->exitGhostHouseThreshold = ghostSpawnData[ghostType].releaseThreshold;
+  Velocity *ghostVelocity = ECS_GetVelocity(newEntity);
+  ghostVelocity->deltaRow = 0;
+  ghostVelocity->deltaColumn = 0;
+  ghostVelocity->tilesPerSecond = GHOST_SPEED;
+  Position *ghostPosition = ECS_GetPosition(newEntity);
+  ghostPosition->row = row;
+  ghostPosition->column = column;
+  Renderable *renderData = ECS_GetRenderable(newEntity);
+  renderData->red = ghostSpawnData[ghostType].red;
+  renderData->green = ghostSpawnData[ghostType].green;
+  renderData->blue = ghostSpawnData[ghostType].blue;
+  renderData->alpha = 255;
+  renderData->width = MAP_GRID_CELL_SIZE;
+  renderData->height = MAP_GRID_CELL_SIZE;
+  renderData->renderLayer = RENDERLAYER_GHOST;
+  printf("[map.c] - Ghost %d spawned at row=%d and column=%d\n", ghostType, row,
+         column);
+}
+void LoadMap(LevelData *levelData, const char *filePath,
+             Entity ghostEntities[]) {
   FILE *mazeTextFile;
   const int LENGTH_OF_MAZE_LINE = MAP_COLUMNS + 2;
   int row = 0;
@@ -42,8 +112,8 @@ void LoadMap(LevelData *levelData, const char *filePath) {
     perror("[map.c] - Unable to load maze.txt");
     exit(EXIT_FAILURE);
   }
-  // Process the line - Skip comments and empty lines, once you get to the maze
-  // trim the line and create mapTiles from the line holds
+  // Process the line - Skip comments and empty lines, once you get to the
+  // maze trim the line and create mapTiles from the line holds
   while (fgets(currentLine, sizeof(currentLine), mazeTextFile)) {
     // Check if hit the end of the line with EOF or '\n'
     bool hasReadFullLine = (strchr(currentLine, '\n')) != NULL;
@@ -66,64 +136,79 @@ void LoadMap(LevelData *levelData, const char *filePath) {
     // Loop through the .txt file and get populate the levelData->mapTiles
     if (row < MAP_ROWS) {
       for (int column = 0; column < MAP_COLUMNS; column++) {
-        if (currentLine[column] != '\0') {
-          // Create the MapTile
-          MapTile mapTile = CharToMapTile(currentLine[column]);
-          switch (mapTile) {
-          case TILE_DOT: {
-            Entity dotEntity = ECS_CreateEntity();
-            ECS_AddComponent(dotEntity, COMPONENT_POSITION | COMPONENT_EDIBLE |
-                                            COMPONENT_RENDERABLE);
-            Renderable *dotRenderData = ECS_GetRenderable(dotEntity);
-            dotRenderData->red = 240;
-            dotRenderData->blue = 240;
-            dotRenderData->green = 240;
-            dotRenderData->alpha = 255;
-            dotRenderData->width = MAP_GRID_CELL_SIZE;
-            dotRenderData->height = MAP_GRID_CELL_SIZE;
-            dotRenderData->renderLayer = RENDERLAYER_EDIBLE;
-            Position *dotPosition = ECS_GetPosition(dotEntity);
-            dotPosition->row = row;
-            dotPosition->column = column;
-            Edible *dotEdible = ECS_GetEdible(dotEntity);
-            dotEdible->scoreValue = DOT_PELLET_SCORE_VALUE;
-            dotEdible->typeEaten = DOT;
-            levelData->mapTiles[row][column] = TILE_EMPTY;
-            break;
+        char currentCharacter = currentLine[column];
+        if (currentCharacter == '\0') {
+          continue;
+        }
+        if (currentCharacter == 'B' || currentCharacter == 'P' ||
+            currentCharacter == 'I' || currentCharacter == 'C') {
+          printf("[map.c] - Found ghost '%c' at row=%d col=%d\n",
+                 currentCharacter, row, column);
+          GhostType ghostType;
+          if (currentCharacter == 'B') {
+            ghostType = GHOSTTYPE_BLINKY;
+          } else if (currentCharacter == 'P') {
+            ghostType = GHOSTTYPE_PINKY;
+          } else if (currentCharacter == 'I') {
+            ghostType = GHOSTTYPE_INKY;
+          } else {
+            ghostType = GHOSTTYPE_CLYDE;
           }
-          case TILE_POWER_PELLET: {
-            Entity powerPelletEntity = ECS_CreateEntity();
-            ECS_AddComponent(powerPelletEntity, COMPONENT_POSITION |
-                                                    COMPONENT_EDIBLE |
-                                                    COMPONENT_RENDERABLE);
-            Renderable *powerPelletRenderData =
-                ECS_GetRenderable(powerPelletEntity);
-            powerPelletRenderData->red = 100;
-            powerPelletRenderData->blue = 100;
-            powerPelletRenderData->green = 100;
-            powerPelletRenderData->alpha = 255;
-            powerPelletRenderData->width = MAP_GRID_CELL_SIZE;
-            powerPelletRenderData->height = MAP_GRID_CELL_SIZE;
-            powerPelletRenderData->renderLayer = RENDERLAYER_EDIBLE;
-            Position *powerPelletPosition = ECS_GetPosition(powerPelletEntity);
-            powerPelletPosition->row = row;
-            powerPelletPosition->column = column;
-            Edible *powerPelletEdible = ECS_GetEdible(powerPelletEntity);
-            powerPelletEdible->scoreValue = POWER_PELLET_SCORE_VALUE;
-            powerPelletEdible->typeEaten = POWER_PELLET;
-            levelData->mapTiles[row][column] = TILE_EMPTY;
-            break;
-          }
-          case TILE_GHOST: {
-            // InitializeGhosts() creates the gameInitialization.c
-            levelData->mapTiles[row][column] = TILE_EMPTY;
-            break;
-          }
-          default: {
-            levelData->mapTiles[row][column] = mapTile;
-            break;
-          }
-          }
+          SpawnGhost(ghostEntities, ghostType, row, column);
+          levelData->mapTiles[row][column] = TILE_EMPTY;
+          continue;
+        }
+        // Create the MapTile
+        MapTile mapTile = CharToMapTile(currentCharacter);
+        switch (mapTile) {
+        case TILE_DOT: {
+          Entity dotEntity = ECS_CreateEntity();
+          ECS_AddComponent(dotEntity, COMPONENT_POSITION | COMPONENT_EDIBLE |
+                                          COMPONENT_RENDERABLE);
+          Renderable *dotRenderData = ECS_GetRenderable(dotEntity);
+          dotRenderData->red = 240;
+          dotRenderData->blue = 240;
+          dotRenderData->green = 240;
+          dotRenderData->alpha = 255;
+          dotRenderData->width = MAP_GRID_CELL_SIZE;
+          dotRenderData->height = MAP_GRID_CELL_SIZE;
+          dotRenderData->renderLayer = RENDERLAYER_EDIBLE;
+          Position *dotPosition = ECS_GetPosition(dotEntity);
+          dotPosition->row = row;
+          dotPosition->column = column;
+          Edible *dotEdible = ECS_GetEdible(dotEntity);
+          dotEdible->scoreValue = DOT_PELLET_SCORE_VALUE;
+          dotEdible->typeEaten = DOT;
+          levelData->mapTiles[row][column] = TILE_EMPTY;
+          break;
+        }
+        case TILE_POWER_PELLET: {
+          Entity powerPelletEntity = ECS_CreateEntity();
+          ECS_AddComponent(powerPelletEntity, COMPONENT_POSITION |
+                                                  COMPONENT_EDIBLE |
+                                                  COMPONENT_RENDERABLE);
+          Renderable *powerPelletRenderData =
+              ECS_GetRenderable(powerPelletEntity);
+          powerPelletRenderData->red = 100;
+          powerPelletRenderData->blue = 100;
+          powerPelletRenderData->green = 100;
+          powerPelletRenderData->alpha = 255;
+          powerPelletRenderData->width = MAP_GRID_CELL_SIZE;
+          powerPelletRenderData->height = MAP_GRID_CELL_SIZE;
+          powerPelletRenderData->renderLayer = RENDERLAYER_EDIBLE;
+          Position *powerPelletPosition = ECS_GetPosition(powerPelletEntity);
+          powerPelletPosition->row = row;
+          powerPelletPosition->column = column;
+          Edible *powerPelletEdible = ECS_GetEdible(powerPelletEntity);
+          powerPelletEdible->scoreValue = POWER_PELLET_SCORE_VALUE;
+          powerPelletEdible->typeEaten = POWER_PELLET;
+          levelData->mapTiles[row][column] = TILE_EMPTY;
+          break;
+        }
+        default: {
+          levelData->mapTiles[row][column] = mapTile;
+          break;
+        }
         }
       }
       row++;
@@ -156,12 +241,6 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         // TODO: Look at official Pac-Man game and make it whatever the game
         // actually is
         GraphicsDrawTile(renderer, TILE_GHOST_DOOR, tileRect.x, tileRect.y);
-        break;
-      case TILE_GHOST:
-        // Ghosts are RED for now. For testing purposes only
-        // TODO: Make each ghost it's own ghost entity rather than than just
-        // a marker on the map and draw its specific ghost logic
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         break;
       case TILE_FRUIT:
         // Fruit is orange for now. For testing purposes only

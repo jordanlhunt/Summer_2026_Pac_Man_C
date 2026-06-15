@@ -29,6 +29,5 @@ typedef struct {
 bool InitializeSDL(SDLContext *sdlContext);
 bool InitializePlayer(GameContext *gameContext, Entity player);
 void InitializeSystems();
-bool InitializeGhosts(GameContext *gameContext);
 void Shutdown(SDLContext *sdlContext);
 #endif
