@@ -153,7 +153,7 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
   // Enter the ghost house and reset the ghost to scatter to get back at it.
   if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
       ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
-    ghost->ghostMode = GHOSTMODE_SCATTER;
+    ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
     ghostVelocity->tilesPerSecond = GHOST_SPEED;
     ghostPosition->offsetX = 0.0f;
     ghostPosition->offsetY = 0.0f;
