@@ -27,22 +27,23 @@ Programming and Software Development Things I learned
 7.) Having a consistent style is important
 8.) Function Pointers
 9.) Basics of gdb and debugging code
-10.) Fiddling with your themes and fonts is a NOT programming. Pick a font you can read well, pick a theme that's easy on your eyes, and call it a day. It's fine to switch it up from time to time but it's really not a working. It's not even something you can say it's helping you prepare for work, it's avoiding work 98.28% of the time (in my case anyways).
+10.) Fiddling with my  themes and fonts is a NOT programming. Pick a font I can read well, pick a theme that's easy on my eyes, and call it a day. It's fine to switch it up from time to time but it's really not a working. It's not even something I can say it's helping me  prepare for work, it's avoiding work 98.28% of the time.
 11.) It's easier to do the right way at least for right now. Doing hack-y things aren't clever and I have every reason to do it right. I ought to practice good software development patterns and habits now while I still have the chance.
-12.) Keep changes small. Having to manage what to do next can be a bit overwhelming to manage so create a list or action-plan for your project. Luckily I had the Dossier, but even with that I got lost or forgot what I was supposed to be doing multiple times.
+12.) Keep changes small. Having to manage what to do next can be a bit overwhelming to manage so create a list or action-plan for my project. Luckily I had the Dossier, but even with that I got lost or forgot what I was supposed to be doing multiple times.
 13.) The Flyweight pattern, I use for my spritesheet. I have seen this many times in the tutorials I have done in the past. I have done Monogame/XNA programming in the past and I have done this many times before but didn't know the name. Sadly I'm not really discovering anything new.
-14.) Debugging using "valgrind", I didn't know what this was until I stumbled upon it on StackOverflow post. Seems like a great way to patch up memory leaks and a good tool to make the most from your code.
+14.) Debugging using "valgrind", I didn't know what this was until I stumbled upon it on StackOverflow post. Seems like a great way to patch up memory leaks and a good tool to make the most from my code.
+15.) Constantly test small amounts of code, if I test small it tends to "snap into place" much easier when I try to incorporate changes into other places in my code
 ------------------------------------------------------
 Abstract Morals (in the philosophical sense) I learned
 ------------------------------------------------------
 
 1.) When I'm really programming I get stuck, go look up something, and try something and then get stuck again. That's not a bad thing, that's the whole gig.
-2.) Anyone who says they do it all in one shot is either lying or trying to sell you something
-3.) Learning how to use your tools is important, it's not super important but it's nice to know hotkeys and other tips & tricks to make writing code a bit easier.
+2.) Anyone who says they do it all in one shot is either lying or trying to sell me something
+3.) Learning how to use my tools is important, it's not super important but it's nice to know hotkeys and other tips & tricks to make writing code a bit easier.
 4.) I notice patterns emerge in programming. Understanding the pattern is important. Also understanding *WHY* a pattern is good (or bad) is important-er.
-5.) An extension of #1 but for real getting stuck, unstucking yourself, and getting stuck in new slightly different way is like 90% of the learning process as a whole. There is no avoiding that.
+5.) An extension of #1 but for real getting stuck, unstucking myself, and getting stuck in new slightly different way is like 90% of the learning process as a whole. There is no avoiding that.
 6.) Getting stuck isn't a bad, it's not a sign of failure, it's a necessary component for growing skills. This is true for many disciplines
 7.) There is an avoidable amount of reading that has to be done. Being good at something requires practice and theory. Reading my textbooks must. Not skimming, not summaries, not just getting the gist, but active reading is a must to git gud.
-8.) Asking for help is cool and good, however always ask for help the right way. Provide context, provide your proof you tried something and that you tried to solve it on your own before reaching out. The other person will appreciate that.
+8.) Asking for help is cool and good, however always ask for help the right way. Provide context, provide my proof I tried something and that I tried to solve it on my own before reaching out. The other person will appreciate that.
 9.) Working on a project seems like an endless series of "How does this work?" followed by "How was I supposed to know that?" follow by "Oh I guess that makes sense". Again, I'm sure I'm reiterating the very concept of learning but this is my *REAL* self-guided project so bare with me.
-10.) Actual growth is very mundane. It's worth noting and keeping track of, but it's like any other incremental development. There aren't that many huge jumps, it's just a gradual incline most of the time. There are spikes here and there, but programming is very boring, I mean in the sense it's not what social media would have you beleive. Being consistent is the surest path to success, it may be slower than others but it will get you to where you want to go, and you'll pick up a lot of great things along the way.
+10.) Actual growth is very mundane. It's worth noting and keeping track of, but it's like any other incremental development. There aren't that many huge jumps, it's just a gradual incline most of the time. There are spikes here and there, but programming is very boring, I mean in the sense it's not what social media would have me beleive. Being consistent is the surest path to success, it may be slower than others but it will get me to where I want to go, and I'll pick up a lot of great things along the way.
