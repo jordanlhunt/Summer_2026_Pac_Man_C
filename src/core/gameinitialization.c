@@ -13,8 +13,8 @@ bool InitializeSDL(SDLContext *sdlContext) {
   if (InitializeGraphics(sdlContext->renderer, SOURCESPRITESHEETPNG) == false) {
     printf("[gameinitialization.c] - SDL failed to initialize graphics: %s\n",
            SDL_GetError());
-    InitializeTTF();
   }
+  InitializeTTF();
   return true;
 }
 bool InitializePlayer(GameContext *gameContext, Entity player) {

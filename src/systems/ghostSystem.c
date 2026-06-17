@@ -84,14 +84,12 @@ static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
     ghostPosition->offsetY = 0.0f;
   }
 }
-
 static void MoveGhostTowardTarget(Entity ghostEntity, int targetRow,
                                   int targetColumn, LevelData *levelData,
                                   bool canPassThroughGhostDoor) {
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   Ghost *ghost = ECS_GetGhost(ghostEntity);
-
   // Only change direction when centered on a tile to fix the jitter. It was
   // changing direction every frame
   if (IsGhostCentered(ghostPosition) == false) {
@@ -275,7 +273,6 @@ void GhostSystem(GameContext *gameContext, SDL_Renderer *renderer) {
     case GHOSTMODE_SCATTER: {
       if (gameContext->isFrightenedGhostModeActive == true) {
         ghost->ghostMode = GHOSTMODE_FRIGHTENED;
-
         // When Frigtened it is now edible
         ECS_AddComponent(activeEntity, COMPONENT_EDIBLE);
         Edible *edibleGhost = ECS_GetEdible(activeEntity);
