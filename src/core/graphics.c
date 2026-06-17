@@ -1,7 +1,6 @@
 #include "../../include/graphics.h"
 #include "../../include/gamecontext.h"
-#include <SDL2/SDL_render.h>
-#include <stdio.h>
+
 SpriteSheet *globalSpriteSheet = NULL;
 TTF_Font *globalFont = NULL;
 // PAC-MAN Animation State
