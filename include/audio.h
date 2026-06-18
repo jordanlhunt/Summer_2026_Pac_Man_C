@@ -6,8 +6,7 @@
 #define AUDIO_CHUNK_SIZE 2048
 #define AUDIO_SOUNDEFFECT_CHANNEL_COUNT 16
 
-typedef enum SoundEffectId
-{
+typedef enum SoundEffectId {
   SOUNDEFFECT_WAKA,
   SOUNDEFFECT_POWER_PELLET,
   SOUNDEFFECT_GHOST_EATEN,
@@ -15,8 +14,7 @@ typedef enum SoundEffectId
   SOUNDEFFECT_FRUIT,
   SOUNDEFFECT_COUNT
 } SoundEffectId;
-typedef struct AudioState
-{
+typedef struct AudioState {
   Mix_Chunk *soundEffects[SOUNDEFFECT_COUNT];
   Mix_Chunk *waka0;
   Mix_Chunk *waka1;
