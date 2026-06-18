@@ -1,6 +1,10 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 #include "common.h"
+#define AUDIO_FREQENCY 44100
+#define AUDIO_CHANNELS 2
+#define AUDIO_CHUNK_SIZE 2048
+#define AUDIO_SOUNDEFFECT_CHANNEL_COUNT 16
 typedef enum SoundEffectId {
   SOUNDEFFECT_WAKA0,
   SOUNDEFFECT_WAKA1,
