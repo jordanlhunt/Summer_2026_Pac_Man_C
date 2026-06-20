@@ -5,7 +5,8 @@
 #define AUDIO_CHANNELS 2
 #define AUDIO_CHUNK_SIZE 2048
 #define AUDIO_SOUNDEFFECT_CHANNEL_COUNT 16
-
+#define AUDIO_LOOP_MUSIC -1
+#define AUDIO_DO_NOT_LOOP_MUSIC 0
 typedef enum SoundEffectId {
   SOUNDEFFECT_WAKA,
   SOUNDEFFECT_POWER_PELLET,
@@ -19,13 +20,15 @@ typedef struct AudioState {
   Mix_Chunk *waka0;
   Mix_Chunk *waka1;
   Mix_Music *backgroundMusic;
+  Mix_Music *startMusic;
   int wakaSoundEffectToggle;
 } AudioState;
-bool InitializeAudio(AudioState *audioState);
 bool AudioLoadAssets(AudioState *audioState);
+bool InitializeAudio(AudioState *audioState);
+void AudioPlayMusic(AudioState *audioState, int isLooping);
 void AudioPlaySoundEffect(AudioState *audioState, SoundEffectId soundEffectId);
+void AudioPlayStartMusic(AudioState *audioState);
 void AudioPlayWaka(AudioState *audioState);
-void AudioPlayMusic(AudioState *audioState, bool isLooping);
 void AudioResetWaka(AudioState *audioState);
 void ShutdownAudio(AudioState *audioState);
 #endif

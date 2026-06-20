@@ -1,5 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
+#include "../include/audio.h"
 #include "../include/ecs/ecs.h"
 #include "../include/gamecontext.h"
 #include "../include/gameinitialization.h"

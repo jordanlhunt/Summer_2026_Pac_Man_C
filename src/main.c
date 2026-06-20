@@ -1,11 +1,15 @@
 #include "../include/main.h"
+#include <stdbool.h>
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
 
   SDLContext sdlContext = {0};
   GameContext gameContext = {0};
-  if (InitializeSDL(&sdlContext) == false) {
+  if (InitializeSDL(&sdlContext, &gameContext) == false) {
+    return 1;
+  }
+  if (InitializeAudio(&gameContext.audioPlayer) == false) {
     return 1;
   }
   ECS_Initialize();
@@ -17,6 +21,7 @@ int main(int argc, char *argv[]) {
   if (InitializePlayer(&gameContext, player) == false) {
     return 1;
   }
+  AudioPlayStartMusic(&gameContext.audioPlayer);
   gameContext.playerEntity = player;
   // Game Loop
   bool isQuit = false;
@@ -59,7 +64,7 @@ int main(int argc, char *argv[]) {
     SDL_RenderPresent(sdlContext.renderer);
     delayFramerate(currentTime);
   }
-  Shutdown(&sdlContext);
+  Shutdown(&sdlContext, &gameContext);
   return 0;
 }
 // Caps the game's execution speed to maintain a consistent 60 FPS

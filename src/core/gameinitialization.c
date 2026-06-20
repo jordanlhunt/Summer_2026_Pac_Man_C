@@ -1,6 +1,11 @@
 #include "../../include/gameinitialization.h"
-bool InitializeSDL(SDLContext *sdlContext) {
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+#include <SDL2/SDL_video.h>
+
+bool InitializeSDL(SDLContext *sdlContext, GameContext *gameContext) {
+  if (sdlContext == NULL || gameContext == NULL) {
+    return false;
+  }
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
     printf("[gameinitialization.c] - SDL failed to initialize: %s\n",
            SDL_GetError());
     return false;
@@ -8,8 +13,27 @@ bool InitializeSDL(SDLContext *sdlContext) {
   sdlContext->gameWindow = SDL_CreateWindow(
       "Hac-Man", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
       SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
+  if (sdlContext->gameWindow == NULL) {
+    printf("[InitializeSDL] SDL_CreateWindow failed: %s\n", SDL_GetError());
+    SDL_Quit();
+    return false;
+  }
   sdlContext->renderer =
       SDL_CreateRenderer(sdlContext->gameWindow, -1, SDL_RENDERER_ACCELERATED);
+  if (sdlContext->renderer == NULL) {
+    printf("[gameinitialization.c] - SDL_CreateRenderer failed: %s\n",
+           SDL_GetError());
+    SDL_DestroyWindow(sdlContext->gameWindow);
+    SDL_Quit();
+    return false;
+  }
+  if (InitializeAudio(&gameContext->audioPlayer) == false) {
+    SDL_DestroyRenderer(sdlContext->renderer);
+    SDL_DestroyWindow(sdlContext->gameWindow);
+    SDL_Quit();
+    return false;
+  }
+
   if (InitializeGraphics(sdlContext->renderer, SOURCESPRITESHEETPNG) == false) {
     printf("[gameinitialization.c] - SDL failed to initialize graphics: %s\n",
            SDL_GetError());
@@ -60,7 +84,8 @@ void InitializeSystems() {
   ECS_RegisterSystem(GhostSystem);
   ECS_RegisterSystem(RenderSystem);
 }
-void Shutdown(SDLContext *sdlContext) {
+void Shutdown(SDLContext *sdlContext, GameContext *gameContext) {
+  ShutdownAudio(&gameContext->audioPlayer);
   ShutdownGraphics();
   ShutdownTTF();
   SDL_DestroyRenderer(sdlContext->renderer);

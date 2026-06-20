@@ -1,6 +1,7 @@
 #ifndef GAMECONTEXT_H
 #define GAMECONTEXT_H
 #include "../include/map.h"
+#include "audio.h"
 #include "common.h"
 #include "ecs/ecs.h"
 #include "ecs/entity.h"
@@ -32,6 +33,7 @@ typedef struct GameContext {
   int playerSpawnRow;
   int remainingPellets;
   LevelData levelData;
+  AudioState audioPlayer;
 } GameContext;
 void CheckForRoundWon(GameContext *gameContext);
 void InitializeGameContext(GameContext *gameContext);

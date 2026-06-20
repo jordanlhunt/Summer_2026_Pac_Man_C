@@ -21,6 +21,7 @@ static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
   gameContext->currentScore += justEatenEdible->scoreValue;
   if (justEatenEdible->typeEaten == POWER_PELLET ||
       justEatenEdible->typeEaten == DOT) {
+    AudioPlaySoundEffect(&gameContext->audioPlayer, SOUNDEFFECT_WAKA);
     ReduceRemainingPellets(gameContext);
   }
   if (justEatenEdible->typeEaten == POWER_PELLET) {

@@ -12,7 +12,8 @@ SRCS = src/main.c \
        src/systems/renderSystem.c \
        src/systems/ghostSystem.c \
        src/core/gameinitialization.c \
-       src/core/graphics.c
+       src/core/graphics.c \
+       src/core/audio.c
 
 # COMPILER specifies the compiler
 COMPILER = gcc

@@ -26,8 +26,9 @@ typedef struct {
   SDL_Renderer *renderer;
 } SDLContext;
 
-bool InitializeSDL(SDLContext *sdlContext);
+bool InitializeSDL(SDLContext *sdlContext, GameContext *gameContext);
+void Shutdown(SDLContext *sdlContext, GameContext *gameContext);
 bool InitializePlayer(GameContext *gameContext, Entity player);
 void InitializeSystems();
-void Shutdown(SDLContext *sdlContext);
+
 #endif
