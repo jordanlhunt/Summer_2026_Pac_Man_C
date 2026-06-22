@@ -43,6 +43,16 @@ static Direction OppositeDirection(Direction direction) {
   }
   }
 }
+// Every scatter/chase/frigtened transition requires an immediate reverse of
+// direction
+static void ReverseGhostDirection(Entity entity) {
+  Velocity *ghostVelocity = ECS_GetVelocity(entity);
+  Ghost *ghostEntity = ECS_GetGhost(entity);
+  ghostVelocity->deltaRow *= -1;
+  ghostVelocity->deltaColumn *= -1;
+  ghostEntity->currentDirection =
+      OppositeDirection(ghostEntity->currentDirection);
+}
 static void MoveGhostRandomly(Entity ghostEntity, LevelData *levelData) {
   Position *ghostPosition = ECS_GetPosition(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
@@ -151,7 +161,7 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
   // Enter the ghost house and reset the ghost to scatter to get back at it.
   if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
       ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
-    ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
+    ghost->ghostMode = GHOSTMODE_SCATTER;
     ghostVelocity->tilesPerSecond = GHOST_SPEED;
     ghostPosition->offsetX = 0.0f;
     ghostPosition->offsetY = 0.0f;
