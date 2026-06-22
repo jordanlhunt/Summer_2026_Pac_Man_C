@@ -189,6 +189,23 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
   PlayerControlled *playerControlled =
       ECS_GetPlayerControlled(gameContext->playerEntity);
+
+  // Inky's target is a vector projection from Blinky's position through a point
+  // 2 tiles ahead of PAC-MAN then doubled - the logic is found in The Dossier
+  // [https://pacman.holenet.info/#CH4_Inky]
+  Position *blinkyPosition = NULL;
+  int activeCount = ECS_GetActiveEntitiesCount();
+  for (int i = 0; i < activeCount; i++) {
+    Entity activeEntity = ECS_GetActiveEntity(i);
+    if (ECS_HasComponent(activeEntity, COMPONENT_GHOST)) {
+      Ghost *ghostEntity = ECS_GetGhost(activeEntity);
+      if (ghostEntity->ghostType == GHOSTTYPE_BLINKY) {
+        blinkyPosition = ECS_GetPosition(activeEntity);
+        break;
+      }
+    }
+  }
+
   switch (ghost->ghostType) {
   // Blinky directly targets the player's current location
   // "oikake" (追い掛け) is to purse
@@ -208,26 +225,49 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
         (DirectionToDeltaColumn(playerControlled->currentDirection) * 4);
     break;
   }
-    // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
     // Inky is the most complex tracking. Least predictable most erratic
     // "kimagure" (気まぐれ) means to be "fickle" or "capricious"
   case GHOSTTYPE_INKY: {
-    *targetRow = playerPosition->row;
-    *targetColumn = playerPosition->column;
-    break;
+    // Setup the pivot point two tiles ahead of the player
+    int pivotPointRow =
+        playerPosition->row +
+        (DirectionToDeltaRow(playerControlled->currentDirection) * 2);
+    int pivotPointColumn =
+        playerPosition->column +
+        (DirectionToDeltaColumn(playerControlled->currentDirection) * 2);
+    // Double the vector from Blinky to pivot
+    if (blinkyPosition != NULL) {
+      *targetRow = pivotPointRow + (pivotPointRow - blinkyPosition->row);
+      *targetColumn =
+          pivotPointColumn + (pivotPointColumn - blinkyPosition->column);
+    } else {
+      *targetRow = playerPosition->row;
+      *targetColumn = playerPosition->column;
+    }
     break;
   }
-  // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
-  // Clyde uses a proximity tracking
-  //  "otoboke" (お惚け) is to feign ignorance
+    // Clyde uses a proximity tracking
+    // Chases directly when more than eight tiles way, but retreats to scatter
+    // corner when with 8
+    //  "otoboke" (お惚け) is to feign ignorance
   case GHOSTTYPE_CLYDE: {
-    *targetRow = playerPosition->row;
-    *targetColumn = playerPosition->column;
-    break;
+    Position *clydePosition = ECS_GetPosition(entity);
+    int distanceSquared =
+        DistanceSquared(clydePosition->row, clydePosition->column,
+                        playerPosition->row, playerPosition->column);
+    if (distanceSquared > CLYDE_RETREAT_THRESHOLD) {
+      // Chase Pac-Man
+      *targetRow = playerPosition->row;
+      *targetColumn = playerPosition->column;
+    } else {
+      // Retreat from Pac-Man
+      Ghost *clydeGhost = ECS_GetGhost(entity);
+      *targetRow = clydeGhost->scatterTargetRow;
+      *targetColumn = clydeGhost->scatterTargetColumn;
+    }
     break;
   }
   default: {
-    // TODO: Add logic for Inky and Clyde, will default to BLINKY for now.
     *targetRow = playerPosition->row;
     *targetColumn = playerPosition->column;
     break;
