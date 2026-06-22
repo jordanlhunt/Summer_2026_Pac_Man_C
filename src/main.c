@@ -9,9 +9,6 @@ int main(int argc, char *argv[]) {
   if (InitializeSDL(&sdlContext, &gameContext) == false) {
     return 1;
   }
-  if (InitializeAudio(&gameContext.audioPlayer) == false) {
-    return 1;
-  }
   ECS_Initialize();
   InitializeSystems();
   LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE,
