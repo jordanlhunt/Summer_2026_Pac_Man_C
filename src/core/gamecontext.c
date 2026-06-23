@@ -1,5 +1,7 @@
 #include "../../include/gamecontext.h"
+
 static void ResetGameRound(GameContext *gameContext) {
+  srand(0);
   ResetPlayerPosition(gameContext);
   gameContext->isFrightenedGhostModeActive = false;
   gameContext->frightenedGhostModeTimer = 0.0f;
@@ -36,7 +38,7 @@ void CheckForRoundWon(GameContext *gameContext) {
   }
 }
 void InitializeGameContext(GameContext *gameContext) {
-  srand((unsigned int)time(NULL)); // Seed the random number generator
+  srand(0); // Frightened movement is deterministic per-level
   gameContext->remainingPellets = NUMBER_OF_DOTS;
   gameContext->currentScore = 0;
   gameContext->isFrightenedGhostModeActive = false;
