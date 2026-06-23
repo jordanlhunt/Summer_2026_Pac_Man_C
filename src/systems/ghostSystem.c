@@ -1,5 +1,4 @@
 #include "../../include/systems/ghostSystem.h"
-#include <stdbool.h>
 static int DistanceSquared(int row1, int column1, int row2, int column2) {
   int distanceSquared = 0;
   int deltaRow = row2 - row1;
@@ -155,7 +154,6 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
   Ghost *ghost = ECS_GetGhost(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   ghostVelocity->tilesPerSecond = GHOST_SPEED_EYES;
-
   // Move to the Entrance
   if (ghostPosition->row != GHOST_HOUSE_ENTRANCE_ROW ||
       ghostPosition->column != GHOST_HOUSE_CENTER_COLUMN) {
@@ -164,7 +162,6 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
                           true);
     return;
   }
-
   // At entrance then pass through the ghost door
   MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_CENTER_ROW,
                         GHOST_HOUSE_CENTER_COLUMN, &gameContext->levelData,
@@ -212,7 +209,6 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
   Position *playerPosition = ECS_GetPosition(gameContext->playerEntity);
   PlayerControlled *playerControlled =
       ECS_GetPlayerControlled(gameContext->playerEntity);
-
   // Inky's target is a vector projection from Blinky's position through a point
   // 2 tiles ahead of PAC-MAN then doubled - the logic is found in The Dossier
   // [https://pacman.holenet.info/#CH4_Inky]
@@ -228,7 +224,6 @@ static void GetChaseTarget(Entity entity, GameContext *gameContext,
       }
     }
   }
-
   switch (ghost->ghostType) {
   // Blinky directly targets the player's current location
   // "oikake" (追い掛け) is to purse
