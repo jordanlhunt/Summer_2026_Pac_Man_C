@@ -154,26 +154,30 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
   Ghost *ghost = ECS_GetGhost(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   ghostVelocity->tilesPerSecond = GHOST_SPEED_EYES;
-  // Move to the Entrance
-  if (ghostPosition->row != GHOST_HOUSE_ENTRANCE_ROW ||
-      ghostPosition->column != GHOST_HOUSE_CENTER_COLUMN) {
-    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
-                          GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
-                          true);
-    return;
-  }
-  // At entrance then pass through the ghost door
-  MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_CENTER_ROW,
-                        GHOST_HOUSE_CENTER_COLUMN, &gameContext->levelData,
-                        true);
-  // Enter the ghost house and reset the ghost to scatter to get back at it.
-  if (ghostPosition->row == GHOST_HOUSE_CENTER_ROW &&
+  // If at the ghost house entrance, enter the ghost house
+  if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
       ghostPosition->column == GHOST_HOUSE_CENTER_COLUMN) {
-    ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
-    ghostVelocity->tilesPerSecond = GHOST_SPEED;
-    ghostPosition->offsetX = 0.0f;
-    ghostPosition->offsetY = 0.0f;
-    printf("[ghostSystem.c] - Ghost has respawned.\n");
+    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_CENTER_ROW,
+                          GHOST_HOUSE_CENTER_COLUMN, &gameContext->levelData,
+                          true);
+    // Enter the ghost house and reset the ghost to scatter to get into the
+    // action.
+    if (ghostPosition->row == GHOST_HOUSE_CENTER_ROW &&
+        ghostPosition->column == GHOST_HOUSE_CENTER_COLUMN) {
+      ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
+      ghostVelocity->tilesPerSecond = GHOST_SPEED;
+      ghostVelocity->deltaRow = 0;
+      ghostVelocity->deltaColumn = 0;
+      ghostPosition->offsetX = 0.0f;
+      ghostPosition->offsetY = 0.0f;
+      ghost->currentDirection = UP;
+      printf("[ghostSystem.c] - Ghost has respawned.\n");
+    }
+  } else {
+    // Move toward the ghost door
+    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
+                          GHOST_HOUSE_ENTRANCE_ROW, &gameContext->levelData,
+                          true);
   }
 }
 static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
