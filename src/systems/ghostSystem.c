@@ -154,14 +154,33 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
   Ghost *ghost = ECS_GetGhost(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   ghostVelocity->tilesPerSecond = GHOST_SPEED_EYES;
-  // If at the ghost house entrance, enter the ghost house
-  if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
-      ghostPosition->column == GHOST_HOUSE_CENTER_COLUMN) {
-    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_CENTER_ROW,
-                          GHOST_HOUSE_CENTER_COLUMN, &gameContext->levelData,
+  // Determine if the ghost is currently traveling down into the ghost house
+  bool isEnteringHouse =
+      (ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) &&
+      (ghostPosition->row >= GHOST_HOUSE_ENTRANCE_ROW) &&
+      (ghostPosition->row <= GHOST_HOUSE_CENTER_ROW);
+  // If not in that column, keep heading to the entrance
+  if (!isEnteringHouse) {
+    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
+                          GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
                           true);
-    // Enter the ghost house and reset the ghost to scatter to get into the
-    // action.
+    return;
+  }
+  // If we are entering the house, head toward the center
+  MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_CENTER_ROW,
+                        GHOST_HOUSE_CENTER_COLUMN, &gameContext->levelData,
+                        true);
+  // Enter the ghost house and reset the ghost to scatter to get into the
+  // action.
+  if (ghostPosition->row == GHOST_HOUSE_CENTER_ROW &&
+      ghostPosition->column == GHOST_HOUSE_CENTER_COLUMN) {
+    ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
+    ghostVelocity->tilesPerSecond = GHOST_SPEED;
+    ghostVelocity->deltaRow = 0;
+    ghostVelocity->deltaColumn = 0;
+    ghostPosition->offsetX = 0.0f;
+    ghostPosition->offsetY = 0.0f;
+    ghost->currentDirection = UP;
     if (ghostPosition->row == GHOST_HOUSE_CENTER_ROW &&
         ghostPosition->column == GHOST_HOUSE_CENTER_COLUMN) {
       ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
@@ -171,13 +190,12 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
       ghostPosition->offsetX = 0.0f;
       ghostPosition->offsetY = 0.0f;
       ghost->currentDirection = UP;
+      // Stop being eyes and become a ghost
+      if (ECS_HasComponent(ghostEntity, COMPONENT_EDIBLE)) {
+        ECS_RemoveComponent(ghostEntity, COMPONENT_EDIBLE);
+      }
       printf("[ghostSystem.c] - Ghost has respawned.\n");
     }
-  } else {
-    // Move toward the ghost door
-    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
-                          GHOST_HOUSE_ENTRANCE_ROW, &gameContext->levelData,
-                          true);
   }
 }
 static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
@@ -185,23 +203,33 @@ static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
   Ghost *ghost = ECS_GetGhost(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   int dotsEaten = NUMBER_OF_DOTS - gameContext->remainingPellets;
-  // Ghosts exit the Ghost House after a threshold is met
-  if (dotsEaten < ghost->exitGhostHouseThreshold) {
-    ghostVelocity->deltaRow = 0;
-    ghostVelocity->deltaColumn = 0;
+  if (ghost->ghostMode == GHOSTMODE_IN_GHOSTHOUSE) {
+    // Ghosts exit the Ghost House after a threshold is met
+    if (dotsEaten < ghost->exitGhostHouseThreshold) {
+      ghostVelocity->deltaRow = 0;
+      ghostVelocity->deltaColumn = 0;
+      return;
+    }
+    // Leaving ghost needs to be be able to pass through the door
+    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_STAGING_ROW,
+                          GHOST_HOUSE_STAGING_COLUMN, &gameContext->levelData,
+                          true);
+    if (ghostPosition->row == GHOST_HOUSE_STAGING_ROW &&
+        ghostPosition->column == GHOST_HOUSE_STAGING_COLUMN) {
+      ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
+    }
     return;
   }
-  if (ghost->ghostMode == GHOSTMODE_IN_GHOSTHOUSE) {
-    ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
-  }
-  // Leaving ghost needs to be be able to pass through the door
-  MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
-                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
-                        true);
-  if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
-      ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
-    ghost->ghostMode = GHOSTMODE_SCATTER;
-    printf("[ghostSystem.c] - Ghost exited house.\n");
+  if (ghost->ghostMode == GHOSTMODE_EXIT_GHOSTHOUSE) {
+    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
+                          GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
+                          true);
+    if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
+        ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
+      ghost->ghostMode = GHOSTMODE_SCATTER;
+      ghost->currentDirection = LEFT;
+      printf("[ghostSystem.c] - Ghost exited house.\n");
+    }
   }
 }
 // After leaving Scatter, the ghost needs to enter a chase mode. The dossier
