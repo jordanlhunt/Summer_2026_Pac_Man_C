@@ -1,4 +1,5 @@
 #include "../../include/systems/ghostSystem.h"
+#include <stdbool.h>
 static int DistanceSquared(int row1, int column1, int row2, int column2) {
   int distanceSquared = 0;
   int deltaRow = row2 - row1;
@@ -154,13 +155,23 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
   Ghost *ghost = ECS_GetGhost(ghostEntity);
   Velocity *ghostVelocity = ECS_GetVelocity(ghostEntity);
   ghostVelocity->tilesPerSecond = GHOST_SPEED_EYES;
-  // As a eyes it can pass through the ghost door
-  MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
-                        GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
+
+  // Move to the Entrance
+  if (ghostPosition->row != GHOST_HOUSE_ENTRANCE_ROW ||
+      ghostPosition->column != GHOST_HOUSE_CENTER_COLUMN) {
+    MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
+                          GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
+                          true);
+    return;
+  }
+
+  // At entrance then pass through the ghost door
+  MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_CENTER_ROW,
+                        GHOST_HOUSE_CENTER_COLUMN, &gameContext->levelData,
                         true);
   // Enter the ghost house and reset the ghost to scatter to get back at it.
-  if (ghostPosition->row == GHOST_HOUSE_ENTRANCE_ROW &&
-      ghostPosition->column == GHOST_HOUSE_ENTRANCE_COLUMN) {
+  if (ghostPosition->row == GHOST_HOUSE_CENTER_ROW &&
+      ghostPosition->column == GHOST_HOUSE_CENTER_COLUMN) {
     ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
     ghostVelocity->tilesPerSecond = GHOST_SPEED;
     ghostPosition->offsetX = 0.0f;
@@ -179,7 +190,9 @@ static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
     ghostVelocity->deltaColumn = 0;
     return;
   }
-  ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
+  if (ghost->ghostMode == GHOSTMODE_IN_GHOSTHOUSE) {
+    ghost->ghostMode = GHOSTMODE_EXIT_GHOSTHOUSE;
+  }
   // Leaving ghost needs to be be able to pass through the door
   MoveGhostTowardTarget(ghostEntity, GHOST_HOUSE_ENTRANCE_ROW,
                         GHOST_HOUSE_ENTRANCE_COLUMN, &gameContext->levelData,
