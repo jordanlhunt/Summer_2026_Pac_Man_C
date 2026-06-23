@@ -181,21 +181,11 @@ static void UpdateGhostEyes(Entity ghostEntity, GameContext *gameContext) {
     ghostPosition->offsetX = 0.0f;
     ghostPosition->offsetY = 0.0f;
     ghost->currentDirection = UP;
-    if (ghostPosition->row == GHOST_HOUSE_CENTER_ROW &&
-        ghostPosition->column == GHOST_HOUSE_CENTER_COLUMN) {
-      ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
-      ghostVelocity->tilesPerSecond = GHOST_SPEED;
-      ghostVelocity->deltaRow = 0;
-      ghostVelocity->deltaColumn = 0;
-      ghostPosition->offsetX = 0.0f;
-      ghostPosition->offsetY = 0.0f;
-      ghost->currentDirection = UP;
-      // Stop being eyes and become a ghost
-      if (ECS_HasComponent(ghostEntity, COMPONENT_EDIBLE)) {
-        ECS_RemoveComponent(ghostEntity, COMPONENT_EDIBLE);
-      }
-      printf("[ghostSystem.c] - Ghost has respawned.\n");
+    // Stop being eyes and become a ghost
+    if (ECS_HasComponent(ghostEntity, COMPONENT_EDIBLE)) {
+      ECS_RemoveComponent(ghostEntity, COMPONENT_EDIBLE);
     }
+    printf("[ghostSystem.c] - Ghost has respawned.\n");
   }
 }
 static void UpdateGhostHouseExit(Entity ghostEntity, GameContext *gameContext) {
