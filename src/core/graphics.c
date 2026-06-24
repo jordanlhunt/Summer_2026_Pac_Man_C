@@ -482,6 +482,7 @@ void ShutdownGraphics() {
 }
 void ShutdownTTF() {
   if (globalFont != NULL) {
+    TTF_CloseFont(globalFont);
     globalFont = NULL;
   }
   TTF_Quit();
