@@ -5,6 +5,7 @@
 #include "common.h"
 #include "ecs/ecs.h"
 #include "ecs/entity.h"
+#include "gamestate.h"
 #include "graphics.h"
 #include "input.h"
 #include "leveldata.h"
@@ -17,6 +18,7 @@
 #define CHASE_TIME_LIMIT 20.0f
 #define SCATTER_TIME_LIMIT 7.0f
 typedef struct GameContext {
+  AudioState audioPlayer;
   bool isFrightenedGhostModeActive;
   bool isGameOver;
   bool isRoundWon;
@@ -26,16 +28,16 @@ typedef struct GameContext {
   float deltaTime;
   float frightenedGhostModeTimer;
   float ghostModeTimer;
+  GameState currentGameState;
   GhostMode currentGhostMode;
   Input input;
   int currentScore;
+  int highScore;
   int playerLives;
   int playerSpawnColumn;
   int playerSpawnRow;
   int remainingPellets;
-  int highScore;
   LevelData levelData;
-  AudioState audioPlayer;
 } GameContext;
 void CheckForRoundWon(GameContext *gameContext);
 void InitializeGameContext(GameContext *gameContext);

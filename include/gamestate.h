@@ -1,9 +1,10 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 typedef enum {
-  TITLE_SCREEN,
-  PLAYING,
-  PAUSED,
-  GAME_OVER,
-} CurrentGameState;
+  GAMESTATE_TITLE,
+  GAMESTATE_PLAYING,
+  GAMESTATE_PAUSED,
+  STATE_DEATH_ANIMATION,
+  STATE_GAME_OVER
+} GameState;
 #endif
