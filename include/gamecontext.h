@@ -8,7 +8,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "leveldata.h"
-#define HIGH_SCORE_SAVE_FILE = "highscore.dat"
+#define HIGH_SCORE_SAVE_FILE = "../assets/highscore.dat"
 #define DOT_PELLET_SCORE_VALUE 1
 #define POWER_PELLET_SCORE_VALUE 50
 #define BASE_GHOST_SCORE 200
@@ -46,4 +46,7 @@ void TriggerGameOver(GameContext *gameContext);
 void TriggerPlayerDeath(GameContext *gameContext);
 void TriggerRoundWon(GameContext *gameContext);
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime);
+void LoadHighScore(GameContext *gameContext);
+void SaveHighScore(GameContext *gameContext);
+
 #endif

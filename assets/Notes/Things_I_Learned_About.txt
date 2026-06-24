@@ -34,6 +34,7 @@ Programming and Software Development Things I learned
 14.) Debugging using "valgrind", I didn't know what this was until I stumbled upon it on StackOverflow post. Seems like a great way to patch up memory leaks and a good tool to make the most from my code.
 15.) Constantly test small amounts of code, if I test small it tends to "snap into place" much easier when I try to incorporate changes into other places in my code
 16.) The very basics of using git
+17.) The very basics of reading and writings to and from files
 ------------------------------------------------------
 Abstract Morals (in the philosophical sense) I learned
 ------------------------------------------------------

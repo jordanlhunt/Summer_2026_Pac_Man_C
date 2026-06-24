@@ -1,5 +1,23 @@
 #include "../../include/gamecontext.h"
 
+static void LoadHighScore(GameContext *gameContext) {
+  FILE *saveFile = fopen(HIGH_SCORE_SAVE_FILE, "r");
+  if (saveFile != NULL) {
+    fread(&gameContext->highScore, sizeof(int), 1, saveFile);
+    fclose(saveFile);
+  } else {
+    gameContext->highScore = 0;
+  }
+}
+
+static void SaveHighScore(GameContext *gameContext) {
+  FILE *saveFile = fopen(HIGH_SCORE_SAVE_FILE, "w");
+  if (saveFile != NULL) {
+    fwrite(&gameContext->highScore, sizeof(int), 1, saveFile);
+    fclose(saveFile);
+  }
+}
+
 static void ResetGameRound(GameContext *gameContext) {
   srand(0);
   ResetPlayerPosition(gameContext);
