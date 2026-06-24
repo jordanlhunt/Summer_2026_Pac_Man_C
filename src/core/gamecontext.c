@@ -66,6 +66,7 @@ void InitializeGameContext(GameContext *gameContext) {
   gameContext->deltaTime = 0.0f;
   gameContext->playerLives = 3;
   gameContext->pendingDirection = ZERO_DIRECTION;
+  LoadHighScore(gameContext);
 }
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
   if (gameContext == NULL) {
@@ -92,6 +93,11 @@ void TriggerGameOver(GameContext *gameContext) {
   }
   if (gameContext->isGameOver) {
     return;
+  }
+  if (gameContext->currentScore > gameContext->highScore) {
+    gameContext->highScore = gameContext->currentScore;
+    SaveHighScore(gameContext);
+    printf("[gamecontext.c] - NEW HIGH SCORE!\n");
   }
   gameContext->isGameOver = true;
   printf("[gamecontext.c] - Game Over. Final Score: %d\n",
