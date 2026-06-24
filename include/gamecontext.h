@@ -8,6 +8,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "leveldata.h"
+#define HIGH_SCORE_SAVE_FILE = "highscore.dat"
 #define DOT_PELLET_SCORE_VALUE 1
 #define POWER_PELLET_SCORE_VALUE 50
 #define BASE_GHOST_SCORE 200
@@ -32,6 +33,7 @@ typedef struct GameContext {
   int playerSpawnColumn;
   int playerSpawnRow;
   int remainingPellets;
+  int highScore;
   LevelData levelData;
   AudioState audioPlayer;
 } GameContext;
