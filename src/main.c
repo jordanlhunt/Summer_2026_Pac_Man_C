@@ -67,6 +67,9 @@ int main(int argc, char *argv[]) {
       }
       break;
     }
+    default: {
+      break;
+    }
     }
 
     // Render and Update
@@ -82,6 +85,9 @@ int main(int argc, char *argv[]) {
     switch (gameContext.currentGameState) {
     case GAMESTATE_TITLE: {
       DrawTitleScreen(sdlContext.renderer, &gameContext);
+      break;
+    }
+    default: {
       break;
     }
     }
