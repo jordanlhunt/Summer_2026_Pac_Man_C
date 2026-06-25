@@ -87,6 +87,21 @@ int main(int argc, char *argv[]) {
       DrawTitleScreen(sdlContext.renderer, &gameContext);
       break;
     }
+    case GAMESTATE_PLAYING: {
+      DrawMap(&gameContext.levelData, sdlContext.renderer);
+      ECS_Update(&gameContext, sdlContext.renderer);
+      // TODO: Add a UI for the score to help get the original cabinet feeling
+      break;
+    }
+    case GAMESTATE_GAME_OVER: {
+      DrawMap(&gameContext.levelData, sdlContext.renderer);
+      ECS_Update(&gameContext, sdlContext.renderer);
+      // TODO: Add a Game Over Screen
+      break;
+    }
+    case GAMESTATE_PAUSED: {
+      break;
+    }
     default: {
       break;
     }
