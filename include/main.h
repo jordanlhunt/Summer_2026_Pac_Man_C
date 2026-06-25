@@ -20,7 +20,7 @@ void initializeGameState();
 void handleInput();
 void drawGame();
 void updateGame();
-void delayFramerate(Uint32 startTime);
+void DelayFramerate(Uint32 startTime);
 void updateFrightenedModeTimer(GameContext *gameContext, float deltaTime);
 void cleanup(SDL_Renderer *, SDL_Window *);
 #endif

@@ -275,6 +275,13 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
       (SDL_Rect){488, 144, GENERAL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
   return true;
 }
+
+void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  SDL_RenderClear(renderer);
+  SDL_Rect tileRect = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 60, 200, 40};
+}
+
 void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y) {
   SDL_Rect sourceRectangle;
   switch (tile) {

@@ -1,4 +1,5 @@
 #include "../include/main.h"
+#include <SDL2/SDL_render.h>
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
@@ -100,12 +101,17 @@ int main(int argc, char *argv[]) {
       break;
     }
     case GAMESTATE_PAUSED: {
+      DrawMap(&gameContext.levelData, sdlContext.renderer);
+      ECS_Update(&gameContext, sdlContext.renderer);
+      // TODO: Add a Pause Screen
       break;
     }
     default: {
       break;
     }
     }
+    SDL_RenderPresent(sdlContext.renderer);
+    DelayFramerate(currentTime);
   }
   Shutdown(&sdlContext, &gameContext);
   return 0;
