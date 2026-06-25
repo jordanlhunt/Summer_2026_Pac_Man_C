@@ -9,15 +9,8 @@ int main(int argc, char *argv[]) {
   }
   ECS_Initialize();
   InitializeSystems();
-  LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE,
-          gameContext.ghostsEntities);
   InitializeGameContext(&gameContext);
-  Entity player = ECS_CreateEntity();
-  if (InitializePlayer(&gameContext, player) == false) {
-    return 1;
-  }
   AudioPlayStartMusic(&gameContext.audioPlayer);
-  gameContext.playerEntity = player;
   // Game Loop
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();
@@ -55,25 +48,43 @@ int main(int argc, char *argv[]) {
       break;
     }
     case GAMESTATE_PLAYING: {
+      updateFrightenedModeTimer(&gameContext, gameContext.deltaTime);
+      UpdateGhostTimer(&gameContext, gameContext.deltaTime);
+      ECS_Update(&gameContext, sdlContext.renderer);
+      break;
+    }
+    case GAMESTATE_GAME_OVER: {
+      // Press Spacebar to insert another coin and reset the game
+      if (gameContext.input.pauseGame == true) {
+        InitializeGameContext(&gameContext);
+        LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE,
+                gameContext.ghostsEntities);
+        Entity player = ECS_CreateEntity();
+        InitializePlayer(&gameContext, player);
+        gameContext.playerEntity = player;
+        gameContext.currentGameState = GAMESTATE_TITLE;
+        gameContext.input.pauseGame = false;
+      }
       break;
     }
     }
 
-    // Handle the Frightened Ghost Mode
-    updateFrightenedModeTimer(&gameContext, gameContext.deltaTime);
-    UpdateGhostTimer(&gameContext, gameContext.deltaTime);
-    SDL_SetRenderDrawColor(sdlContext.renderer, 100, 216, 107,
-                           255); // Matrix Green
-    if (gameContext.isFrightenedGhostModeActive == true) {
-      // Change the background color for visual feedback
-      SDL_SetRenderDrawColor(sdlContext.renderer, 206, 32, 41,
-                             255); // Fire Engine Red
-    }
+    // Render and Update
+    SDL_SetRenderDrawColor(
+        sdlContext.renderer, 100, 149, 237,
+        255); // XNA Cornflower Blue as an homage to my many failed attempts to
+              // into game development even though I totally missed the boat and
+              // this hobby will likely never be sustainable as a career. I wish
+              // I didn't slack off in my youth, can't change the past only the
+              // present. I'll find a game development job somewhere.
+
     SDL_RenderClear(sdlContext.renderer);
-    DrawMap(&gameContext.levelData, sdlContext.renderer);
-    ECS_Update(&gameContext, sdlContext.renderer);
-    SDL_RenderPresent(sdlContext.renderer);
-    DelayFramerate(currentTime);
+    switch (gameContext.currentGameState) {
+    case GAMESTATE_TITLE: {
+      DrawTitleScreen(sdlContext.renderer, &gameContext);
+      break;
+    }
+    }
   }
   Shutdown(&sdlContext, &gameContext);
   return 0;
