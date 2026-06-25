@@ -48,5 +48,6 @@ void TriggerGameOver(GameContext *gameContext);
 void TriggerPlayerDeath(GameContext *gameContext);
 void TriggerRoundWon(GameContext *gameContext);
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime);
+void ResetGameRound(GameContext *gameContext);
 
 #endif

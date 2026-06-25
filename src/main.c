@@ -1,9 +1,7 @@
 #include "../include/main.h"
-#include <stdbool.h>
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
-
   SDLContext sdlContext = {0};
   GameContext gameContext = {0};
   if (InitializeSDL(&sdlContext, &gameContext) == false) {
@@ -34,7 +32,6 @@ int main(int argc, char *argv[]) {
     if (gameContext.deltaTime > MAX_DELTA_TIME) {
       gameContext.deltaTime = MAX_DELTA_TIME;
     }
-
     previousTime = currentTime;
     while (SDL_PollEvent(&sdl_event) != 0) {
       if (sdl_event.type == SDL_QUIT) {
@@ -45,6 +42,23 @@ int main(int argc, char *argv[]) {
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
+
+    // State Machine
+    switch (gameContext.currentGameState) {
+    case GAMESTATE_TITLE: {
+      // Press Spacebar to 'insert coin' to start the play session
+      if (gameContext.input.pauseGame == true) {
+        ResetGameRound(&gameContext);
+        gameContext.currentGameState = GAMESTATE_PLAYING;
+        gameContext.input.pauseGame = false;
+      }
+      break;
+    }
+    case GAMESTATE_PLAYING: {
+      break;
+    }
+    }
+
     // Handle the Frightened Ghost Mode
     updateFrightenedModeTimer(&gameContext, gameContext.deltaTime);
     UpdateGhostTimer(&gameContext, gameContext.deltaTime);
@@ -59,19 +73,19 @@ int main(int argc, char *argv[]) {
     DrawMap(&gameContext.levelData, sdlContext.renderer);
     ECS_Update(&gameContext, sdlContext.renderer);
     SDL_RenderPresent(sdlContext.renderer);
-    delayFramerate(currentTime);
+    DelayFramerate(currentTime);
   }
   Shutdown(&sdlContext, &gameContext);
   return 0;
 }
 // Caps the game's execution speed to maintain a consistent 60 FPS
-void delayFramerate(Uint32 startTime) {
+void DelayFramerate(Uint32 startTime) {
   Uint32 elapsedTime = SDL_GetTicks() - startTime;
   if (elapsedTime < FRAMERATE_DELAY) {
     SDL_Delay(FRAMERATE_DELAY - elapsedTime);
   }
 }
-void updateFrightenedModeTimer(GameContext *gameContext, float deltaTime) {
+void UpdateFrightenedModeTimer(GameContext *gameContext, float deltaTime) {
   if (gameContext->isFrightenedGhostModeActive == true) {
     gameContext->frightenedGhostModeTimer -= deltaTime;
     if (gameContext->frightenedGhostModeTimer <= 0.0) {

@@ -25,7 +25,7 @@ void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
     gameContext->pendingDirection = RIGHT;
     break;
   }
-  case SDLK_ESCAPE: {
+  case SDLK_SPACE: {
     // Only set quit on keydown, not keyup
     if (isPressed) {
       gameContext->input.quitGame = true;

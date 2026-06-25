@@ -18,7 +18,7 @@ static void SaveHighScore(GameContext *gameContext) {
   }
 }
 
-static void ResetGameRound(GameContext *gameContext) {
+void ResetGameRound(GameContext *gameContext) {
   srand(0);
   ResetPlayerPosition(gameContext);
   gameContext->isFrightenedGhostModeActive = false;
@@ -66,6 +66,7 @@ void InitializeGameContext(GameContext *gameContext) {
   gameContext->deltaTime = 0.0f;
   gameContext->playerLives = 3;
   gameContext->pendingDirection = ZERO_DIRECTION;
+  gameContext->currentGameState = GAMESTATE_TITLE;
   LoadHighScore(gameContext);
 }
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {
