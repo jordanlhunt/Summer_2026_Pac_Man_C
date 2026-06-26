@@ -279,7 +279,20 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
 void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
-  SDL_Rect tileRect = {SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 60, 200, 40};
+  SDL_Color sdlColorYellow = {.r = 255, .g = 255, .b = 0, .a = 0};
+  SDL_Color sdlColorWhite = {.r = 255, .g = 255, .b = 255, .a = 0};
+  RenderText(renderer, "HAC-MAN - A PAC-MAN clone in C", 140, 150,
+             sdlColorYellow, 4.0f);
+  char highScoreText[32];
+  snprintf(highScoreText, sizeof(highScoreText), "HIGH SCORE: %d",
+           gameContext->highScore);
+  RenderText(renderer, highScoreText, 200, 230, sdlColorWhite, 1.5f);
+  // Blinking Text like old arcade games
+  Uint32 currentTicks = SDL_GetTicks();
+  if ((currentTicks / 500) % 2 == 0) {
+    RenderText(renderer, "PRESS SPACEBAR TO INSERT COIN", 150, 290,
+               sdlColorWhite, 1.5f);
+  }
 }
 
 void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y) {
@@ -493,4 +506,34 @@ void ShutdownTTF() {
     globalFont = NULL;
   }
   TTF_Quit();
+}
+
+void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
+                SDL_Color color, float scale) {
+  if (globalFont == NULL) {
+    printf("[graphics.c] - Global Font is NULL");
+    return;
+  }
+  SDL_Surface *sdlSurface =
+      TTF_RenderText_Solid(globalFont, textToRender, color);
+  if (sdlSurface == NULL) {
+    printf("[graphics.c] - SDL_Surface is NULL: %s", TTF_GetError())
+  }
+  SDL_Texture *textureFromSurface =
+      SDL_CreateTextureFromSurface(renderer, sdlSurface);
+  if (textureFromSurface == NULL) {
+    printf("[graphics.c] - SDL_CreateTextureFromSurface failed: %s\n",
+           SDL_GetError());
+    SDL_FreeSurface(sdlSurface);
+    return;
+  }
+  // I'm going to use Designated initalizers for now on in my C, it really makes
+  // it super clear
+  SDL_Rect destinationRect = {.x = x,
+                              .y = y,
+                              .w = (int)(sdlSurface->w * scale),
+                              .h = (int)(sdlSurface->h * scale)};
+  SDL_RenderCopy(renderer, textureFromSurface, NULL, &destinationRect);
+  SDL_DestroyTexture(textureFromSurface);
+  SDL_FreeSurface(sdlSurface);
 }

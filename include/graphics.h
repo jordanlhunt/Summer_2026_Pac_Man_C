@@ -85,5 +85,6 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
 void GraphicsDrawPlayer(SDL_Renderer *renderer, Entity playerEntity,
                         GameContext *gameContext);
 void GraphicsDrawEdible(SDL_Renderer *renderer, Entity edibleEntity);
-
+void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
+                SDL_Color color, float scale);
 #endif
