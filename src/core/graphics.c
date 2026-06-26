@@ -294,7 +294,7 @@ void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
                sdlColorWhite, 1.5f);
   }
 }
-
+void DrawGameOverScreen() {}
 void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y) {
   SDL_Rect sourceRectangle;
   switch (tile) {
