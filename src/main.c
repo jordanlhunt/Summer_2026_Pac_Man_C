@@ -1,5 +1,24 @@
 #include "../include/main.h"
 #include <SDL2/SDL_render.h>
+
+void UpdateFrightenedModeTimer(GameContext *gameContext, float deltaTime) {
+  if (gameContext->isFrightenedGhostModeActive == true) {
+    gameContext->frightenedGhostModeTimer -= deltaTime;
+    if (gameContext->frightenedGhostModeTimer <= 0.0) {
+      gameContext->isFrightenedGhostModeActive = false;
+      gameContext->frightenedGhostModeTimer = 0.0f;
+      printf("[main.c] - Ghost Timer is 0, Ghost are no longer FRIGHTENED\n");
+    }
+  }
+}
+// Caps the game's execution speed to maintain a consistent 60 FPS
+void DelayFramerate(Uint32 startTime) {
+  Uint32 elapsedTime = SDL_GetTicks() - startTime;
+  if (elapsedTime < FRAMERATE_DELAY) {
+    SDL_Delay(FRAMERATE_DELAY - elapsedTime);
+  }
+}
+
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
@@ -49,7 +68,7 @@ int main(int argc, char *argv[]) {
       break;
     }
     case GAMESTATE_PLAYING: {
-      updateFrightenedModeTimer(&gameContext, gameContext.deltaTime);
+      UpdateFrightenedModeTimer(&gameContext, gameContext.deltaTime);
       UpdateGhostTimer(&gameContext, gameContext.deltaTime);
       ECS_Update(&gameContext, sdlContext.renderer);
       break;
@@ -115,21 +134,4 @@ int main(int argc, char *argv[]) {
   }
   Shutdown(&sdlContext, &gameContext);
   return 0;
-}
-// Caps the game's execution speed to maintain a consistent 60 FPS
-void DelayFramerate(Uint32 startTime) {
-  Uint32 elapsedTime = SDL_GetTicks() - startTime;
-  if (elapsedTime < FRAMERATE_DELAY) {
-    SDL_Delay(FRAMERATE_DELAY - elapsedTime);
-  }
-}
-void UpdateFrightenedModeTimer(GameContext *gameContext, float deltaTime) {
-  if (gameContext->isFrightenedGhostModeActive == true) {
-    gameContext->frightenedGhostModeTimer -= deltaTime;
-    if (gameContext->frightenedGhostModeTimer <= 0.0) {
-      gameContext->isFrightenedGhostModeActive = false;
-      gameContext->frightenedGhostModeTimer = 0.0f;
-      printf("[main.c] - Ghost Timer is 0, Ghost are no longer FRIGHTENED\n");
-    }
-  }
 }

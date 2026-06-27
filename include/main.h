@@ -21,6 +21,6 @@ void handleInput();
 void drawGame();
 void updateGame();
 void DelayFramerate(Uint32 startTime);
-void updateFrightenedModeTimer(GameContext *gameContext, float deltaTime);
+void UpdateFrightenedModeTimer(GameContext *gameContext, float deltaTime);
 void cleanup(SDL_Renderer *, SDL_Window *);
 #endif

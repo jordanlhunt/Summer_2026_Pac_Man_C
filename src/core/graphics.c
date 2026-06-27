@@ -1,5 +1,6 @@
 #include "../../include/graphics.h"
 #include "../../include/gamecontext.h"
+#include <SDL2/SDL_ttf.h>
 
 SpriteSheet *globalSpriteSheet = NULL;
 TTF_Font *globalFont = NULL;
@@ -11,6 +12,13 @@ static float staticGhostFrightTimer = 0.0f;
 static float staticGhostFlashTimer = 0.0f;
 static int staticGhostFlashFrame = 0;
 static int staticGhostFrightFrame = 0;
+
+static int GetTextWidth(const char *text, float scale) {
+  int textWidth;
+  int textHeight;
+  TTF_SizeText(globalFont, text, &textWidth, &textHeight);
+  return (int)(textWidth * scale);
+}
 bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
   SDL_Surface *sourceSpriteSheetSurface = IMG_Load(spriteSheetPath);
   if (sourceSpriteSheetSurface == NULL) {
@@ -281,20 +289,36 @@ void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
   SDL_RenderClear(renderer);
   SDL_Color sdlColorYellow = {.r = 255, .g = 255, .b = 0, .a = 0};
   SDL_Color sdlColorWhite = {.r = 255, .g = 255, .b = 255, .a = 0};
-  RenderText(renderer, "HAC-MAN - A PAC-MAN clone in C", 140, 150,
-             sdlColorYellow, 4.0f);
+  const char *title = "HAC-MAN";
+  float titleScale = 1.8f;
+  int titleWidth = GetTextWidth(title, titleScale);
+  int titleX = (SCREEN_WIDTH - titleWidth) / 2;
+  int titleY = 150;
+  RenderText(renderer, title, titleX, titleY, sdlColorYellow, titleScale);
   char highScoreText[32];
   snprintf(highScoreText, sizeof(highScoreText), "HIGH SCORE: %d",
            gameContext->highScore);
-  RenderText(renderer, highScoreText, 200, 230, sdlColorWhite, 1.5f);
+  float highScoreScale = 1.5f;
+  int highScoreWidth = GetTextWidth(highScoreText, highScoreScale);
+  int highScoreX = (SCREEN_WIDTH - highScoreWidth) / 2;
+  int highScoreY = titleY + 80;
+  RenderText(renderer, highScoreText, highScoreX, highScoreY, sdlColorWhite,
+             highScoreScale);
+
+  const char *insertCoin = "Press SPACEBAR to insert coin";
+  float insertCoinScale = 1.5f;
+  int insertCoinWidth = GetTextWidth(insertCoin, insertCoinScale);
+  int insertCoinX = (SCREEN_WIDTH - insertCoinWidth) / 2;
+  int insertCoinY = highScoreY + 60;
   // Blinking Text like old arcade games
   Uint32 currentTicks = SDL_GetTicks();
   if ((currentTicks / 500) % 2 == 0) {
-    RenderText(renderer, "PRESS SPACEBAR TO INSERT COIN", 150, 290,
-               sdlColorWhite, 1.5f);
+    RenderText(renderer, insertCoin, insertCoinX, insertCoinY, sdlColorWhite,
+               insertCoinScale);
   }
 }
-void DrawGameOverScreen() {}
+void DrawGameOverScreen(SDL_Renderer *renderer, GameContext *gameContext) {}
+
 void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y) {
   SDL_Rect sourceRectangle;
   switch (tile) {
@@ -517,7 +541,7 @@ void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
   SDL_Surface *sdlSurface =
       TTF_RenderText_Solid(globalFont, textToRender, color);
   if (sdlSurface == NULL) {
-    printf("[graphics.c] - SDL_Surface is NULL: %s", TTF_GetError())
+    printf("[graphics.c] - SDL_Surface is NULL: %s", TTF_GetError());
   }
   SDL_Texture *textureFromSurface =
       SDL_CreateTextureFromSurface(renderer, sdlSurface);

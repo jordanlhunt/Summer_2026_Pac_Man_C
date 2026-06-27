@@ -77,6 +77,7 @@ extern SpriteSheet *globalSpriteSheet;
 void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext);
 void DrawGameOverScreen(SDL_Renderer *renderer, GameContext *gameContext);
 void DrawPausedScreen(SDL_Renderer *renderer, GameContext *gameContext);
+void DrawUI(SDL_Renderer *renderer, GameContext *gameContext);
 
 bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath);
 bool InitializeTTF();
