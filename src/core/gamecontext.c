@@ -19,6 +19,13 @@ static void SaveHighScore(GameContext *gameContext) {
 }
 
 void ResetGameRound(GameContext *gameContext) {
+  if (gameContext == NULL) {
+    printf("[gamecontext.c] - ResetGameRound() gameContext is NULL");
+    return;
+  }
+  if (gameContext->playerEntity == 0) {
+    printf("[gameContext.c] - ResetGameRound() playerEntity is NULL");
+  }
   srand(0);
   ResetPlayerPosition(gameContext);
   gameContext->isFrightenedGhostModeActive = false;
@@ -122,6 +129,10 @@ void TriggerPlayerDeath(GameContext *gameContext) {
 }
 void ResetPlayerPosition(GameContext *gameContext) {
   if (gameContext == NULL) {
+    return;
+  }
+  if (gameContext->playerEntity == 0) {
+    printf("[gamecontext.c] - ResetPlayerPosition: playerEntity is 0!\n");
     return;
   }
   Position *position = ECS_GetPosition(gameContext->playerEntity);

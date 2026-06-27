@@ -35,6 +35,7 @@ Programming and Software Development Things I learned
 15.) Constantly test small amounts of code, if I test small it tends to "snap into place" much easier when I try to incorporate changes into other places in my code
 16.) The very basics of using git
 17.) The very basics of reading and writings to and from files
+18.) The importance of NULL checks to prevent segmentation faults
 ------------------------------------------------------
 Abstract Morals (in the philosophical sense) I learned
 ------------------------------------------------------

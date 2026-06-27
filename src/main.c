@@ -29,6 +29,14 @@ int main(int argc, char *argv[]) {
   InitializeSystems();
   InitializeGameContext(&gameContext);
   AudioPlayStartMusic(&gameContext.audioPlayer);
+  LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE,
+          gameContext.ghostsEntities);
+  Entity player = ECS_CreateEntity();
+  if (InitializePlayer(&gameContext, player) == false) {
+    return 1;
+  }
+  gameContext.playerEntity = player;
+
   // Game Loop
   bool isQuit = false;
   Uint32 previousTime = SDL_GetTicks();
