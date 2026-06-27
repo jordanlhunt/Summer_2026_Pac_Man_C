@@ -1,5 +1,7 @@
 #include "../../include/graphics.h"
 #include "../../include/gamecontext.h"
+#include <SDL2/SDL_pixels.h>
+#include <stdio.h>
 SpriteSheet *globalSpriteSheet = NULL;
 TTF_Font *globalFont = NULL;
 // PAC-MAN Animation State
@@ -279,6 +281,33 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
   globalSpriteSheet->score800 =
       (SDL_Rect){488, 144, GENERAL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
   return true;
+}
+void DrawUI(SDL_Renderer *renderer, GameContext *gameContext) {
+  char scoreText[SCORE_ARRAY_LENGTH];
+  SDL_Color white = {.r = 255, .g = 255, .b = 255, .a = 0};
+  snprintf(scoreText, sizeof(scoreText), "1UP %d", gameContext->currentScore);
+  RenderText(renderer, scoreText, 10, 10, white, 1.0f);
+  char highScore[SCORE_ARRAY_LENGTH];
+  snprintf(highScore, sizeof(highScore), "HIGH SCORE %d",
+           gameContext->highScore);
+  float highScoreScale = 1.0f;
+  int highScoreWidth = GetTextWidth(highScore, highScoreScale);
+  int highScoreX = (SCREEN_WIDTH - highScoreWidth) / 2;
+  RenderText(renderer, highScore, highScoreX, 10, white,
+             highScoreScale); // 3. LIVES as Pac-Man sprites (Bottom Left)
+
+  // Each subsequent life is offset by 20 pixels to the right
+  int startX = 10;
+  int startY = SCREEN_HEIGHT - 20;
+  int iconSize = 16;      // Small Pac-Man size (half of normal 32)
+  int spacingOffset = 20; // Space between each life icon
+  for (int i = 0; i < gameContext->playerLives; i++) {
+    SDL_Rect sourceRectangle = globalSpriteSheet->pacmanRight[0];
+    SDL_Rect destinationRectangle = {startX + (i * spacingOffset), startY,
+                                     iconSize, iconSize};
+    SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
+                   &destinationRectangle);
+  }
 }
 void DrawPausedScreen(SDL_Renderer *renderer) {
   // Add a semi-transparent overlay so the game looks dimmed
