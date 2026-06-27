@@ -48,4 +48,12 @@ Abstract Morals (in the philosophical sense) I learned
 7.) There is an avoidable amount of reading that has to be done. Being good at something requires practice and theory. Reading my textbooks must. Not skimming, not summaries, not just getting the gist, but active reading is a must to git gud.
 8.) Asking for help is cool and good, however always ask for help the right way. Provide context, provide my proof I tried something and that I tried to solve it on my own before reaching out. The other person will appreciate that.
 9.) Working on a project seems like an endless series of "How does this work?" followed by "How was I supposed to know that?" follow by "Oh I guess that makes sense". Again, I'm sure I'm reiterating the very concept of learning but this is my *REAL* self-guided project so bare with me.
-10.) Actual growth is very mundane. It's worth noting and keeping track of, but it's like any other incremental development. There aren't that many huge jumps, it's just a gradual incline most of the time. There are spikes here and there, but programming is very boring, I mean in the sense it's not what social media would have me beleive. Being consistent is the surest path to success, it may be slower than others but it will get me to where I want to go, and I'll pick up a lot of great things along the way.
+10.) Actual growth is very mundane. It's worth noting and keeping track of, but it's like any other incremental development. There aren't that many huge jumps, it's just a gradual incline most of the time. There are spikes here and there, but programming is very boring, I mean in the sense it's not what social media would have me believe. Being consistent is the surest path to success, it may be slower than others but it will get me to where I want to go, and I'll pick up a lot of great things along the way.
+
+------------------------------------------------------
+Other things I learned that I can't quite categorize
+------------------------------------------------------
+1.) I can't spell the word 'initialize' for the life of me. In fact I can't spell that well in general. 
+2.) There are a lot of discussion of conventions in C that are interesting but ultimately result in "do whatever man, just be consistent about it".
+3.) Everything has a Discord now. I hate that. Unless we are talking about fighting games, then it's fine.
+4.) I gotta build a simple blog/website to show of my work and resume. I don't wanna do social media but it seems like it's a must in our modern nightmare ecosystem.

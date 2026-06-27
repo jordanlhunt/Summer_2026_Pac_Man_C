@@ -1,6 +1,5 @@
 #include "../include/main.h"
 #include <SDL2/SDL_render.h>
-
 void UpdateFrightenedModeTimer(GameContext *gameContext, float deltaTime) {
   if (gameContext->isFrightenedGhostModeActive == true) {
     gameContext->frightenedGhostModeTimer -= deltaTime;
@@ -18,7 +17,6 @@ void DelayFramerate(Uint32 startTime) {
     SDL_Delay(FRAMERATE_DELAY - elapsedTime);
   }
 }
-
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
@@ -55,16 +53,9 @@ int main(int argc, char *argv[]) {
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
-
     // State Machine
     switch (gameContext.currentGameState) {
     case GAMESTATE_TITLE: {
-      // Press Spacebar to 'insert coin' to start the play session
-      if (gameContext.input.pauseGame == true) {
-        ResetGameRound(&gameContext);
-        gameContext.currentGameState = GAMESTATE_PLAYING;
-        gameContext.input.pauseGame = false;
-      }
       break;
     }
     case GAMESTATE_PLAYING: {
@@ -74,24 +65,15 @@ int main(int argc, char *argv[]) {
       break;
     }
     case GAMESTATE_GAME_OVER: {
-      // Press Spacebar to insert another coin and reset the game
-      if (gameContext.input.pauseGame == true) {
-        InitializeGameContext(&gameContext);
-        LoadMap(&gameContext.levelData, PATH_TO_MAZE_FILE,
-                gameContext.ghostsEntities);
-        Entity player = ECS_CreateEntity();
-        InitializePlayer(&gameContext, player);
-        gameContext.playerEntity = player;
-        gameContext.currentGameState = GAMESTATE_TITLE;
-        gameContext.input.pauseGame = false;
-      }
+      break;
+    }
+    case GAMESTATE_PAUSED: {
       break;
     }
     default: {
       break;
     }
     }
-
     // Render and Update
     SDL_SetRenderDrawColor(
         sdlContext.renderer, 100, 149, 237,
@@ -99,8 +81,8 @@ int main(int argc, char *argv[]) {
               // into game development even though I totally missed the boat and
               // this hobby will likely never be sustainable as a career. I wish
               // I didn't slack off in my youth, can't change the past only the
-              // present. I'll find a game development job somewhere.
-
+              // present. I'll find a game development job somewhere. Marking it
+              // here Saturday 27 June 2026.
     SDL_RenderClear(sdlContext.renderer);
     switch (gameContext.currentGameState) {
     case GAMESTATE_TITLE: {
@@ -110,19 +92,19 @@ int main(int argc, char *argv[]) {
     case GAMESTATE_PLAYING: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
       ECS_Update(&gameContext, sdlContext.renderer);
-      // TODO: Add a UI for the score to help get the original cabinet feeling
+      DrawUI(sdlContext.renderer, &gameContext);
       break;
     }
     case GAMESTATE_GAME_OVER: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
       ECS_Update(&gameContext, sdlContext.renderer);
-      // TODO: Add a Game Over Screen
+      DrawGameOverScreen(sdlContext.renderer, &gameContext);
       break;
     }
     case GAMESTATE_PAUSED: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
       ECS_Update(&gameContext, sdlContext.renderer);
-      // TODO: Add a Pause Screen
+      DrawPausedScreen(sdlContext.renderer);
       break;
     }
     default: {

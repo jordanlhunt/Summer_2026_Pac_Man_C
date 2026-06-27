@@ -30,19 +30,41 @@ void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
     }
     break;
   }
+  // Treat SPACE like the start button at the arcade
   case SDLK_SPACE: {
-    printf("[input.c] - Space was pressed\n");
-    if (isPressed == true &&
-        gameContext->currentGameState == GAMESTATE_PLAYING) {
-      gameContext->currentGameState = GAMESTATE_PAUSED;
-    } else if (isPressed == true &&
-               gameContext->currentGameState == GAMESTATE_PAUSED) {
-      gameContext->currentGameState = GAMESTATE_PLAYING;
+    if (isPressed == false) {
+      break;
     }
-    break;
-  }
-  default: {
-    break;
+    switch (gameContext->currentGameState) {
+      // Start the game
+    case GAMESTATE_TITLE: {
+      ResetGameRound(gameContext);
+      gameContext->currentGameState = GAMESTATE_PLAYING;
+      break;
+    }
+    // Pause the game
+    case GAMESTATE_PLAYING: {
+      gameContext->currentGameState = GAMESTATE_PAUSED;
+      break;
+    }
+    // Unpause the game
+    case GAMESTATE_PAUSED: {
+      gameContext->currentGameState = GAMESTATE_PLAYING;
+      break;
+    }
+    // Restart the game
+    case GAMESTATE_GAME_OVER: {
+      InitializeGameContext(gameContext);
+      LoadMap(&gameContext->levelData, PATH_TO_MAZE_FILE,
+              gameContext->ghostsEntities);
+      Entity playerEntity = ECS_CreateEntity();
+      gameContext->playerEntity = playerEntity;
+      gameContext->currentGameState = GAMESTATE_TITLE;
+    }
+    default: {
+      break;
+    }
+    }
   }
   }
 }
