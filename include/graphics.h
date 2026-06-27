@@ -16,6 +16,7 @@
 #define GHOST_FLASHING_SPEED 6.0f
 #define GHOST_EYES 5
 #define GHOST_DIRECTIONS 5
+#define SCORE_ARRAY_LENGTH 32
 
 #define PUBLICPIXELTTF "assets/font/PublicPixel.ttf"
 #define SOURCESPRITESHEETPNG "assets/art/SourceSpriteSheet.png"
@@ -76,7 +77,7 @@ extern SpriteSheet *globalSpriteSheet;
 
 void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext);
 void DrawGameOverScreen(SDL_Renderer *renderer, GameContext *gameContext);
-void DrawPausedScreen(SDL_Renderer *renderer, GameContext *gameContext);
+void DrawPausedScreen(SDL_Renderer *renderer);
 void DrawUI(SDL_Renderer *renderer, GameContext *gameContext);
 
 bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath);

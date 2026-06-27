@@ -1,7 +1,5 @@
 #include "../../include/graphics.h"
 #include "../../include/gamecontext.h"
-#include <SDL2/SDL_ttf.h>
-
 SpriteSheet *globalSpriteSheet = NULL;
 TTF_Font *globalFont = NULL;
 // PAC-MAN Animation State
@@ -12,7 +10,6 @@ static float staticGhostFrightTimer = 0.0f;
 static float staticGhostFlashTimer = 0.0f;
 static int staticGhostFlashFrame = 0;
 static int staticGhostFrightFrame = 0;
-
 static int GetTextWidth(const char *text, float scale) {
   int textWidth;
   int textHeight;
@@ -283,7 +280,27 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
       (SDL_Rect){488, 144, GENERAL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
   return true;
 }
-
+void DrawPausedScreen(SDL_Renderer *renderer) {
+  // Add a semi-transparent overlay so the game looks dimmed
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 150);
+  SDL_Rect overlay = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+  SDL_RenderFillRect(renderer, &overlay);
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+  SDL_Color white = {255, 255, 255, 255};
+  const char *pausedText = "PAUSED";
+  float titleScale = 3.0f;
+  int titleWidth = GetTextWidth(pausedText, titleScale);
+  int titleX = (SCREEN_WIDTH - titleWidth) / 2;
+  int titleY = 150;
+  RenderText(renderer, pausedText, titleX, titleY, white, titleScale);
+  const char *prompt = "PRESS SPACEBAR TO  RESUME";
+  float promptScale = 1.5f;
+  int promptWidth = GetTextWidth(prompt, promptScale);
+  int promptX = (SCREEN_WIDTH - promptWidth) / 2;
+  int promptY = titleY + 70;
+  RenderText(renderer, prompt, promptX, promptY, white, promptScale);
+}
 void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
@@ -304,7 +321,6 @@ void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
   int highScoreY = titleY + 80;
   RenderText(renderer, highScoreText, highScoreX, highScoreY, sdlColorWhite,
              highScoreScale);
-
   const char *insertCoin = "Press SPACEBAR to insert coin";
   float insertCoinScale = 1.5f;
   int insertCoinWidth = GetTextWidth(insertCoin, insertCoinScale);
@@ -317,8 +333,41 @@ void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
                insertCoinScale);
   }
 }
-void DrawGameOverScreen(SDL_Renderer *renderer, GameContext *gameContext) {}
-
+void DrawGameOverScreen(SDL_Renderer *renderer, GameContext *gameContext) {
+  // Keep the map and entities rendered behind it, just draw text on top.
+  // Don't clear the screen here
+  SDL_Color red = {255, 0, 0, 255};
+  SDL_Color yellow = {255, 255, 0, 255};
+  SDL_Color white = {255, 255, 255, 255};
+  const char *gameOverText = "GAME OVER";
+  float titleScale = 3.0f;
+  int titleWidth = GetTextWidth(gameOverText, titleScale);
+  int titleX = (SCREEN_WIDTH - titleWidth) / 2;
+  int titleY = 120;
+  RenderText(renderer, gameOverText, titleX, titleY, red, titleScale);
+  char scoreText[SCORE_ARRAY_LENGTH];
+  snprintf(scoreText, sizeof(scoreText), "SCORE: %d",
+           gameContext->currentScore);
+  float scoreScale = 1.5f;
+  int scoreWidth = GetTextWidth(scoreText, scoreScale);
+  int scoreX = (SCREEN_WIDTH - scoreWidth) / 2;
+  int scoreY = titleY + 70;
+  RenderText(renderer, scoreText, scoreX, scoreY, yellow, scoreScale);
+  char highText[SCORE_ARRAY_LENGTH];
+  snprintf(highText, sizeof(highText), "HIGH SCORE: %d",
+           gameContext->highScore);
+  float highScale = 1.5f;
+  int highWidth = GetTextWidth(highText, highScale);
+  int highX = (SCREEN_WIDTH - highWidth) / 2;
+  int highY = scoreY + 40;
+  RenderText(renderer, highText, highX, highY, white, highScale);
+  const char *prompt = "PRESS SPACEBAR TO  RESTART";
+  float promptScale = 1.5f;
+  int promptWidth = GetTextWidth(prompt, promptScale);
+  int promptX = (SCREEN_WIDTH - promptWidth) / 2;
+  int promptY = highY + 60;
+  RenderText(renderer, prompt, promptX, promptY, white, promptScale);
+}
 void GraphicsDrawTile(SDL_Renderer *renderer, MapTile tile, int x, int y) {
   SDL_Rect sourceRectangle;
   switch (tile) {
@@ -507,7 +556,6 @@ void GraphicsDrawPlayer(SDL_Renderer *renderer, Entity playerEntity,
   SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
                  &destinationRectangle);
 }
-
 bool InitializeTTF() {
   if (TTF_Init() == -1) {
     return false;
@@ -531,7 +579,6 @@ void ShutdownTTF() {
   }
   TTF_Quit();
 }
-
 void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
                 SDL_Color color, float scale) {
   if (globalFont == NULL) {
@@ -551,8 +598,8 @@ void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
     SDL_FreeSurface(sdlSurface);
     return;
   }
-  // I'm going to use Designated initalizers for now on in my C, it really makes
-  // it super clear
+  // I'm going to use Designated initializers for now on in my C, it really
+  // makes it super clear
   SDL_Rect destinationRect = {.x = x,
                               .y = y,
                               .w = (int)(sdlSurface->w * scale),

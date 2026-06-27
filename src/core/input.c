@@ -1,7 +1,5 @@
 #include "../../include/input.h"
 #include "../../include/gamecontext.h"
-#include <SDL2/SDL.h>
-#include <stdbool.h>
 void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
   // Only process keyboard events
   if (sdlEvent->type != SDL_KEYDOWN && sdlEvent->type != SDL_KEYUP) {
@@ -33,9 +31,13 @@ void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
     break;
   }
   case SDLK_SPACE: {
-    // Toggle pause on keydown only
-    if (isPressed) {
-      gameContext->input.pauseGame = !gameContext->input.pauseGame;
+    printf("[input.c] - Space was pressed\n");
+    if (isPressed == true &&
+        gameContext->currentGameState == GAMESTATE_PLAYING) {
+      gameContext->currentGameState = GAMESTATE_PAUSED;
+    } else if (isPressed == true &&
+               gameContext->currentGameState == GAMESTATE_PAUSED) {
+      gameContext->currentGameState = GAMESTATE_PLAYING;
     }
     break;
   }
