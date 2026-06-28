@@ -38,6 +38,7 @@ Programming and Software Development Things I learned
 18.) The importance of NULL checks to prevent segmentation faults
 19.) Reading the documentation is a must. There is no getting around it. SDL2 has a great wiki [https://wiki.libsdl.org/SDL2/FrontPage].
 20.) UI adjustments in code are clunky. Having to change and then build it and check again is annoying to be blunt. 
+
 ------------------------------------------------------
 Abstract Morals (in the philosophical sense) I learned
 ------------------------------------------------------
@@ -56,6 +57,7 @@ Abstract Morals (in the philosophical sense) I learned
 ------------------------------------------------------
 Other things I learned that I can't quite categorize
 ------------------------------------------------------
+
 1.) I can't spell the word 'initialize' for the life of me. In fact I can't spell that well in general. 
 2.) There are a lot of discussion of conventions in C that are interesting but ultimately result in "do whatever man, just be consistent about it".
 3.) Everything has a Discord now. I hate that. Unless we are talking about fighting games, then it's fine.

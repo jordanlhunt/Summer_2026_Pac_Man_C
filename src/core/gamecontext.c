@@ -108,6 +108,7 @@ void TriggerGameOver(GameContext *gameContext) {
     printf("[gamecontext.c] - NEW HIGH SCORE!\n");
   }
   gameContext->isGameOver = true;
+  gameContext->currentGameState = GAMESTATE_GAME_OVER;
   printf("[gamecontext.c] - Game Over. Final Score: %d\n",
          gameContext->currentScore);
 }
