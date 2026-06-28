@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
     }
     case GAMESTATE_PLAYING: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
+      ECS_Draw(&gameContext, sdlContext.renderer);
       DrawUI(sdlContext.renderer, &gameContext);
       break;
     }
