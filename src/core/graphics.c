@@ -293,7 +293,7 @@ void DrawUI(SDL_Renderer *renderer, GameContext *gameContext) {
            gameContext->highScore);
   float highScoreScale = .6f;
   int highScoreWidth = GetTextWidth(highScore, highScoreScale);
-  int highScoreX = (LOGICAL_WIDTH - highScoreWidth) / 2;
+  int highScoreX = LOGICAL_WIDTH - highScoreWidth - 4;
   RenderText(renderer, highScore, highScoreX, 2, white,
              highScoreScale); // 3. LIVES as Pac-Man sprites (Bottom Left)
 

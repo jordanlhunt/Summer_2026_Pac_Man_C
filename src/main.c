@@ -81,6 +81,7 @@ int main(int argc, char *argv[]) {
       break;
     }
     }
+
     // Render
     SDL_SetRenderDrawColor(sdlContext.renderer, 0, 0, 0,
                            255); // Black background to arcade cabinet feel,
@@ -94,6 +95,13 @@ int main(int argc, char *argv[]) {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
       ECS_Draw(&gameContext, sdlContext.renderer);
       DrawUI(sdlContext.renderer, &gameContext);
+      // A white dividing line for clarity sake
+      SDL_SetRenderDrawColor(sdlContext.renderer, 255, 255, 255, 255);
+      SDL_RenderDrawLine(sdlContext.renderer, 0, UI_BLACK_BAR_HEIGHT,
+                         LOGICAL_WIDTH, UI_BLACK_BAR_HEIGHT);
+      SDL_RenderDrawLine(
+          sdlContext.renderer, 0, LOGICAL_HEIGHT - UI_BLACK_BAR_HEIGHT - 1,
+          LOGICAL_WIDTH, LOGICAL_HEIGHT - UI_BLACK_BAR_HEIGHT - 1);
       break;
     }
     case GAMESTATE_GAME_OVER: {
@@ -112,6 +120,7 @@ int main(int argc, char *argv[]) {
       break;
     }
     }
+
     SDL_RenderPresent(sdlContext.renderer);
     DelayFramerate(currentTime);
   }
