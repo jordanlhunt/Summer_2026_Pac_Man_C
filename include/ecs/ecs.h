@@ -42,6 +42,7 @@ typedef void (*System)(struct GameContext *gameContext,
                        struct SDL_Renderer *renderer);
 void ECS_RegisterSystem(System system);
 void ECS_Update(struct GameContext *gameContext, struct SDL_Renderer *renderer);
+void ECS_Draw(GameContext *gameContext, SDL_Renderer *renderer);
 int ECS_GetActiveEntitiesCount();
 Entity ECS_GetActiveEntity(int index);
 #endif

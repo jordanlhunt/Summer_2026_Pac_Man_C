@@ -103,11 +103,13 @@ int main(int argc, char *argv[]) {
     }
     case GAMESTATE_GAME_OVER: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
+      ECS_Draw(&gameContext, sdlContext.renderer);
       DrawGameOverScreen(sdlContext.renderer, &gameContext);
       break;
     }
     case GAMESTATE_PAUSED: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
+      ECS_Draw(&gameContext, sdlContext.renderer);
       DrawPausedScreen(sdlContext.renderer);
       break;
     }

@@ -139,3 +139,9 @@ Edible *ECS_GetEdible(Entity entity) {
   }
   return edible;
 }
+
+void ECS_Draw(GameContext *gameContext, SDL_Renderer *renderer) {
+  if (staticSystemsCounter > 0) {
+    staticSystems[staticSystemsCounter - 1](gameContext, renderer);
+  }
+}
