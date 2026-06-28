@@ -519,7 +519,10 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
         // Move between element 0 and 1
         staticGhostFlashFrame = (staticGhostFlashFrame + 1) % 2;
       }
-      sourceRectangle = globalSpriteSheet->ghostFlashing[staticGhostFlashFrame];
+      if (staticGhostFlashFrame == 0) {
+        sourceRectangle =
+            globalSpriteSheet->ghostFlashing[staticGhostFlashFrame];
+      }
     } else {
       // Advance frightened timer
       staticGhostFrightTimer += gameContext->deltaTime;

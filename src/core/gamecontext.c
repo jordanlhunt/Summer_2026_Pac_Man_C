@@ -74,6 +74,7 @@ void InitializeGameContext(GameContext *gameContext) {
   gameContext->playerLives = 3;
   gameContext->pendingDirection = ZERO_DIRECTION;
   gameContext->currentGameState = GAMESTATE_TITLE;
+  gameContext->isGameOver = false;
   LoadHighScore(gameContext);
 }
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime) {

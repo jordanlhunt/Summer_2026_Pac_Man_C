@@ -1,5 +1,6 @@
 #include "../../include/input.h"
 #include "../../include/gamecontext.h"
+#include "../../include/gameinitialization.h"
 void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
   // Only process keyboard events
   if (sdlEvent->type != SDL_KEYDOWN && sdlEvent->type != SDL_KEYUP) {
@@ -52,14 +53,18 @@ void handleEvent(SDL_Event *sdlEvent, GameContext *gameContext) {
       gameContext->currentGameState = GAMESTATE_PLAYING;
       break;
     }
-    // Restart the game
+    // Restart the game, wipe everything start anew
     case GAMESTATE_GAME_OVER: {
+      ECS_Initialize();
+      InitializeSystems();
       InitializeGameContext(gameContext);
       LoadMap(&gameContext->levelData, PATH_TO_MAZE_FILE,
               gameContext->ghostsEntities);
-      Entity playerEntity = ECS_CreateEntity();
-      gameContext->playerEntity = playerEntity;
+      Entity player = ECS_CreateEntity();
+      InitializePlayer(gameContext, player);
+      gameContext->playerEntity = player;
       gameContext->currentGameState = GAMESTATE_TITLE;
+      break;
     }
     default: {
       break;
