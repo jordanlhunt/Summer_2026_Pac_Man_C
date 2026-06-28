@@ -439,8 +439,9 @@ void GraphicsDrawEdible(SDL_Renderer *renderer, Entity edibleEntity) {
   SDL_Rect destinationRectangle = {
       (int)((ediblePosition->column + ediblePosition->offsetX) *
             MAP_GRID_CELL_SIZE),
-      (int)((ediblePosition->row + ediblePosition->offsetY) *
-            MAP_GRID_CELL_SIZE),
+      UI_BLACK_BAR_HEIGHT +
+          (int)((ediblePosition->row + ediblePosition->offsetY) *
+                MAP_GRID_CELL_SIZE),
       MAP_GRID_CELL_SIZE, MAP_GRID_CELL_SIZE};
   SDL_Rect sourceRectangle;
   switch (edibleComponent->typeEaten) {
@@ -483,7 +484,9 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
   SDL_Rect destinationRectangle = {
       (int)((ghostPosition->column + ghostPosition->offsetX) *
             MAP_GRID_CELL_SIZE),
-      (int)((ghostPosition->row + ghostPosition->offsetY) * MAP_GRID_CELL_SIZE),
+      UI_BLACK_BAR_HEIGHT +
+          (int)((ghostPosition->row + ghostPosition->offsetY) *
+                MAP_GRID_CELL_SIZE),
       MAP_GRID_CELL_SIZE, MAP_GRID_CELL_SIZE};
   SDL_Rect sourceRectangle;
   int ghostIndex = (int)ghostComponent->ghostType;
@@ -581,8 +584,9 @@ void GraphicsDrawPlayer(SDL_Renderer *renderer, Entity playerEntity,
   SDL_Rect destinationRectangle = {
       (int)((playerPosition->column + playerPosition->offsetX) *
             MAP_GRID_CELL_SIZE),
-      (int)((playerPosition->row + playerPosition->offsetY) *
-            MAP_GRID_CELL_SIZE),
+      UI_BLACK_BAR_HEIGHT +
+          (int)((playerPosition->row + playerPosition->offsetY) *
+                MAP_GRID_CELL_SIZE),
       MAP_GRID_CELL_SIZE, MAP_GRID_CELL_SIZE};
   SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
                  &destinationRectangle);

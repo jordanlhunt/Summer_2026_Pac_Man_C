@@ -229,7 +229,7 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
     for (int col = 0; col < MAP_COLUMNS; col++) {
       MapTile newMapTile = levelData->mapTiles[row][col];
       tileRect.x = col * MAP_GRID_CELL_SIZE;
-      tileRect.y = row * MAP_GRID_CELL_SIZE;
+      tileRect.y = (row * MAP_GRID_CELL_SIZE) + UI_BLACK_BAR_HEIGHT;
       switch (newMapTile) {
       case TILE_WALL:
         // Walls are Blue

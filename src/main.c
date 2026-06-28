@@ -82,14 +82,8 @@ int main(int argc, char *argv[]) {
     }
     }
     // Render
-    SDL_SetRenderDrawColor(
-        sdlContext.renderer, 100, 149, 237,
-        255); // XNA Cornflower Blue as an homage to my many failed attempts to
-              // into game development even though I totally missed the boat and
-              // this hobby will likely never be sustainable as a career. I wish
-              // I didn't slack off in my youth, can't change the past only the
-              // present. I'll find a game development job somewhere. Marking it
-              // here Saturday 27 June 2026.
+    SDL_SetRenderDrawColor(sdlContext.renderer, 0, 0, 0,
+                           255); // Black background to arcade cabinet feel,
     SDL_RenderClear(sdlContext.renderer);
     switch (gameContext.currentGameState) {
     case GAMESTATE_TITLE: {
