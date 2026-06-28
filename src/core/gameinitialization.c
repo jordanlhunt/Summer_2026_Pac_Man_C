@@ -1,6 +1,4 @@
 #include "../../include/gameinitialization.h"
-#include <SDL2/SDL_video.h>
-
 bool InitializeSDL(SDLContext *sdlContext, GameContext *gameContext) {
   if (sdlContext == NULL || gameContext == NULL) {
     return false;
@@ -27,6 +25,8 @@ bool InitializeSDL(SDLContext *sdlContext, GameContext *gameContext) {
     SDL_Quit();
     return false;
   }
+  SDL_RenderSetLogicalSize(sdlContext->renderer, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
   if (InitializeAudio(&gameContext->audioPlayer) == false) {
     SDL_DestroyRenderer(sdlContext->renderer);
     SDL_DestroyWindow(sdlContext->gameWindow);

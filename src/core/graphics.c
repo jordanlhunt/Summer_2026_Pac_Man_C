@@ -285,22 +285,24 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
 void DrawUI(SDL_Renderer *renderer, GameContext *gameContext) {
   char scoreText[SCORE_ARRAY_LENGTH];
   SDL_Color white = {.r = 255, .g = 255, .b = 255, .a = 0};
+  float currentScoreScale = .6f;
   snprintf(scoreText, sizeof(scoreText), "1UP %d", gameContext->currentScore);
-  RenderText(renderer, scoreText, 10, 10, white, 1.0f);
+  RenderText(renderer, scoreText, 4, 2, white, currentScoreScale);
   char highScore[SCORE_ARRAY_LENGTH];
   snprintf(highScore, sizeof(highScore), "HIGH SCORE %d",
            gameContext->highScore);
-  float highScoreScale = 1.0f;
+  float highScoreScale = .6f;
   int highScoreWidth = GetTextWidth(highScore, highScoreScale);
-  int highScoreX = (SCREEN_WIDTH - highScoreWidth) / 2;
-  RenderText(renderer, highScore, highScoreX, 10, white,
+  int highScoreX = (LOGICAL_WIDTH - highScoreWidth) / 2;
+  RenderText(renderer, highScore, highScoreX, 2, white,
              highScoreScale); // 3. LIVES as Pac-Man sprites (Bottom Left)
 
-  // Each subsequent life is offset by 20 pixels to the right
-  int startX = 10;
-  int startY = SCREEN_HEIGHT - 20;
-  int iconSize = 16;      // Small Pac-Man size (half of normal 32)
-  int spacingOffset = 20; // Space between each life icon
+  // Each subsequent life is offset by 4 pixels to the right
+  int startX = 4;
+  int startY = LOGICAL_HEIGHT - 12;
+  int iconSize =
+      8; // Small Pac-Man size (now 8 due to SDL_RenderSetLogicalSize)
+  int spacingOffset = 10; // Space between each life icon
   for (int i = 0; i < gameContext->playerLives; i++) {
     SDL_Rect sourceRectangle = globalSpriteSheet->pacmanRight[0];
     SDL_Rect destinationRectangle = {startX + (i * spacingOffset), startY,
@@ -313,21 +315,21 @@ void DrawPausedScreen(SDL_Renderer *renderer) {
   // Add a semi-transparent overlay so the game looks dimmed
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 150);
-  SDL_Rect overlay = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+  SDL_Rect overlay = {0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT};
   SDL_RenderFillRect(renderer, &overlay);
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
   SDL_Color white = {255, 255, 255, 255};
   const char *pausedText = "PAUSED";
-  float titleScale = 3.0f;
+  float titleScale = 1.2f;
   int titleWidth = GetTextWidth(pausedText, titleScale);
-  int titleX = (SCREEN_WIDTH - titleWidth) / 2;
-  int titleY = 150;
+  int titleX = (LOGICAL_WIDTH - titleWidth) / 2;
+  int titleY = 60;
   RenderText(renderer, pausedText, titleX, titleY, white, titleScale);
-  const char *prompt = "PRESS SPACEBAR TO  RESUME";
-  float promptScale = 1.5f;
+  const char *prompt = "SPACEBAR TO RESUME";
+  float promptScale = .9f;
   int promptWidth = GetTextWidth(prompt, promptScale);
-  int promptX = (SCREEN_WIDTH - promptWidth) / 2;
-  int promptY = titleY + 70;
+  int promptX = (LOGICAL_WIDTH - promptWidth) / 2;
+  int promptY = titleY + 45;
   RenderText(renderer, prompt, promptX, promptY, white, promptScale);
 }
 void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
@@ -336,24 +338,24 @@ void DrawTitleScreen(SDL_Renderer *renderer, GameContext *gameContext) {
   SDL_Color sdlColorYellow = {.r = 255, .g = 255, .b = 0, .a = 0};
   SDL_Color sdlColorWhite = {.r = 255, .g = 255, .b = 255, .a = 0};
   const char *title = "HAC-MAN";
-  float titleScale = 1.8f;
+  float titleScale = 2.0f;
   int titleWidth = GetTextWidth(title, titleScale);
-  int titleX = (SCREEN_WIDTH - titleWidth) / 2;
-  int titleY = 150;
+  int titleX = (LOGICAL_WIDTH - titleWidth) / 2;
+  int titleY = 60;
   RenderText(renderer, title, titleX, titleY, sdlColorYellow, titleScale);
   char highScoreText[32];
   snprintf(highScoreText, sizeof(highScoreText), "HIGH SCORE: %d",
            gameContext->highScore);
-  float highScoreScale = 1.5f;
+  float highScoreScale = .75f;
   int highScoreWidth = GetTextWidth(highScoreText, highScoreScale);
-  int highScoreX = (SCREEN_WIDTH - highScoreWidth) / 2;
+  int highScoreX = (LOGICAL_WIDTH - highScoreWidth) / 2;
   int highScoreY = titleY + 80;
   RenderText(renderer, highScoreText, highScoreX, highScoreY, sdlColorWhite,
              highScoreScale);
-  const char *insertCoin = "Press SPACEBAR to insert coin";
-  float insertCoinScale = 1.5f;
+  const char *insertCoin = "SPACEBAR to insert coin";
+  float insertCoinScale = .65f;
   int insertCoinWidth = GetTextWidth(insertCoin, insertCoinScale);
-  int insertCoinX = (SCREEN_WIDTH - insertCoinWidth) / 2;
+  int insertCoinX = (LOGICAL_WIDTH - insertCoinWidth) / 2;
   int insertCoinY = highScoreY + 60;
   // Blinking Text like old arcade games
   Uint32 currentTicks = SDL_GetTicks();
@@ -369,31 +371,31 @@ void DrawGameOverScreen(SDL_Renderer *renderer, GameContext *gameContext) {
   SDL_Color yellow = {255, 255, 0, 255};
   SDL_Color white = {255, 255, 255, 255};
   const char *gameOverText = "GAME OVER";
-  float titleScale = 3.0f;
+  float titleScale = 1.2f;
   int titleWidth = GetTextWidth(gameOverText, titleScale);
-  int titleX = (SCREEN_WIDTH - titleWidth) / 2;
+  int titleX = (LOGICAL_WIDTH - titleWidth) / 2;
   int titleY = 120;
   RenderText(renderer, gameOverText, titleX, titleY, red, titleScale);
   char scoreText[SCORE_ARRAY_LENGTH];
   snprintf(scoreText, sizeof(scoreText), "SCORE: %d",
            gameContext->currentScore);
-  float scoreScale = 1.5f;
+  float scoreScale = .8f;
   int scoreWidth = GetTextWidth(scoreText, scoreScale);
-  int scoreX = (SCREEN_WIDTH - scoreWidth) / 2;
+  int scoreX = (LOGICAL_WIDTH - scoreWidth) / 2;
   int scoreY = titleY + 70;
   RenderText(renderer, scoreText, scoreX, scoreY, yellow, scoreScale);
   char highText[SCORE_ARRAY_LENGTH];
   snprintf(highText, sizeof(highText), "HIGH SCORE: %d",
            gameContext->highScore);
-  float highScale = 1.5f;
+  float highScale = .8f;
   int highWidth = GetTextWidth(highText, highScale);
-  int highX = (SCREEN_WIDTH - highWidth) / 2;
+  int highX = (LOGICAL_WIDTH - highWidth) / 2;
   int highY = scoreY + 40;
   RenderText(renderer, highText, highX, highY, white, highScale);
-  const char *prompt = "PRESS SPACEBAR TO  RESTART";
-  float promptScale = 1.5f;
+  const char *prompt = "SPACEBAR TO RESTART";
+  float promptScale = 0.8f;
   int promptWidth = GetTextWidth(prompt, promptScale);
-  int promptX = (SCREEN_WIDTH - promptWidth) / 2;
+  int promptX = (LOGICAL_WIDTH - promptWidth) / 2;
   int promptY = highY + 60;
   RenderText(renderer, prompt, promptX, promptY, white, promptScale);
 }
