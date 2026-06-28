@@ -1,5 +1,4 @@
 #include "../include/main.h"
-#include <SDL2/SDL_render.h>
 void UpdateFrightenedModeTimer(GameContext *gameContext, float deltaTime) {
   if (gameContext->isFrightenedGhostModeActive == true) {
     gameContext->frightenedGhostModeTimer -= deltaTime;
@@ -61,7 +60,7 @@ int main(int argc, char *argv[]) {
     if (gameContext.input.quitGame == true) {
       isQuit = true;
     }
-    // State Machine
+    // Update
     switch (gameContext.currentGameState) {
     case GAMESTATE_TITLE: {
       break;
@@ -82,7 +81,7 @@ int main(int argc, char *argv[]) {
       break;
     }
     }
-    // Render and Update
+    // Render
     SDL_SetRenderDrawColor(
         sdlContext.renderer, 100, 149, 237,
         255); // XNA Cornflower Blue as an homage to my many failed attempts to
@@ -99,19 +98,16 @@ int main(int argc, char *argv[]) {
     }
     case GAMESTATE_PLAYING: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
-      ECS_Update(&gameContext, sdlContext.renderer);
       DrawUI(sdlContext.renderer, &gameContext);
       break;
     }
     case GAMESTATE_GAME_OVER: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
-      ECS_Update(&gameContext, sdlContext.renderer);
       DrawGameOverScreen(sdlContext.renderer, &gameContext);
       break;
     }
     case GAMESTATE_PAUSED: {
       DrawMap(&gameContext.levelData, sdlContext.renderer);
-      ECS_Update(&gameContext, sdlContext.renderer);
       DrawPausedScreen(sdlContext.renderer);
       break;
     }
