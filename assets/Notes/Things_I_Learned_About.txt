@@ -36,7 +36,8 @@ Programming and Software Development Things I learned
 16.) The very basics of using git
 17.) The very basics of reading and writings to and from files
 18.) The importance of NULL checks to prevent segmentation faults
-19.) Reading the documentation is a must. There is no getting around it. SDL2 has a great wiki [https://wiki.libsdl.org/SDL2/FrontPage]. 
+19.) Reading the documentation is a must. There is no getting around it. SDL2 has a great wiki [https://wiki.libsdl.org/SDL2/FrontPage].
+20.) UI adjustments in code are clunky. Having to change and then build it and check again is annoying to be blunt. 
 ------------------------------------------------------
 Abstract Morals (in the philosophical sense) I learned
 ------------------------------------------------------
