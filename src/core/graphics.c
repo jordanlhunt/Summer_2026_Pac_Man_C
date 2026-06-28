@@ -510,7 +510,7 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
   }
   case GHOSTMODE_FRIGHTENED: {
     float timer = gameContext->frightenedGhostModeTimer;
-    bool isFlashing = (timer >= FRIGHTEN_GHOST_MODE_DURATION - 2.0f);
+    bool isFlashing = (timer <= 2.0f);
     if (isFlashing == true) {
       // Advance flash timer
       staticGhostFlashTimer += gameContext->deltaTime;
