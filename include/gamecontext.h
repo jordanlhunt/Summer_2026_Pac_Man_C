@@ -17,6 +17,10 @@
 #define FRIGHTEN_GHOST_MODE_DURATION 6.0f
 #define CHASE_TIME_LIMIT 20.0f
 #define SCATTER_TIME_LIMIT 7.0f
+#define FRUIT_SPAWN_1 70
+#define FRUIT_SPAWN_ 170
+#define FRUIT_DURATION 9.0f
+
 typedef struct GameContext {
   AudioState audioPlayer;
   bool isFrightenedGhostModeActive;
@@ -25,6 +29,8 @@ typedef struct GameContext {
   Direction pendingDirection;
   Entity ghostsEntities[GHOST_COUNT];
   Entity playerEntity;
+  Entity fuitEntity;
+  float fruitTimer;
   float deltaTime;
   float frightenedGhostModeTimer;
   float ghostModeTimer;
@@ -48,6 +54,7 @@ void TriggerGameOver(GameContext *gameContext);
 void TriggerPlayerDeath(GameContext *gameContext);
 void TriggerRoundWon(GameContext *gameContext);
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime);
+void UpdateFruitTimer(GameContext *gameContext, float deltaTime);
 void ResetGameRound(GameContext *gameContext);
 
 #endif
