@@ -13,12 +13,13 @@
 #define DOT_PELLET_SCORE_VALUE 1
 #define POWER_PELLET_SCORE_VALUE 50
 #define BASE_GHOST_SCORE 200
+#define BASE_FRUIT_SCORE 100
 #define PLAYER_LIVES 3
 #define FRIGHTEN_GHOST_MODE_DURATION 6.0f
 #define CHASE_TIME_LIMIT 20.0f
 #define SCATTER_TIME_LIMIT 7.0f
 #define FRUIT_SPAWN_1 70
-#define FRUIT_SPAWN_ 170
+#define FRUIT_SPAWN_2 170
 #define FRUIT_DURATION 9.0f
 
 typedef struct GameContext {
@@ -29,7 +30,7 @@ typedef struct GameContext {
   Direction pendingDirection;
   Entity ghostsEntities[GHOST_COUNT];
   Entity playerEntity;
-  Entity fuitEntity;
+  Entity fruitEntity;
   float fruitTimer;
   float deltaTime;
   float frightenedGhostModeTimer;
