@@ -30,6 +30,7 @@ static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
   if (justEatenEdible->typeEaten == FRIGHTENED_GHOST) {
     Ghost *ghost = ECS_GetGhost(edibleEntity);
     ghost->ghostMode = GHOSTMODE_EATEN_EYES;
+   ECS_RemoveComponent(edibleEntity,COMPONENT_EDIBLE);
     printf("[collision.c] - A frightened ghost has been eaten! Current "
            "Score: %d\n",
            gameContext->currentScore);
@@ -37,6 +38,7 @@ static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
     return;
   }
   if(justEatenEdible->typeEaten == FRUIT){
+    ECS_RemoveComponent(edibleEntity,COMPONENT_EDIBLE);
     gameContext->fruitEntity = ENTITY_NULL;
   }
   // Destroy Dots, Power Pellets, and/or fruit
