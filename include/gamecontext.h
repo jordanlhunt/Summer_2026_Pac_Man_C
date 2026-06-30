@@ -35,6 +35,7 @@ typedef struct GameContext {
   float deltaTime;
   float frightenedGhostModeTimer;
   float ghostModeTimer;
+  float playerDeathAnimationTimer;
   GameState currentGameState;
   GhostMode currentGhostMode;
   Input input;
@@ -45,6 +46,7 @@ typedef struct GameContext {
   int playerSpawnRow;
   int remainingPellets;
   LevelData levelData;
+
 } GameContext;
 void CheckForRoundWon(GameContext *gameContext);
 void InitializeGameContext(GameContext *gameContext);

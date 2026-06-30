@@ -23,16 +23,19 @@
 
 typedef struct GameContext GameContext;
 
-typedef struct SpriteAnimation2Frames {
+typedef struct SpriteAnimation2Frames
+{
   SDL_Rect ghostFrames[GHOST_ANIMATION_FRAMES];
 } SpriteAnimation2Frames;
 
-typedef struct SpriteGroupGhost {
+typedef struct SpriteGroupGhost
+{
   // Direction Enums is 5: ZERO_DIRECTION will default to RIGHT
   SpriteAnimation2Frames ghostDirections[GHOST_EYES];
 } SpriteGroupGhost;
 
-typedef struct SpriteSheet {
+typedef struct SpriteSheet
+{
   SDL_Texture *texture;
   SDL_Rect wall;
   SDL_Rect dot;
@@ -92,4 +95,7 @@ void GraphicsDrawPlayer(SDL_Renderer *renderer, Entity playerEntity,
 void GraphicsDrawEdible(SDL_Renderer *renderer, Entity edibleEntity);
 void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
                 SDL_Color color, float scale);
+void GraphicsResetDeathAnimation();
+void GraphicsUpdateDeathAnimation(float deltaTime);
+
 #endif

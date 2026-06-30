@@ -1,17 +1,19 @@
 #include "../../include/graphics.h"
 #include "../../include/gamecontext.h"
-#include <SDL2/SDL_pixels.h>
-#include <stdio.h>
+
 SpriteSheet *globalSpriteSheet = NULL;
 TTF_Font *globalFont = NULL;
 // PAC-MAN Animation State
 static float staticPacmanAnimationTimer = 0.0f;
 static int staticPacmanCurrentFrame = 0;
+static float staticPacmanDeathAnimationTimer = 0.0f;
+static int staticPacmanDeathAnimationFrame = 0;
 // Ghost Animation State
 static float staticGhostFrightTimer = 0.0f;
 static float staticGhostFlashTimer = 0.0f;
 static int staticGhostFlashFrame = 0;
 static int staticGhostFrightFrame = 0;
+
 static int GetTextWidth(const char *text, float scale) {
   int textWidth;
   int textHeight;
