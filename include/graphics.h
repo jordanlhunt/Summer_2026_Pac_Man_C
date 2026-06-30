@@ -96,6 +96,6 @@ void GraphicsDrawEdible(SDL_Renderer *renderer, Entity edibleEntity);
 void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
                 SDL_Color color, float scale);
 void GraphicsResetDeathAnimation();
-void GraphicsUpdateDeathAnimation(float deltaTime);
+bool GraphicsUpdateDeathAnimation(float deltaTime);
 
 #endif

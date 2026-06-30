@@ -35,7 +35,6 @@ typedef struct GameContext {
   float deltaTime;
   float frightenedGhostModeTimer;
   float ghostModeTimer;
-  float playerDeathAnimationTimer;
   GameState currentGameState;
   GhostMode currentGhostMode;
   Input input;

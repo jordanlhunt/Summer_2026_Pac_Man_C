@@ -648,3 +648,18 @@ void RenderText(SDL_Renderer *renderer, const char *textToRender, int x, int y,
   SDL_DestroyTexture(textureFromSurface);
   SDL_FreeSurface(sdlSurface);
 }
+
+
+void GraphicsResetDeathAnimation()
+{
+    staticPacmanDeathAnimationFrame=0;
+    staticPacmanDeathAnimationTimer = 0.0f;
+}
+
+bool GraphicsUpdateDeathAnimation(float deltaTime){
+    if(staticPacmanDeathAnimationTimer >= (1.0/PACMAN_ANIMATION_FPS) ){
+        staticPacmanDeathAnimationTimer = 0.0f;
+        staticPacmanDeathAnimationFrame++;
+    }
+    return (staticPacmanDeathAnimationFrame >= PACMAN_DEATH_ANIMATION_FRAMES);
+}
