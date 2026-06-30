@@ -593,6 +593,16 @@ void GraphicsDrawPlayer(SDL_Renderer *renderer, Entity playerEntity,
           (int)((playerPosition->row + playerPosition->offsetY) *
                 MAP_GRID_CELL_SIZE),
       MAP_GRID_CELL_SIZE, MAP_GRID_CELL_SIZE};
+    if(gameContext->currentGameState == GAMESTATE_DEATH_ANIMATION){
+      int currentDeathFrame = staticPacmanDeathAnimationFrame;
+      if(currentDeathFrame >= PACMAN_DEATH_ANIMATION_FRAMES){
+          currentDeathFrame = PACMAN_DEATH_ANIMATION_FRAMES-1;
+      }
+      SDL_Rect sourceRectangle = globalSpriteSheet->pacmanDeath[currentDeathFrame];
+      SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle, &destinationRectangle);
+      return;
+
+  }
   SDL_RenderCopy(renderer, globalSpriteSheet->texture, &sourceRectangle,
                  &destinationRectangle);
 }
@@ -657,6 +667,7 @@ void GraphicsResetDeathAnimation()
 }
 
 bool GraphicsUpdateDeathAnimation(float deltaTime){
+    staticPacmanDeathAnimationTimer += deltaTime;
     if(staticPacmanDeathAnimationTimer >= (1.0/PACMAN_ANIMATION_FPS) ){
         staticPacmanDeathAnimationTimer = 0.0f;
         staticPacmanDeathAnimationFrame++;

@@ -125,14 +125,11 @@ void TriggerPlayerDeath(GameContext *gameContext) {
   if (gameContext->isGameOver == true) {
     return;
   }
-  gameContext->playerLives -= 1;
-  printf("[gamecontext.c] - Player has died. Lives remaining: %d\n",
-         gameContext->playerLives);
-  if (gameContext->playerLives <= 0) {
-    TriggerGameOver(gameContext);
+  if(gameContext->currentGameState == GAMESTATE_DEATH_ANIMATION){
     return;
   }
-  ResetGameRound(gameContext);
+ GraphicsResetDeathAnimation();
+ gameContext->currentGameState = GAMESTATE_DEATH_ANIMATION;printf("[gamecontext.c] - Death animation started.\n");
 }
 void ResetPlayerPosition(GameContext *gameContext) {
   if (gameContext == NULL) {

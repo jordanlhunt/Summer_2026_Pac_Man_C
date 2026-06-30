@@ -72,6 +72,22 @@ int main(int argc, char *argv[]) {
       ECS_Update(&gameContext, sdlContext.renderer);
       break;
     }
+    case GAMESTATE_DEATH_ANIMATION:{
+      bool isDeathAnimaitonFinished = GraphicsUpdateDeathAnimation(gameContext.deltaTime);
+      if(isDeathAnimaitonFinished==true){
+        gameContext.playerLives -= 1;
+              printf("[main.c] - Death animation finished. Lives remaining: %d\n",
+               gameContext.playerLives);
+               if(gameContext.playerLives <=0 ){
+                TriggerGameOver(&gameContext);
+               }
+               else {
+                ResetGameRound(&gameContext);
+                gameContext.currentGameState =GAMESTATE_PLAYING;
+               }
+      }
+      break;
+    }
     case GAMESTATE_GAME_OVER: {
       break;
     }
@@ -103,6 +119,19 @@ int main(int argc, char *argv[]) {
       SDL_RenderDrawLine(
           sdlContext.renderer, 0, LOGICAL_HEIGHT - UI_BLACK_BAR_HEIGHT - 1,
           LOGICAL_WIDTH, LOGICAL_HEIGHT - UI_BLACK_BAR_HEIGHT - 1);
+      break;
+    }
+     case GAMESTATE_DEATH_ANIMATION: {
+      DrawMap(&gameContext.levelData, sdlContext.renderer);
+      ECS_Draw(&gameContext, sdlContext.renderer);
+      DrawUI(sdlContext.renderer, &gameContext);
+      SDL_SetRenderDrawColor(sdlContext.renderer, 255, 255, 255, 255);
+      SDL_RenderDrawLine(sdlContext.renderer, 0, UI_BLACK_BAR_HEIGHT,
+                         LOGICAL_WIDTH, UI_BLACK_BAR_HEIGHT);
+      SDL_RenderDrawLine(sdlContext.renderer, 0,
+                         LOGICAL_HEIGHT - UI_BLACK_BAR_HEIGHT - 1,
+                         LOGICAL_WIDTH,
+                         LOGICAL_HEIGHT - UI_BLACK_BAR_HEIGHT - 1);
       break;
     }
     case GAMESTATE_GAME_OVER: {
