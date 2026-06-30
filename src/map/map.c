@@ -243,10 +243,6 @@ void DrawMap(LevelData *levelData, SDL_Renderer *renderer) {
         GraphicsDrawTile(renderer, TILE_GHOST_DOOR, tileRect.x, tileRect.y);
         break;
       case TILE_FRUIT:
-        // Fruit is orange for now. For testing purposes only
-        // TODO: Make each fruit it's own fruit entity rather than just a
-        // marker on the map.
-        SDL_SetRenderDrawColor(renderer, 255, 154, 51, 255);
         break;
       case TILE_EMPTY:
         // Empty space will be all black

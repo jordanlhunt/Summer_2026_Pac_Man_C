@@ -36,6 +36,9 @@ static void ConsumeEdibleEntity(GameContext *gameContext, Entity edibleEntity) {
     // Don't destroy FRIGRENED_GHOSTS because they must remain on the map
     return;
   }
+  if(justEatenEdible->typeEaten == FRUIT){
+    gameContext->fruitEntity = ENTITY_NULL;
+  }
   // Destroy Dots, Power Pellets, and/or fruit
   ECS_DestroyEntity(edibleEntity);
   if (gameContext->isRoundWon == false) {

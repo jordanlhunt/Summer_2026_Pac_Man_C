@@ -68,6 +68,7 @@ int main(int argc, char *argv[]) {
     case GAMESTATE_PLAYING: {
       UpdateFrightenedModeTimer(&gameContext, gameContext.deltaTime);
       UpdateGhostTimer(&gameContext, gameContext.deltaTime);
+      UpdateFruitTimer(&gameContext, gameContext.deltaTime);
       ECS_Update(&gameContext, sdlContext.renderer);
       break;
     }
