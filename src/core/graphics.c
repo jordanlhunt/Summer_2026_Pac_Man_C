@@ -230,16 +230,17 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
   globalSpriteSheet->ghostFlashing[1] =
       (SDL_Rect){632, 64, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // Ghost Eyes
+  // Ghost Eyes
   globalSpriteSheet->ghostEyes[RIGHT] =
-      (SDL_Rect){520, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){584, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostEyes[LEFT] =
-      (SDL_Rect){536, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){600, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostEyes[UP] =
-      (SDL_Rect){552, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){616, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostEyes[DOWN] =
-      (SDL_Rect){568, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){632, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->ghostEyes[ZERO_DIRECTION] =
-      (SDL_Rect){520, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){584, 80, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // Fruit
   globalSpriteSheet->cherry =
       (SDL_Rect){488, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
