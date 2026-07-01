@@ -6,8 +6,9 @@ static void SpawnFruit(GameContext *gameContext) {
     gameContext->fruitEntity = ENTITY_NULL;
   }
   gameContext->fruitEntity = ECS_CreateEntity();
-  ECS_AddComponent(gameContext->fruitEntity,
-                   COMPONENT_EDIBLE | COMPONENT_EDIBLE | COMPONENT_POSITION);
+  ECS_AddComponent(gameContext->fruitEntity, COMPONENT_EDIBLE |
+                                                 COMPONENT_RENDERABLE |
+                                                 COMPONENT_POSITION);
   Position *fruitPosition = ECS_GetPosition(gameContext->fruitEntity);
   int spawnRow = -1;
   int spawnColumn = -1;
@@ -29,6 +30,7 @@ static void SpawnFruit(GameContext *gameContext) {
   Renderable *fruitRenderable = ECS_GetRenderable(gameContext->fruitEntity);
   fruitRenderable->width = MAP_GRID_CELL_SIZE;
   fruitRenderable->height = MAP_GRID_CELL_SIZE;
+  fruitRenderable->renderLayer = RENDERLAYER_EDIBLE;
   gameContext->fruitTimer = FRUIT_DURATION;
 }
 

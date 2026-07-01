@@ -242,21 +242,21 @@ bool InitializeGraphics(SDL_Renderer *renderer, const char *spriteSheetPath) {
       (SDL_Rect){520, 128, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // Fruit
   globalSpriteSheet->cherry =
-      (SDL_Rect){488, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){488, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->strawberry =
-      (SDL_Rect){504, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){504, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->orange =
-      (SDL_Rect){520, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){520, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->apple =
-      (SDL_Rect){536, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){536, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->devilFruit =
-      (SDL_Rect){552, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){552, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->scepter =
-      (SDL_Rect){568, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){568, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->bell =
-      (SDL_Rect){584, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){584, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   globalSpriteSheet->key =
-      (SDL_Rect){600, 32, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
+      (SDL_Rect){600, 48, GENERAL_SPRITE_SIZE, GENERAL_SPRITE_SIZE};
   // Score
   globalSpriteSheet->score100 =
       (SDL_Rect){456, 152, GENERAL_SPRITE_SIZE, SMALL_SPRITE_SIZE};
@@ -521,10 +521,9 @@ void GraphicsDrawGhost(SDL_Renderer *renderer, Entity ghostEntity,
         // Move between element 0 and 1
         staticGhostFlashFrame = (staticGhostFlashFrame + 1) % 2;
       }
-      if (staticGhostFlashFrame == 0) {
-        sourceRectangle =
-            globalSpriteSheet->ghostFlashing[staticGhostFlashFrame];
-      }
+
+      sourceRectangle = globalSpriteSheet->ghostFlashing[staticGhostFlashFrame];
+
     } else {
       // Advance frightened timer
       staticGhostFrightTimer += gameContext->deltaTime;
