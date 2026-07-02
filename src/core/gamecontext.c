@@ -1,5 +1,36 @@
 #include "../../include/gamecontext.h"
 
+static void GetGhostSpawn(GhostType ghostType, int *row, int *column) {
+  switch (ghostType) {
+
+  case GHOSTTYPE_BLINKY: {
+    *row = BLINKY_SPAWN_ROW;
+    *column = BLINKY_SPAWN_COLUMN;
+    break;
+  }
+  case GHOSTTYPE_PINKY: {
+    *row = PINKY_SPAWN_ROW;
+    *column = PINKY_SPAWN_COLUMN;
+    break;
+  }
+  case GHOSTTYPE_INKY: {
+    *row = INKY_SPAWN_ROW;
+    *column = INKY_SPAWN_COLUMN;
+    break;
+  }
+  case GHOSTTYPE_CLYDE: {
+    *row = CLYDE_SPAWN_ROW;
+    *column = CLYDE_SPAWN_COLUMN;
+    break;
+  }
+  default: {
+    *row = 0;
+    *column = 0;
+    break;
+  }
+  }
+}
+
 static void SpawnFruit(GameContext *gameContext) {
   if (gameContext->fruitEntity != ENTITY_NULL) {
     ECS_DestroyEntity(gameContext->fruitEntity);
@@ -193,5 +224,37 @@ void UpdateFruitTimer(GameContext *gameContext, float deltaTime) {
   if (gameContext->fruitTimer <= 0.0f) {
     ECS_DestroyEntity(gameContext->fruitEntity);
     gameContext->fruitEntity = ENTITY_NULL;
+  }
+}
+
+void ResetGhosts(GameContext *gameContext) {
+  for (int i = 0; i < GHOST_COUNT; i++) {
+    Entity entity = gameContext->ghostsEntities[i];
+    if (entity == ENTITY_NULL) {
+      continue;
+    }
+    Ghost *ghost = ECS_GetGhost(entity);
+    Position *position = ECS_GetPosition(entity);
+    Velocity *velocity = ECS_GetVelocity(entity);
+    int spawnRow;
+    int spawnColumn;
+    GetGhostSpawn(ghost->ghostType, &spawnColumn, &spawnRow);
+    position->row = spawnRow;
+    position->column = spawnColumn;
+    position->offsetX = 0.0f;
+    position->offsetY = 0.0f;
+    velocity->deltaRow = 0;
+    velocity->deltaColumn = 0;
+    velocity->tilesPerSecond = GHOST_SPEED;
+    if (ghost->ghostType == GHOSTTYPE_BLINKY) {
+      ghost->ghostMode = GHOSTMODE_SCATTER;
+      ghost->currentDirection = LEFT;
+    } else {
+      ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
+      ghost->currentDirection = UP;
+    }
+    if (ECS_HasComponent(ghost, COMPONENT_EDIBLE) == true) {
+      ECS_RemoveComponent(ghost, COMPONENT_EDIBLE);
+    }
   }
 }

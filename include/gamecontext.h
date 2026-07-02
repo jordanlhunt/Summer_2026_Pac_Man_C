@@ -5,6 +5,7 @@
 #include "common.h"
 #include "ecs/ecs.h"
 #include "ecs/entity.h"
+#include "gameinitialization.h"
 #include "gamestate.h"
 #include "graphics.h"
 #include "input.h"
@@ -58,5 +59,5 @@ void TriggerRoundWon(GameContext *gameContext);
 void UpdateGhostTimer(GameContext *gameContext, float deltaTime);
 void UpdateFruitTimer(GameContext *gameContext, float deltaTime);
 void ResetGameRound(GameContext *gameContext);
-
+void ResetGhosts(GameContext *gameContext);
 #endif
