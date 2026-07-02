@@ -244,7 +244,7 @@ void ResetGhosts(GameContext *gameContext) {
     Velocity *velocity = ECS_GetVelocity(entity);
     int spawnRow;
     int spawnColumn;
-    GetGhostSpawn(ghost->ghostType, &spawnColumn, &spawnRow);
+    GetGhostSpawn(ghost->ghostType, &spawnRow, &spawnColumn);
     position->row = spawnRow;
     position->column = spawnColumn;
     position->offsetX = 0.0f;
@@ -259,8 +259,8 @@ void ResetGhosts(GameContext *gameContext) {
       ghost->ghostMode = GHOSTMODE_IN_GHOSTHOUSE;
       ghost->currentDirection = UP;
     }
-    if (ECS_HasComponent(ghost, COMPONENT_EDIBLE) == true) {
-      ECS_RemoveComponent(ghost, COMPONENT_EDIBLE);
+    if (ECS_HasComponent(entity, COMPONENT_EDIBLE) == true) {
+      ECS_RemoveComponent(entity, COMPONENT_EDIBLE);
     }
   }
 }
