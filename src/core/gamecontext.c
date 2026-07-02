@@ -91,6 +91,12 @@ void ResetGameRound(GameContext *gameContext) {
   if (gameContext->playerEntity == 0) {
     printf("[gameContext.c] - ResetGameRound() playerEntity is NULL");
   }
+  if (gameContext->fruitEntity != ENTITY_NULL) {
+    ECS_DestroyEntity(gameContext->fruitEntity);
+    gameContext->fruitEntity = ENTITY_NULL;
+    gameContext->fruitTimer = 0.0f;
+  }
+  ResetGhosts(gameContext);
   srand(0);
   ResetPlayerPosition(gameContext);
   gameContext->isFrightenedGhostModeActive = false;
