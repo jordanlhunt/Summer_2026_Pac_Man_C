@@ -2,7 +2,21 @@
 
 (No generative AI was used in the writing of this, just want to address that off the rip. Also this isn't SEO'ed in anyway and I'm not trying to sell you anything. All the links are purely to provide context or credit)
 
+### Table of Contents
+* [About Me](#about-me)
+* [What Inspired Me To Pick This Project](#what-inspired-me-to-pick-this-project)
+* [My Programming Background](#my-programming-background)
+* [Why I Didn't Originally Proceed With Game Development as a Hobby](#why-i-didnt-originally-proceed-with-game-development-as-a-hobby)
+* [About The Project](#about-the-project)
+* [Picking Where and How to Start](#picking-where-and-how-to-start)
+* [Getting Lucky With The Dossier](#getting-lucky-with-the-dossier)
+* [The Actual Development of the Project](#the-actual-development-of-the-project)
+* [My Development Configuration](#my-development-configuration)
+
+
 Hello Internet! I wrote an approximate reconstruction of PAC-MAN implementation in C using SDL2. My project isn't wholly a 1-to-1 arcade cabinet recreation but it get most of the fundamentals down. It was a really fun project and it helped me complete something from zero, which is often one of the advice you hear from independent game developers and computer programmers alike. This project was totally self-guided (often misguided) and free of generative AI usage. It was a project by me for me and it's many flaws and shortcomings are mine too. The whole project was learning experience that was meant to force me to buckle myself into my seat and write some C, do research, and commit myself to the learning the process. Overall, I think it went quite well and I'll share my thoughts in this blog. I also want to write more in general, so this will be an excellent means to practice communicating my thoughts and experiences.
+
+
 
 ## About Me
 
