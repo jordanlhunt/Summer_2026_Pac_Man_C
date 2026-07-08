@@ -3,6 +3,7 @@
 (No generative AI was used in the writing of this, just want to address that off the rip. Also this isn't SEO'ed in anyway and I'm not trying to sell you anything. All the links are purely to provide context or credit)
 
 ### Table of Contents
+
 * [About Me](#about-me)
 * [What Inspired Me To Pick This Project](#what-inspired-me-to-pick-this-project)
 * [My Programming Background](#my-programming-background)
@@ -12,7 +13,6 @@
 * [Getting Lucky With The Dossier](#getting-lucky-with-the-dossier)
 * [The Actual Development of the Project](#the-actual-development-of-the-project)
 * [My Development Configuration](#my-development-configuration)
-
 
 Hello Internet! I wrote an approximate reconstruction of PAC-MAN implementation in C using SDL2. My project isn't wholly a 1-to-1 arcade cabinet recreation but it get most of the fundamentals down. It was a really fun project and it helped me complete something from zero, which is often one of the advice you hear from independent game developers and computer programmers alike. This project was totally self-guided (often misguided) and free of generative AI usage. It was a project by me for me and it's many flaws and shortcomings are mine too. The whole project was learning experience that was meant to force me to buckle myself into my seat and write some C, do research, and commit myself to the learning the process. Overall, I think it went quite well and I'll share my thoughts in this blog. I also want to write more in general, so this will be an excellent means to practice communicating my thoughts and experiences.
 
@@ -38,7 +38,7 @@ I even managed to get a job after graduation and worked at a MEGACORP for a bit.
 
 All of my programming came from a couple of E-books on XNA/Monogame and a random smattering of online tutorials. When I first tried to learn game development it was "[XNA](https://en.wikipedia.org/wiki/Microsoft_XNA)" which later became the "[Monogame](https://monogame.net/)" that you see today. I originally picked books on Monogame because I learned that Bastion was written in Monogame. I would later play "Salt & Sanctuary" another excellent game also written in XNA. The XNA/Monogame books were are quite good and I'd highly recommend anyone interested in learning game development pick up Monogame. It's really beginner-friendly and the online community is really nice.
 
-I even did a little bit GDScript with the rise of Godot. I did some tutorials through [GDQuest](https://www.gdquest.com/) and they were quite good as well. However I never quite took the extra step of the path of guided tutorials. I always felt like I "wanted" to make games, but never had the drive to really learn the "process" of making games. I liked "wanting" more than i liked "trying" and I feel like this is a common behavior with a particular type of person.
+I even did a little bit GDScript with the rise of Godot. I did some tutorials through [GDQuest](https://www.gdquest.com/) and they were quite good as well. However I never quite took the extra step of the path of guided tutorials. I always felt like I "wanted" to make games, but never had the drive to really learn the "process" of making games. I liked "wanting" more than i liked "trying" and I feel like this is a common behavior with a particular type of person. You get infintenatly 
 
 ### Why I Didn't Originally Proceed With Game Development as a Hobby
 
@@ -73,12 +73,47 @@ I would read something from the dossier, run into something I didn't know how to
 The Dossier included a lot of the inner-working of PAC-MAN and saved me a lot of time on what to do but it wasn't a how-to guide. I really liked how with this project I had to figure "how" to do something, even though the dossier pretty clearly explain "what" was done, often even "why" something was done.
 
 ## The Actual Development of the Project
+
 ### My Development Configuration
 
 I recently switch to [Linux Mint](https://www.linuxmint.com/) due to frustration with Windows 11 and things have been pretty swell. Development on Linux has been pretty breezy overall. I downloaded [SDL2 and SDL3](https://www.libsdl.org/) from the website and [VSCodium](https://vscodium.com/) did a most of the C/C++ configuration for me. I set up my Git repository and I was pretty much all set. 
 
-I tried using the classic Linux editors like [emacs](https://www.gnu.org/software/emacs/) and [vim](https://www.vim.org/), but I couldn't quite get the hang of it. I grew up on Windows machines and I'm still rather unfamiliar with CLI style computing and text editing. They are great tools, but they are bit too old-school for me. I also tried [Zed](https://zed.dev/) for a bit during development (I disabled the AI features), but I didn't quite like that either. 
+I tried using the classic Linux editors like [emacs](https://www.gnu.org/software/emacs/) and [vim](https://www.vim.org/), but I couldn't quite get the hang of it. I grew up on Windows machines and I'm still rather unfamiliar with CLI style computing and text editing. They are great tools, but they are bit too old-school for me. I also tried [Zed](https://zed.dev/) for a bit during development (I disabled the AI features), but I didn't quite like that either. VSCodium and it's many extensions well suite all my needs. 
 
-I also download the [Hack font](https://sourcefoundry.org/hack/) because I think it's really easy on my eyes. 
+I also download the [Hack font](https://sourcefoundry.org/hack/) because I think it's really easy on my eyes. I think having a good font is important for development. If you're going to look at a screen with glyths on it all day, you might as well have glyths that are aesthetically pleasing and present information clearly. There are [tons to choose from](https://www.programmingfonts.org/) and I think it gives your code some personality. Having 'l','1','i' all look different or 'O', '0', and '8' is one of those things you can't "unsee" once you switch fonts. I think it's a simple quality of life improvment for anyone who looks at screens, but espcially for programmers. 
 
-### 
+### Learning to use Headers
+
+This was my first C project that had multiple files. I remember once did an assignment in community college that had one or two shared headers but that was it. My project grew I found that there was lot of code that needed to know where other code was. I had mutliple instances of circular dpendencies throughout my development process. The biggest culprit was `gamecontext.h` , `ecs.h`
+, and `main.h` I think because those are the most involved pieces of code I have. 
+
+I liked using headers because they are force you to create to think about function signiatures and declearing constants ahead of time. It's sort of like pseudocode in that you don't quite know how something ought to be implemented but it gives you a general shape most of the time and you can easily modifiy. Having done this project in C I found it to be very particuarly insightful in that C doesn't do a lot things for you. I was forced to learn about how forward declaration work and made sure my `.h` were populated with the proper data. Making sure functions signatures match in there `.c` and `.h` definntion is important and I goofed that up often. 
+
+
+
+### Separation of Concerns
+
+At my first year at MEGACORP in my naivie vigor to be a good employee I read a small amount [Heads First Design Patterns]([Head First Design Patterns [Book]](https://www.oreilly.com/library/view/head-first-design/0596007124/)) because it was avaiable in the employee "library". The "library" being a bookcase full of full-throated Corpo propoganda, trite entrepreneur books and mid 90's MBA dreck, and religous conversion pampllets. The design pattern book just caught me eye by chance and I read at my desk. 
+
+I learned about "separation of concerns" from that book and I have seen and read that design pattern mentioned in a many of the game development tutorial as well. I tried to divide up as much as possible to make things do one thing or only handle one thing. Doing or handling one can be a rather broad statement but I think I managed to keep things small enough that the scope and context of anyone particular file could stay in my head.
+
+`main.c` for example handles the game loop. Handling the game loop is main's job but handling the game loop means it has to coordinate a lot different things. Things like the `gamecontext` and the `sdlcontext` and all the various systems I ended up building. `main` had to handled all of those things but that mean all of those things themselves had to handle other things and often themselves. 
+
+I like to think of sparatin of concerns a bit like toy blocks in each concern itself is a block you bind and bundle blocks together to create small chunks of the whole set. With `main` being the whole playset that contains all of the smaller sets you had built prior. Also much like a toy block set, it's can difficult to see how a single piece fits into the whole until you actually put it all together. During the very beginning of my the project I started with just `map.h`, `maptile.c`, and `maze.txt`. It's difficult to see how all of that will build into a larger game, but you can much more easily see how maptiles can be generated from the .txt file and be bundled together to create a map. 
+
+
+
+### Entity Component System
+
+The Entity Component System (ECS) what I'm actually most proud of in this project. I first heard of an ECS from the [Game Programming Patterns book](https://gameprogrammingpatterns.com/) I bought a long time ago. I read a little bit of before but I never read it cover to cover. I'm currently reading now as part of my mental recalibration toward reading more physical books every month. I don't rightly know if my project really *needed* an ECS, but was really fun to research what an ECS is, how an ECS can be used for my particular project, and implementing through trial and error. 
+
+Making things an `Entity` that's defined by various IDs made thinking about the types of systems I needed a lot easier. I had `POSITION`, `VELOCITY`, `RENDERABLE` entity IDs so it me think I would need things like a `movementsystem`, `collisionsystem`,`renderSystem` and so on. Having an ECS made features like frightened mode, fruit spawning, and dot scoring easier to manage, since they’re just component changes or new entities rather than special‑case if‑chains.
+
+
+
+
+
+
+### Defensive Programming
+
+I have never created anything particuarly large in C and I didn't know how easy it is write code that "build" but doesn't run or runs but crashes as soon as you do something. Segmentation faults are a common trope on 
