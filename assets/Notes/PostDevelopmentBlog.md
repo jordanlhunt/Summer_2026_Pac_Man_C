@@ -2,6 +2,8 @@
 
 _(No generative AI was used in the writing of this, just want to address that off the rip. Also this isn't SEO'ed in anyway and I'm not trying to sell you anything. All the links are purely to provide context or credit)_
 
+Date of Publish - 9 JULY 2026
+
 ## Table of Contents
 
 * [About Me](#about-me)
